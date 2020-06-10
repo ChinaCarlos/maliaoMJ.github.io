@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          TypeScript 学习第四章 TypeScript函数 - Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/TypeScript/TypeScript 学习第四章 TypeScript函数/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('http://10wallpaper.com/wallpaper/1680x1050/1508/Iron_man_hulkbuster_in_avengers-Movie_HD_Wallpaper_1680x1050.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                            
+                              <a class="tag" href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
+                            
+                        </div>
+                        <h1>TypeScript 学习第四章 TypeScript函数</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Carlos on
+                            2019-08-17
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1><span id="函数">函数</span></h1>
+<p>函数是 JavaScript 应用程序的基础，它帮助你实现抽象层，模拟类，信息隐藏和模块。在 TypeScript 里，虽然已经支持类，命名空间和模块，但函数仍然是主要的定义行为的地方。TypeScript 为 JavaScript 函数添加了额外的功能，让我们可以更容易地使用。</p>
+<h2><span id="基本示例">基本示例</span></h2>
+<p>和 JavaScript 一样，TypeScript 函数可以创建有名字的函数和匿名函数。你可以随意选择适合应用程序的方式，不论是定义一系列 API 函数还是只使用一次的函数。</p>
+<p>通过下面的例子可以迅速回想起这两种 JavaScript 中的函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 命名函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匿名函数</span></span><br><span class="line"><span class="keyword">let</span> myAdd = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123; </span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 JavaScript 里，函数可以使用函数体外部的变量。 当函数这么做时，我们说它‘捕获’了这些变量。 至于为什么可以这样做以及其中的利弊超出了本文的范围，但是深刻理解这个机制对学习 JavaScript 和 TypeScript 会很有帮助。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> z = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addToZ</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y + z</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="函数类型">函数类型</span></h2>
+<h3><span id="为函数定义类型">为函数定义类型</span></h3>
+<p>让我们为上面那个函数添加类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myAdd = <span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123; </span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以给每个参数添加类型之后再为函数本身添加返回值类型。TypeScript 能够根据返回语句自动推断出返回值类型。</p>
+<h3><span id="书写完整函数类型">书写完整函数类型</span></h3>
+<p>现在我们已经为函数指定了类型，下面让我们写出函数的完整类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myAdd: <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span> = </span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数类型包含两部分：参数类型和返回值类型。 当写出完整函数类型的时候，这两部分都是需要的。 我们以参数列表的形式写出参数类型，为每个参数指定一个名字和类型。这个名字只是为了增加可读性。 我们也可以这么写：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myAdd: <span class="function">(<span class="params">baseValue: <span class="built_in">number</span>, increment: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span> = </span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只要参数类型是匹配的，那么就认为它是有效的函数类型，而不在乎参数名是否正确。</p>
+<p>第二部分是返回值类型。 对于返回值，我们在函数和返回值类型之前使用(<code>=&gt;</code>)符号，使之清晰明了。 如之前提到的，返回值类型是函数类型的必要部分，如果函数没有返回任何值，你也必须指定返回值类型为 <code>void</code> 而不能留空。</p>
+<p>函数的类型只是由参数类型和返回值组成的。 函数中使用的捕获变量不会体现在类型里。 实际上，这些变量是函数的隐藏状态并不是组成 API 的一部分。</p>
+<h3><span id="推断类型">推断类型</span></h3>
+<p>尝试这个例子的时候，你会发现如果你在赋值语句的一边指定了类型但是另一边没有类型的话，TypeScript 编译器会自动识别出类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> myAdd = <span class="function"><span class="keyword">function</span>(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>): <span class="title">number</span> </span>&#123; </span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myAdd: <span class="function">(<span class="params">baseValue: <span class="built_in">number</span>, increment: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span> = </span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这叫做“按上下文归类”，是类型推论的一种。它帮助我们更好地为程序指定类型。</p>
+<h2><span id="可选参数和默认参数">可选参数和默认参数</span></h2>
+<p>TypeScript 里的每个函数参数都是必须的。 这不是指不能传递 <code>null</code> 或 <code>undefined</code> 作为参数，而是说编译器检查用户是否为每个参数都传入了值。编译器还会假设只有这些参数会被传递进函数。 简短地说，传递给一个函数的参数个数必须与函数期望的参数个数一致。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildName</span>(<span class="params">firstName: <span class="built_in">string</span>, lastName: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> firstName + <span class="string">' '</span> + lastName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result1 = buildName(<span class="string">'Bob'</span>)                  <span class="comment">// Error, 参数过少</span></span><br><span class="line"><span class="keyword">let</span> result2 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>, <span class="string">'Sr.'</span>);  <span class="comment">// Error, 参数过多</span></span><br><span class="line"><span class="keyword">let</span> result3 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>);         <span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
+<p>JavaScript 里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是 <code>undefined</code>。 在TypeScript 里我们可以在参数名旁使用 <code>?</code> 实现可选参数的功能。 比如，我们想让 <code>lastName</code> 是可选的：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildName</span>(<span class="params">firstName: <span class="built_in">string</span>, lastName?: <span class="built_in">string</span></span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (lastName)</span><br><span class="line">    <span class="keyword">return</span> firstName + <span class="string">' '</span> + lastName</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> firstName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result1 = buildName(<span class="string">'Bob'</span>);  <span class="comment">// 现在正常了</span></span><br><span class="line"><span class="keyword">let</span> result2 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>, <span class="string">'Sr.'</span>)  <span class="comment">// Error, 参数过多</span></span><br><span class="line"><span class="keyword">let</span> result3 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>)  <span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
+<p>可选参数必须跟在必须参数后面。 如果上例我们想让 <code>firstName</code> 是可选的，那么就必须调整它们的位置，把 <code>firstName</code> 放在后面。</p>
+<p>在 TypeScript 里，我们也可以为参数提供一个默认值当用户没有传递这个参数或传递的值是 <code>undefined</code> 时。 它们叫做有默认初始化值的参数。 让我们修改上例，把<code>lastName</code> 的默认值设置为 <code>&quot;Smith&quot;</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildName</span>(<span class="params">firstName: <span class="built_in">string</span>, lastName = 'Smith'</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> firstName + <span class="string">' '</span> + lastName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result1 = buildName(<span class="string">'Bob'</span>)                  <span class="comment">// 返回 "Bob Smith"</span></span><br><span class="line"><span class="keyword">let</span> result2 = buildName(<span class="string">'Bob'</span>, <span class="literal">undefined</span>)     <span class="comment">// 正常, 同样 "Bob Smith"</span></span><br><span class="line"><span class="keyword">let</span> result3 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>, <span class="string">'Sr.'</span>)  <span class="comment">// 错误, 参数过多</span></span><br><span class="line"><span class="keyword">let</span> result4 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>)        <span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
+<p>与普通可选参数不同的是，带默认值的参数不需要放在必须参数的后面。 如果带默认值的参数出现在必须参数前面，用户必须明确的传入 <code>undefined</code> 值来获得默认值。 例如，我们重写最后一个例子，让 <code>firstName</code> 是带默认值的参数：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildName</span>(<span class="params">firstName = 'Will', lastName: <span class="built_in">string</span></span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> firstName + <span class="string">' '</span> + lastName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result1 = buildName(<span class="string">'Bob'</span>)                  <span class="comment">// Error, 参数过少</span></span><br><span class="line"><span class="keyword">let</span> result2 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>, <span class="string">"Sr."</span>)  <span class="comment">// Error, 参数过多</span></span><br><span class="line"><span class="keyword">let</span> result3 = buildName(<span class="string">'Bob'</span>, <span class="string">'Adams'</span>)         <span class="comment">// OK， 返回 "Bob Adams"</span></span><br><span class="line"><span class="keyword">let</span> result4 = buildName(<span class="literal">undefined</span>, <span class="string">'Adams'</span>)     <span class="comment">// OK，  返回 "Will Adams"</span></span><br></pre></td></tr></table></figure>
+<h3><span id="剩余参数">剩余参数</span></h3>
+<p>必要参数，默认参数和可选参数有个共同点：它们表示某一个参数。 有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来。 在 JavaScript 里，你可以使用 <code>arguments</code> 来访问所有传入的参数。</p>
+<p>在 TypeScript 里，你可以把所有参数收集到一个变量里：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildName</span>(<span class="params">firstName: <span class="built_in">string</span>, ...restOfName: <span class="built_in">string</span>[]</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> firstName + <span class="string">' '</span> + restOfName.join(<span class="string">' '</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> employeeName = buildName(<span class="string">'Joseph'</span>, <span class="string">'Samuel'</span>, <span class="string">'Lucas'</span>, <span class="string">'MacKinzie'</span>)</span><br></pre></td></tr></table></figure>
+<p>剩余参数会被当做个数不限的可选参数。 可以一个都没有，同样也可以有任意个。 编译器创建参数数组，名字是你在省略号（ <code>...</code>）后面给定的名字，你可以在函数体内使用这个数组。</p>
+<p>这个省略号也会在带有剩余参数的函数类型定义上使用到：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buildName</span>(<span class="params">firstName: <span class="built_in">string</span>, ...restOfName: <span class="built_in">string</span>[]</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> firstName + <span class="string">' '</span> + restOfName.join(<span class="string">' '</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> buildNameFun: <span class="function">(<span class="params">fname: <span class="built_in">string</span>, ...rest: <span class="built_in">string</span>[]</span>) =&gt;</span> <span class="built_in">string</span> = buildName</span><br></pre></td></tr></table></figure>
+<h2><span id="this">this</span></h2>
+<p>学习如何在 JavaScript 里正确使用 <code>this</code> 就好比一场成年礼。由于 TypeScript 是 JavaScript 的超集，TypeScript 程序员也需要弄清 <code>this</code> 工作机制并且当有 bug 的时候能够找出错误所在。 幸运的是，TypeScript 能通知你错误地使用了 <code>this</code> 的地方。 如果你想了解 JavaScript 里的 this是如何工作的，那么首先阅读 Yehuda Katz 写的 <a href="http://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/" target="_blank" rel="noopener">Understanding JavaScript Function Invocation and “this”</a>。 Yehuda 的文章详细的阐述了 <code>this</code> 的内部工作原理，因此我们这里只做简单介绍。</p>
+<h3><span id="this-和箭头函数">this 和箭头函数</span></h3>
+<p>JavaScript里，<code>this</code> 的值在函数被调用的时候才会指定。 这是个既强大又灵活的特点，但是你需要花点时间弄清楚函数调用的上下文是什么。但众所周知，这不是一件很简单的事，尤其是在返回一个函数或将函数当做参数传递的时候。</p>
+<p>下面看一个例子：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> deck = &#123;</span><br><span class="line">  suits: [<span class="string">'hearts'</span>, <span class="string">'spades'</span>, <span class="string">'clubs'</span>, <span class="string">'diamonds'</span>],</span><br><span class="line">  cards: <span class="built_in">Array</span>(<span class="number">52</span>),</span><br><span class="line">  createCardPicker: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">let</span> pickedCard = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">52</span>)</span><br><span class="line">      <span class="keyword">let</span> pickedSuit = <span class="built_in">Math</span>.floor(pickedCard / <span class="number">13</span>)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> &#123;suit: <span class="keyword">this</span>.suits[pickedSuit], card: pickedCard % <span class="number">13</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cardPicker = deck.createCardPicker()</span><br><span class="line"><span class="keyword">let</span> pickedCard = cardPicker()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard.card + <span class="string">' of '</span> + pickedCard.suit)</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>createCardPicker</code> 是个函数，并且它又返回了一个函数。如果我们尝试运行这个程序，会发现它并没有输出而是报错了。 因为 <code>createCardPicker</code> 返回的函数里的 <code>this</code> 被设置成了 <code>global</code> 而不是 <code>deck</code> 对象。 因为我们只是独立的调用了 <code>cardPicker()</code>。 顶级的非方法式调用会将 <code>this</code> 视为 <code>global</code>。</p>
+<p>为了解决这个问题，我们可以在函数被返回时就绑好正确的<code>this</code>。 这样的话，无论之后怎么使用它，都会引用绑定的<code>deck</code> 对象。 我们需要改变函数表达式来使用 ECMAScript 6 箭头语法。 箭头函数能保存函数创建时的 <code>this</code> 值，而不是调用时的值：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> deck = &#123;</span><br><span class="line">  suits: [<span class="string">'hearts'</span>, <span class="string">'spades'</span>, <span class="string">'clubs'</span>, <span class="string">'diamonds'</span>],</span><br><span class="line">  cards: <span class="built_in">Array</span>(<span class="number">52</span>),</span><br><span class="line">  createCardPicker: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 注意：这里使用箭头函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> pickedCard = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">52</span>)</span><br><span class="line">      <span class="keyword">let</span> pickedSuit = <span class="built_in">Math</span>.floor(pickedCard / <span class="number">13</span>)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> &#123;suit: <span class="keyword">this</span>.suits[pickedSuit], card: pickedCard % <span class="number">13</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cardPicker = deck.createCardPicker()</span><br><span class="line"><span class="keyword">let</span> pickedCard = cardPicker()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard.card + <span class="string">' of '</span> + pickedCard.suit)</span><br></pre></td></tr></table></figure>
+<h3><span id="this-参数">this 参数</span></h3>
+<p>在上述的例子中 <code>this.suits[pickedSuit]</code> 的类型为 <code>any</code>，这是因为 <code>this</code> 来自对象字面量里的函数表达式。 修改的方法是，提供一个显式的 <code>this</code> 参数。 <code>this</code> 参数是个假的参数，它出现在参数列表的最前面：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"><span class="keyword">this</span>: <span class="built_in">void</span></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 确保“this”在此独立函数中不可用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们往例子里添加一些接口，<code>Card</code> 和 <code>Deck</code>，让类型重用能够变得清晰简单些：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Card &#123;</span><br><span class="line">  suit: <span class="built_in">string</span></span><br><span class="line">  card: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> Deck &#123;</span><br><span class="line">  suits: <span class="built_in">string</span>[]</span><br><span class="line">  cards: <span class="built_in">number</span>[]</span><br><span class="line"></span><br><span class="line">  createCardPicker (<span class="keyword">this</span>: Deck): <span class="function"><span class="params">()</span> =&gt;</span> Card</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> deck: Deck = &#123;</span><br><span class="line">  suits: [<span class="string">'hearts'</span>, <span class="string">'spades'</span>, <span class="string">'clubs'</span>, <span class="string">'diamonds'</span>],</span><br><span class="line">  cards: <span class="built_in">Array</span>(<span class="number">52</span>),</span><br><span class="line">  <span class="comment">// <span class="doctag">NOTE:</span> 函数现在显式指定其被调用方必须是 deck 类型</span></span><br><span class="line">  createCardPicker: <span class="function"><span class="keyword">function</span> (<span class="params"><span class="keyword">this</span>: Deck</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> pickedCard = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">52</span>)</span><br><span class="line">      <span class="keyword">let</span> pickedSuit = <span class="built_in">Math</span>.floor(pickedCard / <span class="number">13</span>)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> &#123;suit: <span class="keyword">this</span>.suits[pickedSuit], card: pickedCard % <span class="number">13</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> cardPicker = deck.createCardPicker()</span><br><span class="line"><span class="keyword">let</span> pickedCard = cardPicker()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard.card + <span class="string">' of '</span> + pickedCard.suit)</span><br></pre></td></tr></table></figure>
+<p>现在 TypeScrip t知道 <code>createCardPicker</code> 期望在某个 <code>Deck</code> 对象上调用。也就是说 <code>this</code> 是 <code>Deck</code> 类型的，而非 <code>any</code>。</p>
+<h3><span id="this-参数在回调函数里">this 参数在回调函数里</span></h3>
+<p>你可以也看到过在回调函数里的 <code>this</code> 报错，当你将一个函数传递到某个库函数里稍后会被调用时。 因为当回调被调用的时候，它们会被当成一个普通函数调用，<code>this</code> 将为 <code>undefined</code>。 稍做改动，你就可以通过 <code>this</code> 参数来避免错误。 首先，库函数的作者要指定 <code>this</code> 的类型：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> UIElement &#123;</span><br><span class="line">  addClickListener(onclick: <span class="function">(<span class="params"><span class="keyword">this</span>: <span class="built_in">void</span>, e: Event</span>) =&gt;</span> <span class="built_in">void</span>): <span class="built_in">void</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>this: void</code> 意味着 <code>addClickListener</code> 期望传入的 <code>onclick</code> 方法不需要 <code>this</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> UIElement &#123;</span><br><span class="line">  addClickListener (onclick: <span class="function">(<span class="params"><span class="keyword">this</span>: <span class="built_in">void</span>, e: Event</span>) =&gt;</span> <span class="built_in">void</span>): <span class="built_in">void</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Handler &#123;</span><br><span class="line">  <span class="keyword">type</span>: <span class="built_in">string</span></span><br><span class="line"></span><br><span class="line">  onClickBad (<span class="keyword">this</span>: Handler, e: Event) &#123;</span><br><span class="line">    <span class="keyword">this</span>.type = e.type</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> h = <span class="keyword">new</span> Handler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uiElement: UIElement = &#123;</span><br><span class="line">  addClickListener () &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uiElement.addClickListener(h.onClickBad) <span class="comment">// error!</span></span><br></pre></td></tr></table></figure>
+<p>指定了 <code>this</code> 类型后，你显式声明 <code>onClickBad</code> 必须在 <code>Handler</code> 的实例上调用。 然后 TypeScript 会检测到 <code>addClickListener</code> 要求函数带有 <code>this: void</code>。 改变 <code>this</code> 类型来修复这个错误：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Handler &#123;</span><br><span class="line">  <span class="keyword">type</span>: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  onClickBad (<span class="keyword">this</span>: <span class="built_in">void</span>, e: Event) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'clicked!'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> h = <span class="keyword">new</span> Handler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uiElement: UIElement = &#123;</span><br><span class="line">  addClickListener () &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uiElement.addClickListener(h.onClickBad)</span><br></pre></td></tr></table></figure>
+<p>因为 <code>onClickGood</code> 指定了 <code>this</code> 类型为 <code>void</code>，因此传递 <code>addClickListener</code> 是合法的。 当然了，这也意味着不能使用 <code>this.info</code>。 如果你两者都想要，你不得不使用箭头函数了：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Handler &#123;</span><br><span class="line">  <span class="keyword">type</span>: <span class="built_in">string</span></span><br><span class="line">  onClickGood = <span class="function">(<span class="params">e: Event</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.type = e.type </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是可行的因为箭头函数不会捕获 <code>this</code>，所以你总是可以把它们传给期望 <code>this: void</code> 的函数。</p>
+<h2><span id="重载">重载</span></h2>
+<p>JavaScript 本身是个动态语言。JavaScript 里函数根据传入不同的参数而返回不同类型的数据的场景是很常见的。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> suits = [<span class="string">'hearts'</span>, <span class="string">'spades'</span>, <span class="string">'clubs'</span>, <span class="string">'diamonds'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(x)) &#123;</span><br><span class="line">    <span class="keyword">let</span> pickedCard = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * x.length)</span><br><span class="line">    <span class="keyword">return</span> pickedCard</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> pickedSuit = <span class="built_in">Math</span>.floor(x / <span class="number">13</span>)</span><br><span class="line">    <span class="keyword">return</span> &#123; suit: suits[pickedSuit], card: x % <span class="number">13</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myDeck = [</span><br><span class="line">  &#123; suit: <span class="string">'diamonds'</span>, card: <span class="number">2</span> &#125;,</span><br><span class="line">  &#123; suit: <span class="string">'spades'</span>, card: <span class="number">10</span> &#125;,</span><br><span class="line">  &#123; suit: <span class="string">'hearts'</span>, card: <span class="number">4</span> &#125;</span><br><span class="line">]</span><br><span class="line"><span class="keyword">let</span> pickedCard1 = myDeck[pickCard(myDeck)];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard1.card + <span class="string">' of '</span> + pickedCard1.suit)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> pickedCard2 = pickCard(<span class="number">15</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard2.card + <span class="string">' of '</span> + pickedCard2.suit)</span><br></pre></td></tr></table></figure>
+<p><code>pickCard</code> 方法根据传入参数的不同会返回两种不同的类型。如果传入的是代表纸牌的对象数组，函数作用是从中抓一张牌。如果用户想抓牌，我们告诉他抓到了什么牌。 但是这怎么在类型系统里表示呢。</p>
+<p>方法是为同一个函数提供多个函数类型定义来进行函数重载。 编译器会根据这个列表去处理函数的调用。 下面我们来重载 <code>pickCard</code> 函数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> suits = [<span class="string">'hearts'</span>, <span class="string">'spades'</span>, <span class="string">'clubs'</span>, <span class="string">'diamonds'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x: &#123;suit: <span class="built_in">string</span>; card: <span class="built_in">number</span> &#125;[]</span>): <span class="title">number</span></span></span><br><span class="line"><span class="function"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x: <span class="built_in">number</span></span>): </span>&#123;<span class="title">suit</span>: <span class="title">string</span></span>; card: <span class="built_in">number</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pickCard</span>(<span class="params">x</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(x)) &#123;</span><br><span class="line">    <span class="keyword">let</span> pickedCard = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * x.length)</span><br><span class="line">    <span class="keyword">return</span> pickedCard</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> pickedSuit = <span class="built_in">Math</span>.floor(x / <span class="number">13</span>)</span><br><span class="line">    <span class="keyword">return</span> &#123; suit: suits[pickedSuit], card: x % <span class="number">13</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myDeck = [</span><br><span class="line">  &#123; suit: <span class="string">'diamonds'</span>, card: <span class="number">2</span> &#125;,</span><br><span class="line">  &#123; suit: <span class="string">'spades'</span>, card: <span class="number">10</span> &#125;,</span><br><span class="line">  &#123; suit: <span class="string">'hearts'</span>, card: <span class="number">4</span> &#125;</span><br><span class="line">]</span><br><span class="line"><span class="keyword">let</span> pickedCard1 = myDeck[pickCard(myDeck)];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard1.card + <span class="string">' of '</span> + pickedCard1.suit)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> pickedCard2 = pickCard(<span class="number">15</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'card: '</span> + pickedCard2.card + <span class="string">' of '</span> + pickedCard2.suit)</span><br></pre></td></tr></table></figure>
+<p>这样改变后，重载的 <code>pickCard</code> 函数在调用的时候会进行正确的类型检查。</p>
+<p>为了让编译器能够选择正确的检查类型，它与 JavaScript 里的处理流程相似。它查找重载列表，尝试使用第一个重载定义。 如果匹配的话就使用这个。因此，在定义重载的时候，一定要把最精确的定义放在最前面。</p>
+<p>注意，<code>function pickCard(x): any</code> 并不是重载列表的一部分，因此这里只有两个重载：一个是接收对象数组，另一个接收数字。 以其它参数调用 <code>pickCard</code> 会产生错误。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/TypeScript/TypeScript 学习第五章 TypeScript接口/" data-toggle="tooltip" data-placement="top" title="TypeScript 学习第五章 TypeScript接口">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/TypeScript/TypeScript 学习第三章 TypeScript基本类型/" data-toggle="tooltip" data-placement="top" title="TypeScript 学习第三章 TypeScript基本类型">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+<!--PC和WAP自适应版-->
+            <div id="SOHUCS" sid="TypeScript/TypeScript 学习第四章 TypeScript函数/"></div>
+            <script type="text/javascript">
+                (function () {
+                    var appid = 'cyudaHkzu';
+                    var conf = 'prod_53d882f398ccb8a21ddd91e1aefc77a0';
+                    var width = window.innerWidth || document.documentElement.clientWidth;
+                    if (width < 960) {
+                        window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+                    
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if (docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                           
+                            } else { var loadJs = function (d, a) { var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement; var b = document.createElement("script"); b.setAttribute("type", "text/javascript"); b.setAttribute("charset", "UTF-8"); b.setAttribute("src", d); if (typeof a === "function") { if (window.attachEvent) { b.onreadystatechange = function () { var e = b.readyState; if (e === "loaded" || e === "complete") { b.onreadystatechange = null; a() } } } else { b.onload = a } } c.appendChild(b) }; loadJs("https://changyan.sohu.com/upload/changyan.js", function () { 
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if(docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                        window.changyan.api.config({ appid: appid, conf: conf }) });
+                    }
+                    
+                })();
+                </script>
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="https://s2.ax1x.com/2019/04/30/E8OqQx.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="https://s2.ax1x.com/2019/04/30/E8ObS1.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><span id="&#x51FD;&#x6570;">&#x51FD;&#x6570;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text"><span id="&#x57FA;&#x672C;&#x793A;&#x4F8B;">&#x57FA;&#x672C;&#x793A;&#x4F8B;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text"><span id="&#x51FD;&#x6570;&#x7C7B;&#x578B;">&#x51FD;&#x6570;&#x7C7B;&#x578B;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text"><span id="&#x4E3A;&#x51FD;&#x6570;&#x5B9A;&#x4E49;&#x7C7B;&#x578B;">&#x4E3A;&#x51FD;&#x6570;&#x5B9A;&#x4E49;&#x7C7B;&#x578B;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text"><span id="&#x4E66;&#x5199;&#x5B8C;&#x6574;&#x51FD;&#x6570;&#x7C7B;&#x578B;">&#x4E66;&#x5199;&#x5B8C;&#x6574;&#x51FD;&#x6570;&#x7C7B;&#x578B;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text"><span id="&#x63A8;&#x65AD;&#x7C7B;&#x578B;">&#x63A8;&#x65AD;&#x7C7B;&#x578B;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text"><span id="&#x53EF;&#x9009;&#x53C2;&#x6570;&#x548C;&#x9ED8;&#x8BA4;&#x53C2;&#x6570;">&#x53EF;&#x9009;&#x53C2;&#x6570;&#x548C;&#x9ED8;&#x8BA4;&#x53C2;&#x6570;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text"><span id="&#x5269;&#x4F59;&#x53C2;&#x6570;">&#x5269;&#x4F59;&#x53C2;&#x6570;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"><span id="this">this</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text"><span id="this-&#x548C;&#x7BAD;&#x5934;&#x51FD;&#x6570;">this &#x548C;&#x7BAD;&#x5934;&#x51FD;&#x6570;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text"><span id="this-&#x53C2;&#x6570;">this &#x53C2;&#x6570;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.4.3.</span> <span class="toc-nav-text"><span id="this-&#x53C2;&#x6570;&#x5728;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x91CC;">this &#x53C2;&#x6570;&#x5728;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x91CC;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text"><span id="&#x91CD;&#x8F7D;">&#x91CD;&#x8F7D;</span></span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                          <a class="tag" href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+                    
+                        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+                    
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    
+                        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+                    
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                    
+                        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    #pop_ad{
+        display: none!important;
+    }
+    #feedAv{
+        display: none!important;
+    }
+    .module-cmt-float-bar{
+        display: none!important;
+    }
+    .list-content-wrapper-wap:last-child{
+        display: none!important;
+    }
+    div[ad-wap-feed='ad-wap-feed']{
+        display: none!important;
+    }
+    #baidu_new_ad,#bianxianmao_ad,.list-ctrl-area-wap{
+       display: none!important; 
+    }
+    .cy-logo{
+        background-size: 100%!important;
+    }
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Vue 源码阅读 模板编译（六） - Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/Vue/Vue 源码阅读 模板编译（六）/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img.zcool.cn/community/0144ed58660585a8012060c810d41f.jpg@2o.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                            
+                              <a class="tag" href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+                            
+                              <a class="tag" href="/tags/#Vue" title="Vue">Vue</a>
+                            
+                        </div>
+                        <h1>Vue 源码阅读 模板编译（六）</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Carlos on
+                            2019-10-26
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="1-前言">1. 前言</span></h2>
+<p>经过前几篇文章，我们把用户所写的模板字符串先经过解析阶段解析生成对应的抽象语法树<code>AST</code>，接着再经过优化阶段将<code>AST</code>中的静态节点及静态根节点都打上标记，现在终于到了模板编译三大阶段的最后一个阶段了——代码生成阶段。所谓代码生成阶段，到底是要生成什么代码？答：要生成<code>render</code>函数字符串。</p>
+<p>我们知道，<code>Vue</code>实例在挂载的时候会调用其自身的<code>render</code>函数来生成实例上的<code>template</code>选项所对应的<code>VNode</code>，简单的来说就是<code>Vue</code>只要调用了<code>render</code>函数，就可以把模板转换成对应的虚拟<code>DOM</code>。那么<code>Vue</code>要想调用<code>render</code>函数，那必须要先有这个<code>render</code>函数，那这个<code>render</code>函数又是从哪来的呢？是用户手写的还是<code>Vue</code>自己生成的？答案是都有可能。我们知道，我们在日常开发中是可以在<code>Vue</code>组件选项中手写一个<code>render</code>选项，其值对应一个函数，那这个函数就是<code>render</code>函数，当用户手写了<code>render</code>函数时，那么<code>Vue</code>在挂载该组件的时候就会调用用户手写的这个<code>render</code>函数。那如果用户没有写呢？那这个时候<code>Vue</code>就要自己根据模板内容生成一个<code>render</code>函数供组件挂载的时候调用。而<code>Vue</code>自己根据模板内容生成<code>render</code>函数的过程就是本篇文章所要介绍的代码生成阶段。</p>
+<p>现在我们知道了，所谓代码生成其实就是根据模板对应的抽象语法树<code>AST</code>生成一个函数，通过调用这个函数就可以得到模板对应的虚拟<code>DOM</code>。</p>
+<h2><span id="2-如何根据ast生成render函数">2. 如何根据AST生成render函数</span></h2>
+<p>通过上文我们知道了，代码生成阶段主要的工作就是根据已有的<code>AST</code>生成对应的<code>render</code>函数供组件挂载时调用，组件只要调用的这个<code>render</code>函数就可以得到<code>AST</code>对应的虚拟<code>DOM</code>的<code>VNode</code>。那么如何根据<code>AST</code>生成<code>render</code>函数呢？这其中是怎样一个过程呢？接下来我们就来细细剖析一下。</p>
+<p>假设现有如下模板：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"NLRX"</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>Hello &#123;&#123;name&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>该模板经过解析并优化后对应的<code>AST</code>如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">ast = &#123;</span><br><span class="line">    <span class="string">'type'</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">'tag'</span>: <span class="string">'div'</span>,</span><br><span class="line">    <span class="string">'attrsList'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'name'</span>:<span class="string">'id'</span>,</span><br><span class="line">            <span class="string">'value'</span>:<span class="string">'NLRX'</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">'attrsMap'</span>: &#123;</span><br><span class="line">      <span class="string">'id'</span>: <span class="string">'NLRX'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'static'</span>:<span class="literal">false</span>,</span><br><span class="line">    <span class="string">'parent'</span>: <span class="literal">undefined</span>,</span><br><span class="line">    <span class="string">'plain'</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">'children'</span>: [&#123;</span><br><span class="line">      <span class="string">'type'</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">'tag'</span>: <span class="string">'p'</span>,</span><br><span class="line">      <span class="string">'plain'</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="string">'static'</span>:<span class="literal">false</span>,  </span><br><span class="line">      <span class="string">'children'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'type'</span>: <span class="number">2</span>,</span><br><span class="line">            <span class="string">'expression'</span>: <span class="string">'"Hello "+_s(name)'</span>,</span><br><span class="line">            <span class="string">'text'</span>: <span class="string">'Hello &#123;&#123;name&#125;&#125;'</span>,</span><br><span class="line">            <span class="string">'static'</span>:<span class="literal">false</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;]</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>下面我们就来根据已有的这个<code>AST</code>来生成对应的<code>render</code>函数。生成<code>render</code>函数的过程其实就是一个递归的过程，从顶向下依次递归<code>AST</code>中的每一个节点，根据不同的<code>AST</code>节点类型创建不同的<code>VNode</code>类型。接下来我们就来对照已有的模板和<code>AST</code>实际演示一下生成<code>render</code>函数的过程。</p>
+<ol>
+<li>
+<p>首先，根节点<code>div</code>是一个元素型<code>AST</code>节点，那么我们就要创建一个元素型<code>VNode</code>，我们把创建元素型<code>VNode</code>的方法叫做<code>_c(tagName,data,children)</code>。我们暂且不管<code>_c()</code>是什么，只需知道调用<code>_c()</code>就可以创建一个元素型<code>VNode</code>。那么就可以生成如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_c(<span class="string">'div'</span>,&#123;<span class="attr">attrs</span>:&#123;<span class="string">"id"</span>:<span class="string">"NLRX"</span>&#125;&#125;,[<span class="comment">/*子节点列表*/</span>])</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>根节点<code>div</code>有子节点，那么我们进入子节点列表<code>children</code>里遍历子节点，发现子节点<code>p</code>也是元素型的，那就继续创建元素型<code>VNode</code>并将其放入上述代码中根节点的子节点列表中，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_c(<span class="string">'div'</span>,&#123;<span class="attr">attrs</span>:&#123;<span class="string">"id"</span>:<span class="string">"NLRX"</span>&#125;&#125;,[_c(<span class="string">'p'</span>),[<span class="comment">/*子节点列表*/</span>]])</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>同理，继续遍历<code>p</code>节点的子节点，发现是一个文本型节点，那就创建一个文本型<code>VNode</code>并将其插入到<code>p</code>节点的子节点列表中，同理，创建文本型<code>VNode</code>我们调用<code>_v()</code>方法，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_c(<span class="string">'div'</span>,&#123;<span class="attr">attrs</span>:&#123;<span class="string">"id"</span>:<span class="string">"NLRX"</span>&#125;&#125;,[_c(<span class="string">'p'</span>),[_v(<span class="string">"Hello "</span>+_s(name))]])</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>到此，整个<code>AST</code>就遍历完毕了，我们将得到的代码再包装一下，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">`</span></span><br><span class="line"><span class="string">with(this)&#123;</span></span><br><span class="line"><span class="string">    reurn _c(</span></span><br><span class="line"><span class="string">        'div',</span></span><br><span class="line"><span class="string">        &#123;</span></span><br><span class="line"><span class="string">            attrs:&#123;"id":"NLRX"&#125;,</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        [</span></span><br><span class="line"><span class="string">            _c('p'),</span></span><br><span class="line"><span class="string">            [</span></span><br><span class="line"><span class="string">                _v("Hello "+_s(name))</span></span><br><span class="line"><span class="string">            ]</span></span><br><span class="line"><span class="string">        ])</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>最后，我们将上面得到的这个函数字符串传递给<code>createFunction</code>函数（关于这个函数在后面会介绍到），<code>createFunction</code>函数会帮我们把得到的函数字符串转换成真正的函数，赋给组件中的<code>render</code>选项，从而就是<code>render</code>函数了。如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">res.render = createFunction(compiled.render, fnGenErrors)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFunction</span> (<span class="params">code, errors</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Function</span>(code)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    errors.push(&#123; err, code &#125;)</span><br><span class="line">    <span class="keyword">return</span> noop</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>以上就是根据一个简单的模板所对应的<code>AST</code>生成<code>render</code>函数的过程，理论过程我们已经了解了，那么在源码中实际是如何实现的呢？下面我们就回归源码分析其具体实现过程。</p>
+<h2><span id="3-回归源码">3. 回归源码</span></h2>
+<p>代码生成阶段的源码位于<code>src/compiler/codegen/index.js</code> 中，源码虽然很长，但是逻辑不复杂，核心逻辑如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">generate</span> (<span class="params">ast,option</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> state = <span class="keyword">new</span> CodegenState(options)</span><br><span class="line">  <span class="keyword">const</span> code = ast ? genElement(ast, state) : <span class="string">'_c("div")'</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    render: <span class="string">`with(this)&#123;return <span class="subst">$&#123;code&#125;</span>&#125;`</span>,</span><br><span class="line">    staticRenderFns: state.staticRenderFns</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> code = generate(ast, options)</span><br></pre></td></tr></table></figure>
+<p>调用<code>generate</code>函数并传入优化后得到的<code>ast</code>，在<code>generate</code>函数内部先判断<code>ast</code>是否为空，不为空则调用<code>genElement(ast, state)</code>函数创建<code>VNode</code>，为空则创建一个空的元素型<code>div</code>的<code>VNode</code>。然后将得到的结果用<code>with(this){return ${code}}</code>包裹返回。可以看出，真正起作用的是<code>genElement</code>函数，下面我们继续来看一下<code>genElement</code>函数内部是怎样的。</p>
+<p><code>genElement</code>函数定义如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">genElement</span> (<span class="params">el: ASTElement, state: CodegenState</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (el.staticRoot &amp;&amp; !el.staticProcessed) &#123;</span><br><span class="line">    <span class="keyword">return</span> genStatic(el, state)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.once &amp;&amp; !el.onceProcessed) &#123;</span><br><span class="line">    <span class="keyword">return</span> genOnce(el, state)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.for &amp;&amp; !el.forProcessed) &#123;</span><br><span class="line">    <span class="keyword">return</span> genFor(el, state)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.if &amp;&amp; !el.ifProcessed) &#123;</span><br><span class="line">    <span class="keyword">return</span> genIf(el, state)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.tag === <span class="string">'template'</span> &amp;&amp; !el.slotTarget) &#123;</span><br><span class="line">    <span class="keyword">return</span> genChildren(el, state) || <span class="string">'void 0'</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (el.tag === <span class="string">'slot'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> genSlot(el, state)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// component or element</span></span><br><span class="line">    <span class="keyword">let</span> code</span><br><span class="line">    <span class="keyword">if</span> (el.component) &#123;</span><br><span class="line">      code = genComponent(el.component, el, state)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> data = el.plain ? <span class="literal">undefined</span> : genData(el, state)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> children = el.inlineTemplate ? <span class="literal">null</span> : genChildren(el, state, <span class="literal">true</span>)</span><br><span class="line">      code = <span class="string">`_c('<span class="subst">$&#123;el.tag&#125;</span>'<span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">        data ? <span class="string">`,<span class="subst">$&#123;data&#125;</span>`</span> : <span class="string">''</span> <span class="regexp">//</span> data</span></span></span><br><span class="line"><span class="string"><span class="subst">      &#125;</span><span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">        children ? <span class="string">`,<span class="subst">$&#123;children&#125;</span>`</span> : <span class="string">''</span> <span class="regexp">//</span> children</span></span></span><br><span class="line"><span class="string"><span class="subst">      &#125;</span>)`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// module transforms</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; state.transforms.length; i++) &#123;</span><br><span class="line">      code = state.transforms[i](el, code)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> code</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>genElement</code>函数逻辑很清晰，就是根据当前 <code>AST</code> 元素节点属性的不同从而执行不同的代码生成函数。虽然元素节点属性的情况有很多种，但是最后真正创建出来的<code>VNode</code>无非就三种，分别是元素节点，文本节点，注释节点。接下来我们就着重分析一下如何生成这三种节点类型的<code>render</code>函数的。</p>
+<h3><span id="31-元素节点">3.1 元素节点</span></h3>
+<p>生成元素型节点的<code>render</code>函数代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = el.plain ? <span class="literal">undefined</span> : genData(el, state)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> children = el.inlineTemplate ? <span class="literal">null</span> : genChildren(el, state, <span class="literal">true</span>)</span><br><span class="line">code = <span class="string">`_c('<span class="subst">$&#123;el.tag&#125;</span>'<span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">data ? <span class="string">`,<span class="subst">$&#123;data&#125;</span>`</span> : <span class="string">''</span> <span class="regexp">//</span> data</span></span></span><br><span class="line"><span class="string"><span class="subst">&#125;</span><span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">children ? <span class="string">`,<span class="subst">$&#123;children&#125;</span>`</span> : <span class="string">''</span> <span class="regexp">//</span> children</span></span></span><br><span class="line"><span class="string"><span class="subst">&#125;</span>)`</span></span><br></pre></td></tr></table></figure>
+<p>生成元素节点的<code>render</code>函数就是生成一个<code>_c()</code>函数调用的字符串，上文提到了<code>_c()</code>函数接收三个参数，分别是节点的标签名<code>tagName</code>，节点属性<code>data</code>，节点的子节点列表<code>children</code>。那么我们只需将这三部分都填进去即可。</p>
+<ol>
+<li>
+<p>获取节点属性data</p>
+<p>首先判断<code>plain</code>属性是否为<code>true</code>，若为<code>true</code>则表示节点没有属性，将<code>data</code>赋值为<code>undefined</code>；如果不为<code>true</code>则调用<code>genData</code>函数获取节点属性<code>data</code>数据。<code>genData</code>函数定义如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">genData</span> (<span class="params">el: ASTElement, state: CodegenState</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> data = <span class="string">'&#123;'</span></span><br><span class="line">  <span class="keyword">const</span> dirs = genDirectives(el, state)</span><br><span class="line">  <span class="keyword">if</span> (dirs) data += dirs + <span class="string">','</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// key</span></span><br><span class="line">    <span class="keyword">if</span> (el.key) &#123;</span><br><span class="line">        data += <span class="string">`key:<span class="subst">$&#123;el.key&#125;</span>,`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ref</span></span><br><span class="line">    <span class="keyword">if</span> (el.ref) &#123;</span><br><span class="line">        data += <span class="string">`ref:<span class="subst">$&#123;el.ref&#125;</span>,`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (el.refInFor) &#123;</span><br><span class="line">        data += <span class="string">`refInFor:true,`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// pre</span></span><br><span class="line">    <span class="keyword">if</span> (el.pre) &#123;</span><br><span class="line">        data += <span class="string">`pre:true,`</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 篇幅所限，省略其他情况的判断	</span></span><br><span class="line">    data = data.replace(<span class="regexp">/,$/</span>, <span class="string">''</span>) + <span class="string">'&#125;'</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到，源码中<code>genData</code>虽然很长，但是其逻辑非常简单，就是在拼接字符串，先给<code>data</code>赋值为一个<code>{</code>，然后判断存在哪些属性数据，就将这些数据拼接到<code>data</code>中，最后再加一个<code>}</code>，最终得到节点全部属性<code>data</code>。</p>
+</li>
+<li>
+<p>获取子节点列表children</p>
+<p>获取子节点列表<code>children</code>其实就是遍历<code>AST</code>的<code>children</code>属性中的元素，然后根据元素属性的不同生成不同的<code>VNode</code>创建函数调用字符串，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">genChildren</span> (<span class="params">el</span>):  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (children.length) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">`[<span class="subst">$&#123;children.map(c =&gt; genNode(c, state)).join(<span class="string">','</span>)&#125;</span>]`</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">genNode</span> (<span class="params">node: ASTNode, state: CodegenState</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (node.type === <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> genElement(node, state)</span><br><span class="line">  &#125; <span class="keyword">if</span> (node.type === <span class="number">3</span> &amp;&amp; node.isComment) &#123;</span><br><span class="line">    <span class="keyword">return</span> genComment(node)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> genText(node)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>上面两步完成之后，生成<code>_c（）</code>函数调用字符串，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">code = <span class="string">`_c('<span class="subst">$&#123;el.tag&#125;</span>'<span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">        data ? <span class="string">`,<span class="subst">$&#123;data&#125;</span>`</span> : <span class="string">''</span> <span class="regexp">//</span> data</span></span></span><br><span class="line"><span class="string"><span class="subst">      &#125;</span><span class="subst">$&#123;</span></span></span><br><span class="line"><span class="string"><span class="subst">        children ? <span class="string">`,<span class="subst">$&#123;children&#125;</span>`</span> : <span class="string">''</span> <span class="regexp">//</span> children</span></span></span><br><span class="line"><span class="string"><span class="subst">      &#125;</span>)`</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3><span id="32-文本节点">3.2 文本节点</span></h3>
+<p>文本型的<code>VNode</code>可以调用<code>_v(text)</code>函数来创建，所以生成文本节点的<code>render</code>函数就是生成一个<code>_v(text)</code>函数调用的字符串。<code>_v()</code>函数接收文本内容作为参数，如果文本是动态文本，则使用动态文本<code>AST</code>节点的<code>expression</code>属性，如果是纯静态文本，则使用<code>text</code>属性。其生成代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">genText</span> (<span class="params">text: ASTText | ASTExpression</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`_v(<span class="subst">$&#123;text.type === <span class="number">2</span></span></span></span><br><span class="line"><span class="string"><span class="subst">    ? text.expression <span class="regexp">//</span> no need <span class="keyword">for</span> () because already wrapped <span class="keyword">in</span> _s()</span></span></span><br><span class="line"><span class="string"><span class="subst">    : transformSpecialNewlines(<span class="built_in">JSON</span>.stringify(text.text))</span></span></span><br><span class="line"><span class="string"><span class="subst">  &#125;</span>)`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="33-注释节点">3.3 注释节点</span></h3>
+<p>注释型的<code>VNode</code>可以调用<code>_e(text)</code>函数来创建，所以生成注释节点的<code>render</code>函数就是生成一个<code>_e(text)</code>函数调用的字符串。<code>_e()</code>函数接收注释内容作为参数，其生成代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">genComment</span> (<span class="params">comment: ASTText</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`_e(<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(comment.text)&#125;</span>)`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="4-总结">4. 总结</span></h2>
+<p>本篇文章介绍了模板编译三大阶段的最后一个阶段——代码生成阶段。</p>
+<p>首先，介绍了为什么要有代码生成阶段以及代码生成阶段主要干什么。我们知道了，代码生成其实就是根据模板对应的抽象语法树<code>AST</code>生成一个函数供组件挂载时调用，通过调用这个函数就可以得到模板对应的虚拟<code>DOM</code>。</p>
+<p>接着，我们通过一个简单的模板演示了把模板经过递归遍历最后生成<code>render</code>函数的过程。</p>
+<p>最后，我们回归源码，通过分析源码了解了生成<code>render</code>函数的具体实现过程。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/Vue/Vue 源码阅读 模板编译（七）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 模板编译（七）">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/Vue/Vue 源码阅读 模板编译（五）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 模板编译（五）">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+<!--PC和WAP自适应版-->
+            <div id="SOHUCS" sid="Vue/Vue 源码阅读 模板编译（六）/"></div>
+            <script type="text/javascript">
+                (function () {
+                    var appid = 'cyudaHkzu';
+                    var conf = 'prod_53d882f398ccb8a21ddd91e1aefc77a0';
+                    var width = window.innerWidth || document.documentElement.clientWidth;
+                    if (width < 960) {
+                        window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+                    
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if (docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                           
+                            } else { var loadJs = function (d, a) { var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement; var b = document.createElement("script"); b.setAttribute("type", "text/javascript"); b.setAttribute("charset", "UTF-8"); b.setAttribute("src", d); if (typeof a === "function") { if (window.attachEvent) { b.onreadystatechange = function () { var e = b.readyState; if (e === "loaded" || e === "complete") { b.onreadystatechange = null; a() } } } else { b.onload = a } } c.appendChild(b) }; loadJs("https://changyan.sohu.com/upload/changyan.js", function () { 
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if(docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                        window.changyan.api.config({ appid: appid, conf: conf }) });
+                    }
+                    
+                })();
+                </script>
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="https://s2.ax1x.com/2019/04/30/E8OqQx.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="https://s2.ax1x.com/2019/04/30/E8ObS1.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><span id="1-&#x524D;&#x8A00;">1. &#x524D;&#x8A00;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><span id="2-&#x5982;&#x4F55;&#x6839;&#x636E;ast&#x751F;&#x6210;render&#x51FD;&#x6570;">2. &#x5982;&#x4F55;&#x6839;&#x636E;AST&#x751F;&#x6210;render&#x51FD;&#x6570;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><span id="3-&#x56DE;&#x5F52;&#x6E90;&#x7801;">3. &#x56DE;&#x5F52;&#x6E90;&#x7801;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><span id="31-&#x5143;&#x7D20;&#x8282;&#x70B9;">3.1 &#x5143;&#x7D20;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><span id="32-&#x6587;&#x672C;&#x8282;&#x70B9;">3.2 &#x6587;&#x672C;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><span id="33-&#x6CE8;&#x91CA;&#x8282;&#x70B9;">3.3 &#x6CE8;&#x91CA;&#x8282;&#x70B9;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><span id="4-&#x603B;&#x7ED3;">4. &#x603B;&#x7ED3;</span></span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                          <a class="tag" href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+                        
+                          <a class="tag" href="/tags/#Vue" title="Vue">Vue</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+                    
+                        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+                    
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    
+                        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+                    
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                    
+                        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    #pop_ad{
+        display: none!important;
+    }
+    #feedAv{
+        display: none!important;
+    }
+    .module-cmt-float-bar{
+        display: none!important;
+    }
+    .list-content-wrapper-wap:last-child{
+        display: none!important;
+    }
+    div[ad-wap-feed='ad-wap-feed']{
+        display: none!important;
+    }
+    #baidu_new_ad,#bianxianmao_ad,.list-ctrl-area-wap{
+       display: none!important; 
+    }
+    .cy-logo{
+        background-size: 100%!important;
+    }
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

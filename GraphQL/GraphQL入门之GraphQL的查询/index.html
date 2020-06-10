@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          GraphQL入门之GraphQL的查询 - Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/GraphQL/GraphQL入门之GraphQL的查询/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#graphql" title="graphql">graphql</a>
+                            
+                        </div>
+                        <h1>GraphQL入门之GraphQL的查询</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Carlos on
+                            2019-02-19
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4><span id></span></h4>
+<p>GraphQL入门之GraphQL的查询</p>
+<p><img src="http://img0.imgtn.bdimg.com/it/u=3309702283,977143577&amp;fm=26&amp;gp=0.jpg" alt></p>
+<h4><span id="先附上源代码文件">先附上源代码文件</span></h4>
+<blockquote>
+<p>app.js</p>
+</blockquote>
+<pre><code>const express = require('express');
+const { buildSchema } = require('graphql');
+const graphqlHTTP = require('express-graphql');
+
+const originData = [{
+        id: 10000,
+        name: 'superMario',
+        gender: 'man',
+        age: 23
+    },
+    {
+        id: 10001,
+        name: 'Jack',
+        gender: 'man',
+        age: 23
+    },
+    {
+        id: 10002,
+        name: 'Tom',
+        gender: 'man',
+        age: 23
+    },
+    {
+        id: 10003,
+        name: 'Alice',
+        gender: 'woman',
+        age: 23
+    }
+]
+
+const app = express();
+// Express 托管静态文件
+app.use(express.static('public'));
+const schema = buildSchema(`
+    type User {
+        name: String
+        age: Int
+        id: Int
+        gender: String
+    }
+  type Query {
+    hello: String
+    users: [User!]
+    randomUser: User
+    userInfo(id:Int!):User
+  }
+`)
+
+const rootValue = {
+    hello: () =&gt; 'hello world',
+    users: () =&gt; {
+        return originData
+    },
+    randomUser: () =&gt; {
+        let random = Number.parseInt(Math.random() * 3);
+        return originData[random];
+    },
+    userInfo: ({id}) =&gt; {
+        const tempData = originData.filter(item =&gt; item.id == id);
+        return tempData[0]
+    }
+}
+
+app.use('/graphql', graphqlHTTP({
+    schema,
+    rootValue,
+    graphiql: true
+}));
+
+app.listen(3000, () =&gt; {
+    console.log(&quot;Now open localhost:3000!&quot;);
+});
+</code></pre>
+<blockquote>
+<p>然后运行</p>
+</blockquote>
+<pre><code> nodemon app.js
+</code></pre>
+<blockquote>
+<p>打开游览器访问 localhost:3000/graphql</p>
+</blockquote>
+<h4><span id="一-字段fields">一. 字段（Fields）</span></h4>
+<blockquote>
+<ol>
+<li>简单而言，GraphQL 是关于请求对象上的特定字段。我们以一个非常简单的查询以及其结果为例：</li>
+</ol>
+</blockquote>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/1.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query LearnGraphQLFields{
+ hello
+}
+</code></pre>
+<blockquote>
+<p>在前一例子中，我们请求返回了一个字符串类型（String），但是字段也能指代对象类型（Object）。这个时候，你可以对这个对象的字段进行次级选择（sub-selection）。GraphQL 查询能够遍历相关对象及其字段，使得客户端可以一次请求查询大量相关数据，而不像传统 REST 架构中那样需要多次往返查询。</p>
+</blockquote>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/2.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query LearnGraphQLFieldsObject {
+  randomUser {
+    name
+    age
+    gender
+    id
+  }
+}
+</code></pre>
+<h4><span id="二-参数arguments">二. 参数（Arguments）</span></h4>
+<blockquote>
+<p>即使我们能做的仅仅是遍历对象及其字段，GraphQL就已经是一个非常有用的数据查询语言了。但是当你加入给字段传递参数的能力时，事情会变得更加有趣。</p>
+</blockquote>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/8.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query LearnGraphQLArguments {
+  userInfo(id: 10001) {
+    name
+    age
+    gender
+    id
+  }
+}
+</code></pre>
+<h4><span id="三-别名aliases">三. 别名（Aliases）</span></h4>
+<blockquote>
+<p>你可能已经发现，即便结果中的字段与查询中的字段能够匹配，但是因为他们并不包含参数，你就没法通过不同参数来查询相同字段。这便是为何你需要别名 ——这可以让你重命名结果中的字段为任意你想到的名字。</p>
+</blockquote>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/5.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query LearnGraphQLArguments {
+  userItemDetail: userInfo(id: 10001) {
+    name
+    age
+    gender
+    id
+  }
+}
+</code></pre>
+<h4><span id="四-片段fragments">四. 片段（Fragments）</span></h4>
+<blockquote>
+<p>假设我们的 app 有比较复杂的页面。你立马就能想到对应的查询会变得复杂，因为我们需要将一些字段重复至少一次。两方各一次以作比较。这就是为何 GraphQL 包含了称作片段的可复用单元。片段使你能够组织一组字段，然后在需要它们的的地方引入。下面例子展示了如何使用片段解决上述场景：</p>
+</blockquote>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/6.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query LearnGraphQLArguments {
+  userItemDetail:userInfo(id: 10001) {
+    ...useItem
+  }
+}
+
+fragment useItem on User {
+  name
+  age
+  id
+  gender
+}
+</code></pre>
+<h4><span id="五-变量variables">五. 变量（Variables）</span></h4>
+<blockquote>
+<p>目前为止，我们将参数写在了查询字符串内。但是在很多应用中，字段的参数可能是动态的。将这些动态参数直接传进查询字符串并不是好主意，因为这样我们的客户端就得动态地在运行时操作这些查询字符串了，再把它序列化成 GraphQL 专用的格式。其实，GraphQL拥有一级方法将动态值提取到查询之外，然后作为分离的字典传进去。这些动态值即称为变量。使用变量之前，我们得做三件事：</p>
+</blockquote>
+<ol>
+<li>使用 $variableName 替代查询中的静态值。</li>
+<li>声明 $variableName 为查询接受的变量之一。</li>
+<li>将 variableName: value 通过传输专用（通常是 JSON）的分离的变量字典中。</li>
+</ol>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/9.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query getUser($id:Int=10001){
+  userDetailInfo:userInfo(id: $id){
+    name,
+    age,
+    gender
+  }
+}
+</code></pre>
+<h4><span id="六-操作名称operation-name">六. 操作名称（Operation name）</span></h4>
+<blockquote>
+<p>这之前，我们都使用了简写句法，省略了 query 关键字和查询名称，但是生产中使用这些可以使我们代码减少歧义。操作类型可以是 query、mutation 或 subscription，描述你打算做什么类型的操作。操作类型是必需的，除非你使用查询简写语法，在这种情况下，你无法为操作提供名称或变量定义。操作名称是你的操作的有意义和明确的名称。它仅在有多个操作的文档中是必需的，但我们鼓励使用它，因为它对于调试和服务器端日志记录非常有用。 当在你的网络日志或是 GraphQL 服务器中出现问题时，通过名称来从你的代码库中找到一个查询比尝试去破译内容更加容易。 就把它想成你喜欢的程序语言中的函数名。例如，在 JavaScript 中，我们只用匿名函数就可以工作，但是当我们给了函数名之后，就更加容易追踪、调试我们的代码，并在其被调用的时候做日志。同理，GraphQL 的查询和变更名称，以及片段名称，都可以成为服务端侧用来识别不同 GraphQL 请求的有效调试工具。</p>
+</blockquote>
+<h4><span id="七-指令directives">七. 指令（Directives）</span></h4>
+<blockquote>
+<p>我们上面讨论的变量使得我们可以避免手动字符串插值构建动态查询。传递变量给参数解决了一大堆这样的问题，但是我们可能也需要一个方式使用变量动态地改变我们查询的结构。譬如我们假设有个 UI 组件，其有概括视图和详情视图，后者比前者拥有更多的字段。我们来构建一个这种组件的查询：</p>
+</blockquote>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/10.png" alt></p>
+<blockquote>
+<p>查询语句如下：</p>
+</blockquote>
+<pre><code>query getUser($id:Int=10001,$showId:Boolean=false){
+  userDetailInfo:userInfo(id: $id){
+    name,
+    age,
+    gender
+  }
+  userList: users{
+    name @include(if:$showId)
+    age
+    gender
+  }
+}
+</code></pre>
+<blockquote>
+<h4><span id="更多学习请参考-graphql官网">更多学习请参考 </span></h4>
+</blockquote>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/GraphQL/graphQL 如和在客户端调用/" data-toggle="tooltip" data-placement="top" title="graphQL 如和在客户端调用">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/docker/Docker 中如何安装WordPress/" data-toggle="tooltip" data-placement="top" title="Docker 中如何安装WordPress">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+<!--PC和WAP自适应版-->
+            <div id="SOHUCS" sid="GraphQL/GraphQL入门之GraphQL的查询/"></div>
+            <script type="text/javascript">
+                (function () {
+                    var appid = 'cyudaHkzu';
+                    var conf = 'prod_53d882f398ccb8a21ddd91e1aefc77a0';
+                    var width = window.innerWidth || document.documentElement.clientWidth;
+                    if (width < 960) {
+                        window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+                    
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if (docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                           
+                            } else { var loadJs = function (d, a) { var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement; var b = document.createElement("script"); b.setAttribute("type", "text/javascript"); b.setAttribute("charset", "UTF-8"); b.setAttribute("src", d); if (typeof a === "function") { if (window.attachEvent) { b.onreadystatechange = function () { var e = b.readyState; if (e === "loaded" || e === "complete") { b.onreadystatechange = null; a() } } } else { b.onload = a } } c.appendChild(b) }; loadJs("https://changyan.sohu.com/upload/changyan.js", function () { 
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if(docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                        window.changyan.api.config({ appid: appid, conf: conf }) });
+                    }
+                    
+                })();
+                </script>
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="https://s2.ax1x.com/2019/04/30/E8OqQx.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="https://s2.ax1x.com/2019/04/30/E8ObS1.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><span id=""></span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><span id="&#x5148;&#x9644;&#x4E0A;&#x6E90;&#x4EE3;&#x7801;&#x6587;&#x4EF6;">&#x5148;&#x9644;&#x4E0A;&#x6E90;&#x4EE3;&#x7801;&#x6587;&#x4EF6;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><span id="&#x4E00;-&#x5B57;&#x6BB5;fields">&#x4E00;. &#x5B57;&#x6BB5;&#xFF08;Fields&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><span id="&#x4E8C;-&#x53C2;&#x6570;arguments">&#x4E8C;. &#x53C2;&#x6570;&#xFF08;Arguments&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><span id="&#x4E09;-&#x522B;&#x540D;aliases">&#x4E09;. &#x522B;&#x540D;&#xFF08;Aliases&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><span id="&#x56DB;-&#x7247;&#x6BB5;fragments">&#x56DB;. &#x7247;&#x6BB5;&#xFF08;Fragments&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">7.</span> <span class="toc-nav-text"><span id="&#x4E94;-&#x53D8;&#x91CF;variables">&#x4E94;. &#x53D8;&#x91CF;&#xFF08;Variables&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">8.</span> <span class="toc-nav-text"><span id="&#x516D;-&#x64CD;&#x4F5C;&#x540D;&#x79F0;operation-name">&#x516D;. &#x64CD;&#x4F5C;&#x540D;&#x79F0;&#xFF08;Operation name&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">9.</span> <span class="toc-nav-text"><span id="&#x4E03;-&#x6307;&#x4EE4;directives">&#x4E03;. &#x6307;&#x4EE4;&#xFF08;Directives&#xFF09;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">10.</span> <span class="toc-nav-text"><span id="&#x66F4;&#x591A;&#x5B66;&#x4E60;&#x8BF7;&#x53C2;&#x8003;-graphql&#x5B98;&#x7F51;">&#x66F4;&#x591A;&#x5B66;&#x4E60;&#x8BF7;&#x53C2;&#x8003; </span></span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#graphql" title="graphql">graphql</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+                    
+                        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+                    
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    
+                        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+                    
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                    
+                        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    #pop_ad{
+        display: none!important;
+    }
+    #feedAv{
+        display: none!important;
+    }
+    .module-cmt-float-bar{
+        display: none!important;
+    }
+    .list-content-wrapper-wap:last-child{
+        display: none!important;
+    }
+    div[ad-wap-feed='ad-wap-feed']{
+        display: none!important;
+    }
+    #baidu_new_ad,#bianxianmao_ad,.list-ctrl-area-wap{
+       display: none!important; 
+    }
+    .cy-logo{
+        background-size: 100%!important;
+    }
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          前端面试总结之手写代码系列 - Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/前端面试/面试手写代码系列/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img.zcool.cn/community/0144ed58660585a8012060c810d41f.jpg@2o.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
+                            
+                        </div>
+                        <h1>前端面试总结之手写代码系列</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Carlos on
+                            2020-01-05
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="1-前言">1. 前言</span></h2>
+<p>在我们的面试中，如果有笔试或者机试，很有可能会让你写代码。我总结一下大概常考的知识点。</p>
+<h2><span id="2手写代码题目集合">2.手写代码题目集合</span></h2>
+<h3><span id="1简单版本的深拷贝">1.简单版本的深拷贝</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepClone</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">isObject</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">typeof</span> o == <span class="string">'object'</span> || type o == <span class="string">'function'</span>) &amp;&amp; (o != <span class="literal">null</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(!isObject(obj))&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">TypeError</span>(<span class="string">"the params is not object"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> newObject = <span class="built_in">Array</span>.isArray(obj) ? [...obj] : &#123;...obj&#125;</span><br><span class="line">  <span class="built_in">Reflect</span>.Ownkeys(newObject).forEach(<span class="function"><span class="params">key</span>=&gt;</span> &#123;</span><br><span class="line">    newObject[key] = isObject(obj[key]) ? deepClone(obj[key]) : obj[key]</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> newObject</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="2手动实现call">2.手动实现call</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myCall = <span class="function"><span class="keyword">function</span> (<span class="params">context</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span> != <span class="string">'function'</span>) &#125;&#123;</span><br><span class="line">     <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'error!'</span>)</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">const</span> context = context || <span class="built_in">window</span></span><br><span class="line">   <span class="keyword">const</span> context.fn = <span class="keyword">this</span></span><br><span class="line">   <span class="keyword">const</span> args = [...arguments].slice(<span class="number">1</span>)</span><br><span class="line">   <span class="keyword">const</span> result = context.fn(...args)</span><br><span class="line">   <span class="keyword">delete</span> context.fn</span><br><span class="line">   <span class="keyword">return</span> context</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="3手动实现apply">3.手动实现apply</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myApply = <span class="function"><span class="keyword">function</span>(<span class="params">context</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span> != <span class="string">'function'</span>)&#123;<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'error!'</span>)&#125;</span><br><span class="line">  <span class="keyword">const</span> context = context || <span class="built_in">window</span></span><br><span class="line">  <span class="keyword">const</span> context.fn = <span class="keyword">this</span></span><br><span class="line">  <span class="keyword">let</span> result</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">arguments</span>[<span class="number">1</span>])&#123;</span><br><span class="line">    result = context.fn(...arguments[<span class="number">1</span>])</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    result = context.fn()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">delete</span> context.fn</span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="4手动实现bind">4.手动实现bind</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.prototype.myBind = <span class="function"><span class="keyword">function</span> (<span class="params">context</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span> = <span class="string">'function'</span>) &#123;<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'error!'</span>)&#125;</span><br><span class="line">  <span class="keyword">const</span> args = [...arguments].slice(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">const</span> _this  = <span class="keyword">this</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">F</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span> <span class="keyword">instanceof</span> F) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> _this(...args,...arguments)</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> _this.apply(context,args.conact(...arguments))</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="5new-的过程中发生了什么">5.new 的过程中发生了什么？</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 1. 创建一个新的对象</span></span><br><span class="line"><span class="comment"> * 2. 链接到原型</span></span><br><span class="line"><span class="comment"> * 3. 绑定this</span></span><br><span class="line"><span class="comment"> * 4. 返回一个新的对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> obj = &#123;&#125;</span><br><span class="line">  <span class="keyword">let</span> Constructor = [].shift.call(<span class="built_in">arguments</span>)</span><br><span class="line">  obj.__proto__ = Constructor.prototype</span><br><span class="line">  <span class="keyword">let</span> result = Constructor.apply(obj,<span class="built_in">arguments</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">typeof</span> result == <span class="string">'object'</span> ? result : obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="6手动实现防抖">6.手动实现防抖</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span> (<span class="params">fn, delay</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(timer) clearTimeout(timer)</span><br><span class="line">        timer = setTimeout(fn.apply(<span class="keyword">this</span>,<span class="built_in">arguments</span>),delay)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="7手动实现节流">7.手动实现节流</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span> (<span class="params">fn, delay</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(timer) clearTimeout(timer)</span><br><span class="line">        timer = setTimeout(fn.apply(<span class="keyword">this</span>,<span class="built_in">arguments</span>),delay)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="8instanceof-原理是什么手动实现以下">8.instanceof 原理是什么？手动实现以下</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">instanceOf</span>(<span class="params">left,right</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> prototype = right.prototype</span><br><span class="line">  <span class="keyword">let</span> left = left.__proto__</span><br><span class="line">  <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(left == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    <span class="keyword">if</span>(left == prototype) <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    left = left.__proto__</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="9数组扁平化面试官想要的答案至少说出4种">9.数组扁平化(面试官想要的答案,至少说出4种)</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">flatterArr</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arr.reduce(<span class="function">(<span class="params">result,item</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> result.concat(<span class="built_in">Array</span>.isArray(item) ? flatterArr(item) : item)</span><br><span class="line">  &#125;,[])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="10数组去重面试官想要的答案至少说出4种">10.数组去重(面试官想要的答案,至少说出4种)</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">repeatArr</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arr.reduce(<span class="function">(<span class="params">result,item</span>)=&gt;</span>&#123;</span><br><span class="line">     result.indexOf(item) &gt; <span class="number">-1</span> ? <span class="literal">false</span> : result.push(item)</span><br><span class="line">     <span class="keyword">return</span> result</span><br><span class="line">  &#125;,[])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="11追问-如何对对象数组按照特定的自定去重">11.追问 如何对对象数组按照特定的自定去重 ？</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> usersArr = [</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name1"</span>, <span class="attr">age</span>: <span class="string">"1"</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name2"</span>, <span class="attr">age</span>: <span class="string">"11"</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name7"</span>, <span class="attr">age</span>: <span class="string">"11"</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name3"</span>, <span class="attr">age</span>: <span class="string">"12"</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name4"</span>, <span class="attr">age</span>: <span class="string">"13"</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name2"</span>, <span class="attr">age</span>: <span class="string">"1"</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">"name6"</span>, <span class="attr">age</span>: <span class="string">"12"</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">uniqueArrByFields</span>(<span class="params">array,field</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> hash = &#123;&#125;</span><br><span class="line">    <span class="keyword">return</span> array.reduce(<span class="function">(<span class="params">result,item</span>)=&gt;</span>&#123;</span><br><span class="line">        hash[item[field]] ? <span class="literal">false</span> : hash[item[field]] = <span class="literal">true</span> &amp;&amp; result.push(item)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;,[])</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(uniqueArrByFields(usersArr,<span class="string">'age'</span>))</span><br></pre></td></tr></table></figure>
+<h3><span id="12引发排序问题如何对一个对象数组按照指定的字段进行排序">12.引发排序问题，如何对一个对象数组按照指定的字段进行排序</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortByField</span>(<span class="params">arr,field</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> arr.sort(<span class="function">(<span class="params">a,b</span>)=&gt;</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> a[field] - b[field]</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(sortByField(usersArr, <span class="string">'age'</span>))</span><br></pre></td></tr></table></figure>
+<h3><span id="13-手写排序">13. 手写排序</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">20</span>, <span class="number">10</span>, <span class="number">30</span>, <span class="number">22</span>, <span class="number">11</span>, <span class="number">55</span>, <span class="number">24</span>, <span class="number">31</span>, <span class="number">88</span>, <span class="number">12</span>, <span class="number">100</span>, <span class="number">50</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 快速排序</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">quickSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.length &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">    	<span class="keyword">return</span> arr</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> temp = arr[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> left = []</span><br><span class="line">    <span class="keyword">let</span> right = []</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>;i &lt; arr.length; i++)&#123;</span><br><span class="line">      <span class="keyword">if</span>(arr[i] &lt; temp) &#123;</span><br><span class="line">          left.push(arr[i])</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          right.push(arr[i])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">return</span> quickSort(left).concat([temp],quickSort(right))</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(quickSort(arr))</span><br><span class="line"><span class="comment">// 2. 冒泡排序</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bubbleSort</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span>; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; arr.length - i - <span class="number">1</span>; j++)&#123;</span><br><span class="line">      <span class="keyword">if</span>(arr[j] &gt; arr[j + <span class="number">1</span>])&#123;</span><br><span class="line">        swap(arr, j, j+<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">swap</span>(<span class="params">arr, i, j</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> temp = arr[i];</span><br><span class="line">  arr[i] = arr[j];</span><br><span class="line">  arr[j] = temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(arr);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 选择排序</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">selectSort</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>;i&lt;arr.length;i++) &#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">let</span> j = i+<span class="number">1</span>;j&lt;arr.length;j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[i] &gt; arr[j]) &#123;</span><br><span class="line">            	<span class="keyword">let</span> temp = arr[i]</span><br><span class="line">            	arr[i]= arr[j]</span><br><span class="line">            	arr[j] = temp</span><br><span class="line">            &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(selectSort(arr))</span><br></pre></td></tr></table></figure>
+<h3><span id="14jsonp-的原理">14.JSONP 的原理</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jsonp</span>(<span class="params">url, callback, success</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> scpript = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>)</span><br><span class="line">    script.src = url</span><br><span class="line">    script.async = <span class="literal">true</span></span><br><span class="line">    script.type = <span class="string">'text/javascript'</span></span><br><span class="line">    <span class="built_in">window</span>[callback] = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">        success &amp;&amp; success(data)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">document</span>.appendChild(<span class="string">'script'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jsonp(<span class="string">'https://2323.com/file/jsonp.js'</span>, <span class="string">'jsonp'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3><span id="15实现一个promisea-如果现场写的话我建议放弃但是可以向面试官说说自己的思路">15.实现一个Promise/A+ (如果现场写的话，我建议放弃！但是可以向面试官说说自己的思路)</span></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// promise 三个状态</span></span><br><span class="line"><span class="keyword">const</span> PENDING = <span class="string">"pending"</span>;</span><br><span class="line"><span class="keyword">const</span> FULFILLED = <span class="string">"fulfilled"</span>;</span><br><span class="line"><span class="keyword">const</span> REJECTED = <span class="string">"rejected"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Promise</span>(<span class="params">excutor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> that = <span class="keyword">this</span>; <span class="comment">// 缓存当前promise实例对象</span></span><br><span class="line">    that.status = PENDING; <span class="comment">// 初始状态</span></span><br><span class="line">    that.value = <span class="literal">undefined</span>; <span class="comment">// fulfilled状态时 返回的信息</span></span><br><span class="line">    that.reason = <span class="literal">undefined</span>; <span class="comment">// rejected状态时 拒绝的原因</span></span><br><span class="line">    that.onFulfilledCallbacks = []; <span class="comment">// 存储fulfilled状态对应的onFulfilled函数</span></span><br><span class="line">    that.onRejectedCallbacks = []; <span class="comment">// 存储rejected状态对应的onRejected函数</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params">value</span>) </span>&#123; <span class="comment">// value成功态时接收的终值</span></span><br><span class="line">        <span class="keyword">if</span>(value <span class="keyword">instanceof</span> <span class="built_in">Promise</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> value.then(resolve, reject);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 为什么resolve 加setTimeout?</span></span><br><span class="line">        <span class="comment">// 2.2.4规范 onFulfilled 和 onRejected 只允许在 execution context 栈仅包含平台代码时运行.</span></span><br><span class="line">        <span class="comment">// 注1 这里的平台代码指的是引擎、环境以及 promise 的实施代码。实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。</span></span><br><span class="line"></span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// 调用resolve 回调对应onFulfilled函数</span></span><br><span class="line">            <span class="keyword">if</span> (that.status === PENDING) &#123;</span><br><span class="line">                <span class="comment">// 只能由pedning状态 =&gt; fulfilled状态 (避免调用多次resolve reject)</span></span><br><span class="line">                that.status = FULFILLED;</span><br><span class="line">                that.value = value;</span><br><span class="line">                that.onFulfilledCallbacks.forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb(that.value));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reject</span>(<span class="params">reason</span>) </span>&#123; <span class="comment">// reason失败态时接收的拒因</span></span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// 调用reject 回调对应onRejected函数</span></span><br><span class="line">            <span class="keyword">if</span> (that.status === PENDING) &#123;</span><br><span class="line">                <span class="comment">// 只能由pedning状态 =&gt; rejected状态 (避免调用多次resolve reject)</span></span><br><span class="line">                that.status = REJECTED;</span><br><span class="line">                that.reason = reason;</span><br><span class="line">                that.onRejectedCallbacks.forEach(<span class="function"><span class="params">cb</span> =&gt;</span> cb(that.reason));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 捕获在excutor执行器中抛出的异常</span></span><br><span class="line">    <span class="comment">// new Promise((resolve, reject) =&gt; &#123;</span></span><br><span class="line">    <span class="comment">//     throw new Error('error in excutor')</span></span><br><span class="line">    <span class="comment">// &#125;)</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        excutor(resolve, reject);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        reject(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * resolve中的值几种情况：</span></span><br><span class="line"><span class="comment"> * 1.普通值</span></span><br><span class="line"><span class="comment"> * 2.promise对象</span></span><br><span class="line"><span class="comment"> * 3.thenable对象/函数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 对resolve 进行改造增强 针对resolve中不同值情况 进行处理</span></span><br><span class="line"><span class="comment"> * @param  &#123;promise&#125; promise2 promise1.then方法返回的新的promise对象</span></span><br><span class="line"><span class="comment"> * @param  &#123;[type]&#125; x         promise1中onFulfilled的返回值</span></span><br><span class="line"><span class="comment"> * @param  &#123;[type]&#125; resolve   promise2的resolve方法</span></span><br><span class="line"><span class="comment"> * @param  &#123;[type]&#125; reject    promise2的reject方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolvePromise</span>(<span class="params">promise2, x, resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (promise2 === x) &#123;  <span class="comment">// 如果从onFulfilled中返回的x 就是promise2 就会导致循环引用报错</span></span><br><span class="line">        <span class="keyword">return</span> reject(<span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'循环引用'</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> called = <span class="literal">false</span>; <span class="comment">// 避免多次调用</span></span><br><span class="line">    <span class="comment">// 如果x是一个promise对象 （该判断和下面 判断是不是thenable对象重复 所以可有可无）</span></span><br><span class="line">    <span class="keyword">if</span> (x <span class="keyword">instanceof</span> <span class="built_in">Promise</span>) &#123; <span class="comment">// 获得它的终值 继续resolve</span></span><br><span class="line">        <span class="keyword">if</span> (x.status === PENDING) &#123; <span class="comment">// 如果为等待态需等待直至 x 被执行或拒绝 并解析y值</span></span><br><span class="line">            x.then(<span class="function"><span class="params">y</span> =&gt;</span> &#123;</span><br><span class="line">                resolvePromise(promise2, y, resolve, reject);</span><br><span class="line">            &#125;, reason =&gt; &#123;</span><br><span class="line">                reject(reason);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 如果 x 已经处于执行态/拒绝态(值已经被解析为普通值)，用相同的值执行传递下去 promise</span></span><br><span class="line">            x.then(resolve, reject);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果 x 为对象或者函数</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (x != <span class="literal">null</span> &amp;&amp; ((<span class="keyword">typeof</span> x === <span class="string">'object'</span>) || (<span class="keyword">typeof</span> x === <span class="string">'function'</span>))) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123; <span class="comment">// 是否是thenable对象（具有then方法的对象/函数）</span></span><br><span class="line">            <span class="keyword">let</span> then = x.then;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> then === <span class="string">'function'</span>) &#123;</span><br><span class="line">                then.call(x, y =&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span>(called) <span class="keyword">return</span>;</span><br><span class="line">                    called = <span class="literal">true</span>;</span><br><span class="line">                    resolvePromise(promise2, y, resolve, reject);</span><br><span class="line">                &#125;, reason =&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span>(called) <span class="keyword">return</span>;</span><br><span class="line">                    called = <span class="literal">true</span>;</span><br><span class="line">                    reject(reason);</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123; <span class="comment">// 说明是一个普通对象/函数</span></span><br><span class="line">                resolve(x);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">            <span class="keyword">if</span>(called) <span class="keyword">return</span>;</span><br><span class="line">            called = <span class="literal">true</span>;</span><br><span class="line">            reject(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        resolve(x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * [注册fulfilled状态/rejected状态对应的回调函数]</span></span><br><span class="line"><span class="comment"> * @param  &#123;function&#125; onFulfilled fulfilled状态时 执行的函数</span></span><br><span class="line"><span class="comment"> * @param  &#123;function&#125; onRejected  rejected状态时 执行的函数</span></span><br><span class="line"><span class="comment"> * @return &#123;function&#125; newPromsie  返回一个新的promise对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">Promise</span>.prototype.then = <span class="function"><span class="keyword">function</span>(<span class="params">onFulfilled, onRejected</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">let</span> newPromise;</span><br><span class="line">    <span class="comment">// 处理参数默认值 保证参数后续能够继续执行</span></span><br><span class="line">    onFulfilled =</span><br><span class="line">        <span class="keyword">typeof</span> onFulfilled === <span class="string">"function"</span> ? onFulfilled : <span class="function"><span class="params">value</span> =&gt;</span> value;</span><br><span class="line">    onRejected =</span><br><span class="line">        <span class="keyword">typeof</span> onRejected === <span class="string">"function"</span> ? onRejected : <span class="function"><span class="params">reason</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> reason;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// then里面的FULFILLED/REJECTED状态时 为什么要加setTimeout ?</span></span><br><span class="line">    <span class="comment">// 原因:</span></span><br><span class="line">    <span class="comment">// 其一 2.2.4规范 要确保 onFulfilled 和 onRejected 方法异步执行(且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行) 所以要在resolve里加上setTimeout</span></span><br><span class="line">    <span class="comment">// 其二 2.2.6规范 对于一个promise，它的then方法可以调用多次.（当在其他程序中多次调用同一个promise的then时 由于之前状态已经为FULFILLED/REJECTED状态，则会走的下面逻辑),所以要确保为FULFILLED/REJECTED状态后 也要异步执行onFulfilled/onRejected</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 其二 2.2.6规范 也是resolve函数里加setTimeout的原因</span></span><br><span class="line">    <span class="comment">// 总之都是 让then方法异步执行 也就是确保onFulfilled/onRejected异步执行</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如下面这种情景 多次调用p1.then</span></span><br><span class="line">    <span class="comment">// p1.then((value) =&gt; &#123; // 此时p1.status 由pedding状态 =&gt; fulfilled状态</span></span><br><span class="line">    <span class="comment">//     console.log(value); // resolve</span></span><br><span class="line">    <span class="comment">//     // console.log(p1.status); // fulfilled</span></span><br><span class="line">    <span class="comment">//     p1.then(value =&gt; &#123; // 再次p1.then 这时已经为fulfilled状态 走的是fulfilled状态判断里的逻辑 所以我们也要确保判断里面onFuilled异步执行</span></span><br><span class="line">    <span class="comment">//         console.log(value); // 'resolve'</span></span><br><span class="line">    <span class="comment">//     &#125;);</span></span><br><span class="line">    <span class="comment">//     console.log('当前执行栈中同步代码');</span></span><br><span class="line">    <span class="comment">// &#125;)</span></span><br><span class="line">    <span class="comment">// console.log('全局执行栈中同步代码');</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (that.status === FULFILLED) &#123; <span class="comment">// 成功态</span></span><br><span class="line">        <span class="keyword">return</span> newPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    <span class="keyword">let</span> x = onFulfilled(that.value);</span><br><span class="line">                    resolvePromise(newPromise, x, resolve, reject); <span class="comment">// 新的promise resolve 上一个onFulfilled的返回值</span></span><br><span class="line">                &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">                    reject(e); <span class="comment">// 捕获前面onFulfilled中抛出的异常 then(onFulfilled, onRejected);</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (that.status === REJECTED) &#123; <span class="comment">// 失败态</span></span><br><span class="line">        <span class="keyword">return</span> newPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> x = onRejected(that.reason);</span><br><span class="line">                    resolvePromise(newPromise, x, resolve, reject);</span><br><span class="line">                &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">                    reject(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (that.status === PENDING) &#123; <span class="comment">// 等待态</span></span><br><span class="line">        <span class="comment">// 当异步调用resolve/rejected时 将onFulfilled/onRejected收集暂存到集合中</span></span><br><span class="line">        <span class="keyword">return</span> newPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            that.onFulfilledCallbacks.push(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> x = onFulfilled(value);</span><br><span class="line">                    resolvePromise(newPromise, x, resolve, reject);</span><br><span class="line">                &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">                    reject(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            that.onRejectedCallbacks.push(<span class="function">(<span class="params">reason</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> x = onRejected(reason);</span><br><span class="line">                    resolvePromise(newPromise, x, resolve, reject);</span><br><span class="line">                &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">                    reject(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Promise.all Promise进行并行处理</span></span><br><span class="line"><span class="comment"> * 参数: promise对象组成的数组作为参数</span></span><br><span class="line"><span class="comment"> * 返回值: 返回一个Promise实例</span></span><br><span class="line"><span class="comment"> * 当这个数组里的所有promise对象全部变为resolve状态的时候，才会resolve。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">Promise</span>.all = <span class="function"><span class="keyword">function</span>(<span class="params">promises</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> done = gen(promises.length, resolve);</span><br><span class="line">        promises.forEach(<span class="function">(<span class="params">promise, index</span>) =&gt;</span> &#123;</span><br><span class="line">            promise.then(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">                done(index, value)</span><br><span class="line">            &#125;, reject)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gen</span>(<span class="params">length, resolve</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> values = [];</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">i, value</span>) </span>&#123;</span><br><span class="line">        values[i] = value;</span><br><span class="line">        <span class="keyword">if</span> (++count === length) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(values);</span><br><span class="line">            resolve(values);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Promise.race</span></span><br><span class="line"><span class="comment"> * 参数: 接收 promise对象组成的数组作为参数</span></span><br><span class="line"><span class="comment"> * 返回值: 返回一个Promise实例</span></span><br><span class="line"><span class="comment"> * 只要有一个promise对象进入 FulFilled 或者 Rejected 状态的话，就会继续进行后面的处理(取决于哪一个更快)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">Promise</span>.race = <span class="function"><span class="keyword">function</span>(<span class="params">promises</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        promises.forEach(<span class="function">(<span class="params">promise, index</span>) =&gt;</span> &#123;</span><br><span class="line">           promise.then(resolve, reject);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用于promise方法链时 捕获前面onFulfilled/onRejected抛出的异常</span></span><br><span class="line"><span class="built_in">Promise</span>.prototype.catch = <span class="function"><span class="keyword">function</span>(<span class="params">onRejected</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.then(<span class="literal">null</span>, onRejected);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.resolve = <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">        resolve(value);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.reject = <span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        reject(reason);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 基于Promise实现Deferred的</span></span><br><span class="line"><span class="comment"> * Deferred和Promise的关系</span></span><br><span class="line"><span class="comment"> * - Deferred 拥有 Promise</span></span><br><span class="line"><span class="comment"> * - Deferred 具备对 Promise的状态进行操作的特权方法（resolve reject）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *参考jQuery.Deferred</span></span><br><span class="line"><span class="comment"> *url: http://api.jquery.com/category/deferred-object/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">Promise</span>.deferred = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 延迟对象</span></span><br><span class="line">    <span class="keyword">let</span> defer = &#123;&#125;;</span><br><span class="line">    defer.promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        defer.resolve = resolve;</span><br><span class="line">        defer.reject = reject;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> defer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Promise/A+规范测试</span></span><br><span class="line"><span class="comment"> * npm i -g promises-aplus-tests</span></span><br><span class="line"><span class="comment"> * promises-aplus-tests Promise.js</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="built_in">module</span>.exports = <span class="built_in">Promise</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="总结">总结</span></h2>
+<p>笔试和机试怎么说呢？反正我可以接受机试，笔试的话不是太喜欢，原因有很多！，我觉得面试这个过程需要贴合实际的项目开发和团队技术。Good Luck!</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/Vue/Vue 源码阅读 生命周期（三）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 生命周期（三）">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+<!--PC和WAP自适应版-->
+            <div id="SOHUCS" sid="前端面试/面试手写代码系列/"></div>
+            <script type="text/javascript">
+                (function () {
+                    var appid = 'cyudaHkzu';
+                    var conf = 'prod_53d882f398ccb8a21ddd91e1aefc77a0';
+                    var width = window.innerWidth || document.documentElement.clientWidth;
+                    if (width < 960) {
+                        window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+                    
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if (docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                           
+                            } else { var loadJs = function (d, a) { var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement; var b = document.createElement("script"); b.setAttribute("type", "text/javascript"); b.setAttribute("charset", "UTF-8"); b.setAttribute("src", d); if (typeof a === "function") { if (window.attachEvent) { b.onreadystatechange = function () { var e = b.readyState; if (e === "loaded" || e === "complete") { b.onreadystatechange = null; a() } } } else { b.onload = a } } c.appendChild(b) }; loadJs("https://changyan.sohu.com/upload/changyan.js", function () { 
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if(docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                        window.changyan.api.config({ appid: appid, conf: conf }) });
+                    }
+                    
+                })();
+                </script>
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="https://s2.ax1x.com/2019/04/30/E8OqQx.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="https://s2.ax1x.com/2019/04/30/E8ObS1.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><span id="1-&#x524D;&#x8A00;">1. &#x524D;&#x8A00;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><span id="2&#x624B;&#x5199;&#x4EE3;&#x7801;&#x9898;&#x76EE;&#x96C6;&#x5408;">2.&#x624B;&#x5199;&#x4EE3;&#x7801;&#x9898;&#x76EE;&#x96C6;&#x5408;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text"><span id="1&#x7B80;&#x5355;&#x7248;&#x672C;&#x7684;&#x6DF1;&#x62F7;&#x8D1D;">1.&#x7B80;&#x5355;&#x7248;&#x672C;&#x7684;&#x6DF1;&#x62F7;&#x8D1D;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text"><span id="2&#x624B;&#x52A8;&#x5B9E;&#x73B0;call">2.&#x624B;&#x52A8;&#x5B9E;&#x73B0;call</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text"><span id="3&#x624B;&#x52A8;&#x5B9E;&#x73B0;apply">3.&#x624B;&#x52A8;&#x5B9E;&#x73B0;apply</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text"><span id="4&#x624B;&#x52A8;&#x5B9E;&#x73B0;bind">4.&#x624B;&#x52A8;&#x5B9E;&#x73B0;bind</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text"><span id="5new-&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;">5.new &#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text"><span id="6&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x9632;&#x6296;">6.&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x9632;&#x6296;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text"><span id="7&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x8282;&#x6D41;">7.&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x8282;&#x6D41;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text"><span id="8instanceof-&#x539F;&#x7406;&#x662F;&#x4EC0;&#x4E48;&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x4EE5;&#x4E0B;">8.instanceof &#x539F;&#x7406;&#x662F;&#x4EC0;&#x4E48;&#xFF1F;&#x624B;&#x52A8;&#x5B9E;&#x73B0;&#x4EE5;&#x4E0B;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text"><span id="9&#x6570;&#x7EC4;&#x6241;&#x5E73;&#x5316;&#x9762;&#x8BD5;&#x5B98;&#x60F3;&#x8981;&#x7684;&#x7B54;&#x6848;&#x81F3;&#x5C11;&#x8BF4;&#x51FA;4&#x79CD;">9.&#x6570;&#x7EC4;&#x6241;&#x5E73;&#x5316;(&#x9762;&#x8BD5;&#x5B98;&#x60F3;&#x8981;&#x7684;&#x7B54;&#x6848;,&#x81F3;&#x5C11;&#x8BF4;&#x51FA;4&#x79CD;)</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text"><span id="10&#x6570;&#x7EC4;&#x53BB;&#x91CD;&#x9762;&#x8BD5;&#x5B98;&#x60F3;&#x8981;&#x7684;&#x7B54;&#x6848;&#x81F3;&#x5C11;&#x8BF4;&#x51FA;4&#x79CD;">10.&#x6570;&#x7EC4;&#x53BB;&#x91CD;(&#x9762;&#x8BD5;&#x5B98;&#x60F3;&#x8981;&#x7684;&#x7B54;&#x6848;,&#x81F3;&#x5C11;&#x8BF4;&#x51FA;4&#x79CD;)</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.11.</span> <span class="toc-nav-text"><span id="11&#x8FFD;&#x95EE;-&#x5982;&#x4F55;&#x5BF9;&#x5BF9;&#x8C61;&#x6570;&#x7EC4;&#x6309;&#x7167;&#x7279;&#x5B9A;&#x7684;&#x81EA;&#x5B9A;&#x53BB;&#x91CD;">11.&#x8FFD;&#x95EE; &#x5982;&#x4F55;&#x5BF9;&#x5BF9;&#x8C61;&#x6570;&#x7EC4;&#x6309;&#x7167;&#x7279;&#x5B9A;&#x7684;&#x81EA;&#x5B9A;&#x53BB;&#x91CD; &#xFF1F;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.12.</span> <span class="toc-nav-text"><span id="12&#x5F15;&#x53D1;&#x6392;&#x5E8F;&#x95EE;&#x9898;&#x5982;&#x4F55;&#x5BF9;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x6570;&#x7EC4;&#x6309;&#x7167;&#x6307;&#x5B9A;&#x7684;&#x5B57;&#x6BB5;&#x8FDB;&#x884C;&#x6392;&#x5E8F;">12.&#x5F15;&#x53D1;&#x6392;&#x5E8F;&#x95EE;&#x9898;&#xFF0C;&#x5982;&#x4F55;&#x5BF9;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x6570;&#x7EC4;&#x6309;&#x7167;&#x6307;&#x5B9A;&#x7684;&#x5B57;&#x6BB5;&#x8FDB;&#x884C;&#x6392;&#x5E8F;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.13.</span> <span class="toc-nav-text"><span id="13-&#x624B;&#x5199;&#x6392;&#x5E8F;">13. &#x624B;&#x5199;&#x6392;&#x5E8F;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.14.</span> <span class="toc-nav-text"><span id="14jsonp-&#x7684;&#x539F;&#x7406;">14.JSONP &#x7684;&#x539F;&#x7406;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.15.</span> <span class="toc-nav-text"><span id="15&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;promisea-&#x5982;&#x679C;&#x73B0;&#x573A;&#x5199;&#x7684;&#x8BDD;&#x6211;&#x5EFA;&#x8BAE;&#x653E;&#x5F03;&#x4F46;&#x662F;&#x53EF;&#x4EE5;&#x5411;&#x9762;&#x8BD5;&#x5B98;&#x8BF4;&#x8BF4;&#x81EA;&#x5DF1;&#x7684;&#x601D;&#x8DEF;">15.&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;Promise/A+ (&#x5982;&#x679C;&#x73B0;&#x573A;&#x5199;&#x7684;&#x8BDD;&#xFF0C;&#x6211;&#x5EFA;&#x8BAE;&#x653E;&#x5F03;&#xFF01;&#x4F46;&#x662F;&#x53EF;&#x4EE5;&#x5411;&#x9762;&#x8BD5;&#x5B98;&#x8BF4;&#x8BF4;&#x81EA;&#x5DF1;&#x7684;&#x601D;&#x8DEF;)</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><span id="&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</span></span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+                    
+                        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+                    
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    
+                        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+                    
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                    
+                        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    #pop_ad{
+        display: none!important;
+    }
+    #feedAv{
+        display: none!important;
+    }
+    .module-cmt-float-bar{
+        display: none!important;
+    }
+    .list-content-wrapper-wap:last-child{
+        display: none!important;
+    }
+    div[ad-wap-feed='ad-wap-feed']{
+        display: none!important;
+    }
+    #baidu_new_ad,#bianxianmao_ad,.list-ctrl-area-wap{
+       display: none!important; 
+    }
+    .cy-logo{
+        background-size: 100%!important;
+    }
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

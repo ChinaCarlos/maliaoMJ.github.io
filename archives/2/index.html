@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/archives/2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('http://gss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/279759ee3d6d55fb65c51e786c224f4a20a4dd69.jpg') 
+            /*config*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>Carlos</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading">为天地立心，为生民立命，为往圣继绝学，为万世开太平。</span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 模板编译（五）/">
+        <h2 class="post-title">
+            Vue 源码阅读 模板编译（五）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+在前几篇文章中，我们介绍了模板编译流程三大阶段中的第一阶段模板解析阶段，在这一阶段主要做的工作是用解析器将用户所写的模板字符串解析成AST抽象语法树，理论上来讲，有了AST就可直接进入第三阶段生成render函数了。其实不然，Vue还是很看重性能的，只要有一点可以优化的地方就要将其进行优化。在之前介绍虚拟DOM的时候我们说过，有一种节点一旦首次渲染上了之后不管状态再怎么变化它都不......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 模板编译（二）/">
+        <h2 class="post-title">
+            Vue 源码阅读 模板编译（二）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 整体流程
+上篇文章中我们说了，在模板解析阶段主要做的工作是把用户在&lt;template&gt;&lt;/template&gt;标签内写的模板使用正则等方式解析成抽象语法树（AST）。而这一阶段在源码中对应解析器（parser）模块。
+解析器，顾名思义，就是把用户所写的模板根据一定的解析规则解析出有效的信息，最后用这些信息形成AST。我们知道在&lt;template&gt;&lt......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 模板编译（三）/">
+        <h2 class="post-title">
+            Vue 源码阅读 模板编译（三）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+上篇文章中我们说到，在模板解析阶段主线函数parse中，根据要解析的内容不同会调用不同的解析器，
+而在三个不同的解析器中最主要的当属HTML解析器，为什么这么说呢？因为HTML解析器主要负责解析出模板字符串中有哪些内容，然后根据不同的内容才能调用其他的解析器以及做相应的处理。那么本篇文章就来介绍一下HTML解析器是如何解析出模板字符串中包含的不同的内容的。
+2. HTML解析器内......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-19
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 模板编译（一）/">
+        <h2 class="post-title">
+            Vue 源码阅读 模板编译（一）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+在前几篇文章中，我们介绍了Vue中的虚拟DOM以及虚拟DOM的patch(DOM-Diff)过程，而虚拟DOM存在的必要条件是得先有VNode，那么VNode又是从哪儿来的呢？这就是接下来几篇文章要说的模板编译。你可以这么理解：把用户写的模板进行编译，就会产生VNode。
+2. 什么是模板编译
+我们知道，在日常开发中，我们把写在&lt;template&gt;&lt;/templ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-19
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 深入响应式原理(三)/">
+        <h2 class="post-title">
+            Vue 源码阅读 深入响应式原理(三)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+上一篇文章中我们介绍了Object数据的变化侦测方式，本篇文章我们来看一下对Array型数据的变化Vue是如何进行侦测的。
+为什么Object数据和Array型数据会有两种不同的变化侦测方式？
+这是因为对于Object数据我们使用的是JS提供的对象原型上的方法Object.defineProperty，而这个方法是对象原型上的，所以Array无法使用这个方法，所以我们需要对Arr......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-19
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 深入响应式原理(二)/">
+        <h2 class="post-title">
+            Vue 源码阅读 深入响应式原理(二)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+在上一篇文章中，我们知道：数据驱动视图的关键点则在于我们如何知道数据发生了变化，只要知道数据在什么时候变了，那么问题就变得迎刃而解，我们只需在数据变化的时候去通知视图更新即可。
+要想知道数据什么时候被读取了或数据什么时候被改写了，其实不难，JS为我们提供了Object.defineProperty方法，通过该方法我们就可以轻松的知道数据在什么时候发生变化。
+2. 使Object数......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 深入响应式原理(一)/">
+        <h2 class="post-title">
+            Vue 源码阅读 深入响应式原理(一)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+众所周知，Vue最大的特点之一就是数据驱动视图，那么什么是数据驱动视图呢？在这里，我们可以把数据理解为状态，而视图就是用户可直观看到页面。页面不可能是一成不变的，它应该是动态变化的，而它的变化也不应该是无迹可寻的，它或者是由用户操作引起的，亦或者是由后端数据变化引起的，不管它是因为什么引起的，我们统称为它的状态变了，它由前一个状态变到了后一个状态，页面也就应该随之而变化，所以我们......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读开始 第一篇 /">
+        <h2 class="post-title">
+            Vue 源码阅读开始 第一篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+作为一名前端开发，日常开发的技术栈是Vue，并且用Vue开发也有一年多了，对其用法也较为熟练了，但是对各种用法和各种api使用都是只知其然而不知其所以然，因此，有时候在排查bug的时候就会有点捉襟见肘。鉴于此，索性就从github上clone下来一份Vue源码来学习学习，本系列博文将用来记录博主对Vue源码的整个学习过程，以及自己对源码的一些理解。一方面开阔自己的知识视野，另一方......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/阅读Vue Composition API了解Vue3的设计 （下篇）/">
+        <h2 class="post-title">
+            阅读Vue Composition API 了解Vue3.x的设计思想（下篇）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            API Reference
+
+要看源码之前，首先要学会TypeScript（前十篇文档有Typescript学习指南）,因为vue3.x 版本中+90%的代码是使用的Typescript，Vue3.x 源码地址。
+
+ReadOnly
+接收一个对象（reactive or plain）或ref并返回一个对原始对象的只读（and reactive）代理。
+1234567891011121314c......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-17
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/阅读Vue Composition API了解Vue3的设计 （上篇）/">
+        <h2 class="post-title">
+            阅读Vue Composition API 了解Vue3.x的设计思想（上篇）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            API Reference
+
+要看源码之前，首先要学会TypeScript（前十篇文档有Typescript学习指南）,因为vue3.x 版本中+90%的代码是使用的Typescript，Vue3.x 源码地址。
+
+Setup
+该setup功能是新的组件选项。它充当在组件内部使用Composition API的入口点。
+调用时间
+setup创建组件实例时，在初始道具解析后立即调用。在生命周期......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-17
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+        <li class="previous">
+            <a href="/">&larr; Newer Posts</a>
+        </li>
+    
+    
+        <li class="next">
+            <a href="/archives/3/">Older Posts &rarr;</a>
+        </li>
+    
+</ul>
+
+
+
+                <br>
+
+                <!-- require APlayer -->
+                
+
+                <!-- 如果开启评论功能 -->
+                
+            </div>
+
+          <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+    <!-- no hr -->
+    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+            
+            <a href="/tags/#Docker" title="Docker" rel="3">Docker</a>
+            
+        
+            
+        
+            
+            <a href="/tags/#javascript" title="javascript" rel="9">javascript</a>
+            
+        
+            
+            <a href="/tags/#数据结构" title="数据结构" rel="6">数据结构</a>
+            
+        
+            
+            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
+            
+        
+            
+            <a href="/tags/#JavaScript" title="JavaScript" rel="30">JavaScript</a>
+            
+        
+            
+            <a href="/tags/#TypeScript" title="TypeScript" rel="12">TypeScript</a>
+            
+        
+            
+            <a href="/tags/#Vue源码" title="Vue源码" rel="17">Vue源码</a>
+            
+        
+            
+            <a href="/tags/#Vue" title="Vue" rel="20">Vue</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+            <a href="/tags/#nodejs" title="nodejs" rel="2">nodejs</a>
+            
+        
+            
+        
+            
+            <a href="/tags/#Frontend Interview" title="Frontend Interview" rel="7">Frontend Interview</a>
+            
+        
+            
+            <a href="/tags/#html" title="html" rel="2">html</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+</section>
+
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about/">ABOUT ME</a></h5>
+    <div class="short-about">
+
+        
+            <img id = "avatar_pic" src="http://img11.360buyimg.com/n12/jfs/t187/16/1397415357/103271/c51904ed/53ad22bbN1d5ea0db.jpg%21q70.jpg" />
+        
+
+        
+            <p>风起于青萍之末 浪成于微澜之间</p>
+        
+
+        <!-- SNS Link -->
+        <ul class="list-inline">
+            
+            
+            
+                <li>
+                    <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa  fa-stack-1x fa-inverse">知</i>
+                        </span>
+                    </a>
+                </li>
+            
+
+            
+                <li>
+                    <a target="_blank" href="http://weibo.com/u/7036193150">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+
+            
+
+            
+                <li>
+                    <a target="_blank"  href="https://github.com/maliaoMJ">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+            
+            
+            
+                <li>
+                    <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+</section>
+
+        <hr>
+    
+        
+  <h5>RECENT POSTS</h3>
+  <div class="widget">
+    <ul>
+      
+        <li>
+          <a href="/前端面试/面试手写代码系列/">前端面试总结之手写代码系列</a>
+        </li>
+      
+        <li>
+          <a href="/Vue/Vue 源码阅读 生命周期（三）/">Vue 源码阅读 生命周期（三）</a>
+        </li>
+      
+        <li>
+          <a href="/Vue/Vue 源码阅读 生命周期（二）/">Vue 源码阅读 生命周期（二）</a>
+        </li>
+      
+        <li>
+          <a href="/Vue/Vue 源码阅读 生命周期（一）/">Vue 源码阅读 生命周期（一）</a>
+        </li>
+      
+        <li>
+          <a href="/Vue/Vue 源码阅读 虚拟DOM （四）/">Vue 源码阅读 虚拟DOM （四）</a>
+        </li>
+      
+    </ul>
+  </div>
+
+        <hr>
+    
+        
+    <h5>ARCHIVES</h5>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
+    </div>
+
+        <hr>
+    
+        <!-- Friends Blog -->
+
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+
+    
+        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+    
+        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+    
+        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+    
+        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+    
+        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+    
+        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+    
+</ul>
+
+        <hr>
+    
+</div>
+
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

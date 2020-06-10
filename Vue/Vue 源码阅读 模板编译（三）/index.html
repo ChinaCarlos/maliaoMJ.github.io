@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Vue 源码阅读 模板编译（三） - Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/Vue/Vue 源码阅读 模板编译（三）/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img.zcool.cn/community/0144ed58660585a8012060c810d41f.jpg@2o.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                            
+                              <a class="tag" href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+                            
+                              <a class="tag" href="/tags/#Vue" title="Vue">Vue</a>
+                            
+                        </div>
+                        <h1>Vue 源码阅读 模板编译（三）</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Carlos on
+                            2019-10-19
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="1-前言">1. 前言</span></h2>
+<p>上篇文章中我们说到，在模板解析阶段主线函数<code>parse</code>中，根据要解析的内容不同会调用不同的解析器，</p>
+<p>而在三个不同的解析器中最主要的当属<code>HTML</code>解析器，为什么这么说呢？因为<code>HTML</code>解析器主要负责解析出模板字符串中有哪些内容，然后根据不同的内容才能调用其他的解析器以及做相应的处理。那么本篇文章就来介绍一下<code>HTML</code>解析器是如何解析出模板字符串中包含的不同的内容的。</p>
+<h2><span id="2-html解析器内部运行流程">2. HTML解析器内部运行流程</span></h2>
+<p>在源码中，<code>HTML</code>解析器就是<code>parseHTML</code>函数，在模板解析主线函数<code>parse</code>中调用了该函数，并传入两个参数，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码位置：/src/complier/parser/index.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Convert HTML string to AST.</span></span><br><span class="line"><span class="comment"> * 将HTML模板字符串转化为AST</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">parse</span>(<span class="params">template, options</span>) </span>&#123;</span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line">  parseHTML(template, &#123;</span><br><span class="line">    warn,</span><br><span class="line">    expectHTML: options.expectHTML,</span><br><span class="line">    isUnaryTag: options.isUnaryTag,</span><br><span class="line">    canBeLeftOpenTag: options.canBeLeftOpenTag,</span><br><span class="line">    shouldDecodeNewlines: options.shouldDecodeNewlines,</span><br><span class="line">    shouldDecodeNewlinesForHref: options.shouldDecodeNewlinesForHref,</span><br><span class="line">    shouldKeepComment: options.comments,</span><br><span class="line">    <span class="comment">// 当解析到开始标签时，调用该函数  </span></span><br><span class="line">    start (tag, attrs, unary) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 当解析到结束标签时，调用该函数</span></span><br><span class="line">    end () &#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 当解析到文本时，调用该函数  </span></span><br><span class="line">    chars (text) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 当解析到注释时，调用该函数  </span></span><br><span class="line">    comment (text) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码中我们可以看到，调用<code>parseHTML</code>函数时为其传入的两个参数分别是：</p>
+<ul>
+<li>template:待转换的模板字符串；</li>
+<li>options:转换时所需的选项；</li>
+</ul>
+<p>第一个参数是待转换的模板字符串，无需多言；重点看第二个参数，第二个参数提供了一些解析<code>HTML</code>模板时的一些参数，同时还定义了4个钩子函数。这4个钩子函数有什么作用呢？我们说了模板编译阶段主线函数<code>parse</code>会将<code>HTML</code>模板字符串转化成<code>AST</code>，而<code>parseHTML</code>是用来解析模板字符串的，把模板字符串中不同的内容出来之后，那么谁来把提取出来的内容生成对应的<code>AST</code>呢？答案就是这4个钩子函数。</p>
+<p>把这4个钩子函数作为参数传给解析器<code>parseHTML</code>，当解析器解析出不同的内容时调用不同的钩子函数从而生成不同的<code>AST</code>。</p>
+<ul>
+<li>
+<p>当解析到开始标签时调用<code>start</code>函数生成元素类型的<code>AST</code>节点，代码如下；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当解析到标签的开始位置时，触发start</span></span><br><span class="line">start (tag, attrs, unary) &#123;</span><br><span class="line">	<span class="keyword">let</span> element = createASTElement(tag, attrs, currentParent)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createASTElement</span> (<span class="params">tag,attrs,parent</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: <span class="number">1</span>,</span><br><span class="line">    tag,</span><br><span class="line">    attrsList: attrs,</span><br><span class="line">    attrsMap: makeAttrsMap(attrs),</span><br><span class="line">    parent,</span><br><span class="line">    children: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面代码中我们可以看到，<code>start</code>函数接收三个参数，分别是标签名<code>tag</code>、标签属性<code>attrs</code>、标签是否自闭合<code>unary</code>。当调用该钩子函数时，内部会调用<code>createASTElement</code>函数来创建元素类型的<code>AST</code>节点</p>
+</li>
+<li>
+<p>当解析到结束标签时调用<code>end</code>函数；</p>
+</li>
+<li>
+<p>当解析到文本时调用<code>chars</code>函数生成文本类型的<code>AST</code>节点；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当解析到标签的文本时，触发chars</span></span><br><span class="line">chars (text) &#123;</span><br><span class="line">	<span class="keyword">if</span>(text是带变量的动态文本)&#123;</span><br><span class="line">       <span class="keyword">let</span> element = &#123;</span><br><span class="line">           type: <span class="number">2</span>,</span><br><span class="line">           expression: res.expression,</span><br><span class="line">           tokens: res.tokens,</span><br><span class="line">           text</span><br><span class="line">       &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">let</span> element = &#123;</span><br><span class="line">           type: <span class="number">3</span>,</span><br><span class="line">           text</span><br><span class="line">       &#125; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当解析到标签的文本时，触发<code>chars</code>钩子函数，在该钩子函数内部，首先会判断文本是不是一个带变量的动态文本，如“hello ”。如果是动态文本，则创建动态文本类型的<code>AST</code>节点；如果不是动态文本，则创建纯静态文本类型的<code>AST</code>节点。</p>
+</li>
+<li>
+<p>当解析到注释时调用<code>comment</code>函数生成注释类型的<code>AST</code>节点；</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当解析到标签的注释时，触发comment</span></span><br><span class="line">comment (text: string) &#123;</span><br><span class="line">    <span class="keyword">let</span> element = &#123;</span><br><span class="line">        type: <span class="number">3</span>,</span><br><span class="line">        text,</span><br><span class="line">        isComment: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当解析到标签的注释时，触发<code>comment</code>钩子函数，该钩子函数会创建一个注释类型的<code>AST</code>节点。</p>
+</li>
+</ul>
+<p>一边解析不同的内容一边调用对应的钩子函数生成对应的<code>AST</code>节点，最终完成将整个模板字符串转化成<code>AST</code>,这就是<code>HTML</code>解析器所要做的工作。</p>
+<h2><span id="3-如何解析不同的内容">3. 如何解析不同的内容</span></h2>
+<p>要从模板字符串中解析出不同的内容，那首先要知道模板字符串中都会包含哪些内容。那么通常我们所写的模板字符串中都会包含哪些内容呢？经过整理，通常模板内会包含如下内容：</p>
+<ul>
+<li>文本，例如“难凉热血”</li>
+<li>HTML注释，例如&lt;!-- 我是注释 --&gt;</li>
+<li>条件注释，例如&lt;!-- [if !IE]&gt; --&gt;我是注释&lt;!–&lt; ![endif]  --&gt;</li>
+<li>DOCTYPE，例如&lt;!DOCTYPE html&gt;</li>
+<li>开始标签，例如&lt;div&gt;</li>
+<li>结束标签，例如&lt;/div&gt;</li>
+</ul>
+<p>这几种内容都有其各自独有的特点，也就是说我们要根据不同内容所具有的不同的的特点通过编写不同的正则表达式将这些内容从模板字符串中一一解析出来，然后再把不同的内容做不同的处理。</p>
+<p>下面，我们就来分别看一下<code>HTML</code>解析器是如何从模板字符串中将以上不同种类的内容进行解析出来。</p>
+<h3><span id="31-解析html注释">3.1 解析HTML注释</span></h3>
+<p>解析注释比较简单，我们知道<code>HTML</code>注释是以<code>&lt;!--</code>开头，以<code>--&gt;</code>结尾，这两者中间的内容就是注释内容，那么我们只需用正则判断待解析的模板字符串<code>html</code>是否以<code>&lt;!--</code>开头，若是，那就继续向后寻找<code>--&gt;</code>，如果找到了，OK，注释就被解析出来了。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> comment = <span class="regexp">/^&lt;!\--/</span></span><br><span class="line"><span class="keyword">if</span> (comment.test(html)) &#123;</span><br><span class="line">    <span class="comment">// 若为注释，则继续查找是否存在'--&gt;'</span></span><br><span class="line">    <span class="keyword">const</span> commentEnd = html.indexOf(<span class="string">'--&gt;'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (commentEnd &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 若存在 '--&gt;',继续判断options中是否保留注释</span></span><br><span class="line">        <span class="keyword">if</span> (options.shouldKeepComment) &#123;</span><br><span class="line">            <span class="comment">// 若保留注释，则把注释截取出来传给options.comment，创建注释类型的AST节点</span></span><br><span class="line">            options.comment(html.substring(<span class="number">4</span>, commentEnd))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 若不保留注释，则将游标移动到'--&gt;'之后，继续向后解析</span></span><br><span class="line">        advance(commentEnd + <span class="number">3</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面代码中，如果模板字符串<code>html</code>符合注释开始的正则，那么就继续向后查找是否存在<code>--&gt;</code>，若存在，则把<code>html</code>从第4位（&quot;&lt;!–&quot;长度为4）开始截取，直到<code>--&gt;</code>处，截取得到的内容就是注释的真实内容，然后调用4个钩子函数中的<code>comment</code>函数，将真实的注释内容传进去，创建注释类型的<code>AST</code>节点。</p>
+<p>上面代码中有一处值得注意的地方，那就是我们平常在模板中可以在<code>&lt;template&gt;&lt;/template&gt;</code>标签上配置<code>comments</code>选项来决定在渲染模板时是否保留注释，对应到上面代码中就是<code>options.shouldKeepComment</code>,如果用户配置了<code>comments</code>选项为<code>true</code>，则<code>shouldKeepComment</code>为<code>true</code>，则创建注释类型的<code>AST</code>节点，如不保留注释，则将游标移动到’–&gt;'之后，继续向后解析。</p>
+<p><code>advance</code>函数是用来移动解析游标的，解析完一部分就把游标向后移动一部分，确保不会重复解析，其代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">advance</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">    index += n   <span class="comment">// index为解析游标</span></span><br><span class="line">    html = html.substring(n)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了更加直观地说明 <code>advance</code> 的作用，请看下图：<br>
+<img src="/img/complie/5.png" alt></p>
+<p>调用 <code>advance</code> 函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">advance(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>得到结果：<br>
+<img src="/img/complie/6.png" alt></p>
+<p>从图中可以看到，解析游标<code>index</code>最开始在模板字符串的位置0处，当调用了<code>advance(3)</code>之后，解析游标到了位置3处，每次解析完一段内容就将游标向后移动一段，接着再从解析游标往后解析，这样就保证了解析过的内容不会被重复解析。</p>
+<h3><span id="32-解析条件注释">3.2 解析条件注释</span></h3>
+<p>解析条件注释也比较简单，其原理跟解析注释相同，都是先用正则判断是否是以条件注释特有的开头标识开始，然后寻找其特有的结束标识，若找到，则说明是条件注释，将其截取出来即可，由于条件注释不存在于真正的<code>DOM</code>树中，所以不需要调用钩子函数创建<code>AST</code>节点。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 解析是否是条件注释</span></span><br><span class="line"><span class="keyword">const</span> conditionalComment = <span class="regexp">/^&lt;!\[/</span></span><br><span class="line"><span class="keyword">if</span> (conditionalComment.test(html)) &#123;</span><br><span class="line">    <span class="comment">// 若为条件注释，则继续查找是否存在']&gt;'</span></span><br><span class="line">    <span class="keyword">const</span> conditionalEnd = html.indexOf(<span class="string">']&gt;'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (conditionalEnd &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 若存在 ']&gt;',则从原本的html字符串中把条件注释截掉，把剩下的内容重新赋给html，继续向后匹配</span></span><br><span class="line">        advance(conditionalEnd + <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="33-解析doctype">3.3 解析DOCTYPE</span></h3>
+<p>解析<code>DOCTYPE</code>的原理同解析条件注释完全相同，此处不再赘述，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> doctype = <span class="regexp">/^&lt;!DOCTYPE [^&gt;]+&gt;/i</span></span><br><span class="line"><span class="comment">// 解析是否是DOCTYPE</span></span><br><span class="line"><span class="keyword">const</span> doctypeMatch = html.match(doctype)</span><br><span class="line"><span class="keyword">if</span> (doctypeMatch) &#123;</span><br><span class="line">    advance(doctypeMatch[<span class="number">0</span>].length)</span><br><span class="line">    <span class="keyword">continue</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3><span id="34-解析开始标签">3.4 解析开始标签</span></h3>
+<p>相较于前三种内容的解析，解析开始标签会稍微复杂一点，但是万变不离其宗，它的原理还是相通的，都是使用正则去匹配提取。</p>
+<p>首先使用开始标签的正则去匹配模板字符串，看模板字符串是否具有开始标签的特征，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 匹配开始标签的正则</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> ncname = <span class="string">'[a-zA-Z_][\\w\\-\\.]*'</span></span><br><span class="line"><span class="keyword">const</span> qnameCapture = <span class="string">`((?:<span class="subst">$&#123;ncname&#125;</span>\\:)?<span class="subst">$&#123;ncname&#125;</span>)`</span></span><br><span class="line"><span class="keyword">const</span> startTagOpen = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`^&lt;<span class="subst">$&#123;qnameCapture&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> start = html.match(startTagOpen)</span><br><span class="line"><span class="keyword">if</span> (start) &#123;</span><br><span class="line">    <span class="keyword">const</span> match = &#123;</span><br><span class="line">        tagName: start[<span class="number">1</span>],</span><br><span class="line">        attrs: [],</span><br><span class="line">        start: index</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 以开始标签开始的模板：</span></span><br><span class="line"><span class="string">'&lt;div&gt;&lt;/div&gt;'</span>.match(startTagOpen)  =&gt; [<span class="string">'&lt;div'</span>,<span class="string">'div'</span>,<span class="attr">index</span>:<span class="number">0</span>,<span class="attr">input</span>:<span class="string">'&lt;div&gt;&lt;/div&gt;'</span>]</span><br><span class="line"><span class="comment">// 以结束标签开始的模板：</span></span><br><span class="line"><span class="string">'&lt;/div&gt;&lt;div&gt;&lt;/div&gt;'</span>.match(startTagOpen) =&gt; <span class="literal">null</span></span><br><span class="line"><span class="comment">// 以文本开始的模板：</span></span><br><span class="line"><span class="string">'我是文本&lt;/p&gt;'</span>.match(startTagOpen) =&gt; <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>在上面代码中，我们用不同类型的内容去匹配开始标签的正则，发现只有<code>&lt;div&gt;&lt;/div&gt;</code>的字符串可以正确匹配，并且返回一个数组。</p>
+<p>在前文中我们说到，当解析到开始标签时，会调用4个钩子函数中的<code>start</code>函数，而<code>start</code>函数需要传递3个参数，分别是标签名<code>tag</code>、标签属性<code>attrs</code>、标签是否自闭合<code>unary</code>。标签名通过正则匹配的结果就可以拿到，即上面代码中的<code>start[1]</code>，而标签属性<code>attrs</code>以及标签是否自闭合<code>unary</code>需要进一步解析。</p>
+<ol>
+<li>
+<p>解析标签属性</p>
+<p>我们知道，标签属性一般是写在开始标签的标签名之后的，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"a"</span> <span class="attr">id</span>=<span class="string">"b"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>另外，我们在上面匹配是否是开始标签的正则中已经可以拿到开始标签的标签名，即上面代码中的<code>start[0]</code>，那么我们可以将这一部分先从模板字符串中截掉，则剩下的部分如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class="a" id="b"&gt;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>那么我们只需用剩下的这部分去匹配标签属性的正则，就可以将标签属性提取出来了，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> attribute = <span class="regexp">/^\s*([^\s"'&lt;&gt;\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=&lt;&gt;`]+)))?/</span></span><br><span class="line"><span class="keyword">let</span> html = <span class="string">'class="a" id="b"&gt;&lt;/div&gt;'</span></span><br><span class="line"><span class="keyword">let</span> attr = html.match(attribute)</span><br><span class="line"><span class="built_in">console</span>.log(attr)</span><br><span class="line"><span class="comment">// ["class="a"", "class", "=", "a", undefined, undefined, index: 0, input: "class="a" id="b"&gt;&lt;/div&gt;", groups: undefined]</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，第一个标签属性<code>class=&quot;a&quot;</code>已经被拿到了。另外，标签属性有可能有多个也有可能没有，如果没有的话那好办，匹配标签属性的正则就会匹配失败，标签属性就为空数组；而如果标签属性有多个的话，那就需要循环匹配了，匹配出第一个标签属性后，就把该属性截掉，用剩下的字符串继续匹配，直到不再满足正则为止，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> attribute = <span class="regexp">/^\s*([^\s"'&lt;&gt;\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=&lt;&gt;`]+)))?/</span></span><br><span class="line"><span class="keyword">const</span> startTagClose = <span class="regexp">/^\s*(\/?)&gt;/</span></span><br><span class="line"><span class="keyword">const</span> match = &#123;</span><br><span class="line">    tagName: start[<span class="number">1</span>],</span><br><span class="line">    attrs: [],</span><br><span class="line">    start: index</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (!(end = html.match(startTagClose)) &amp;&amp; (attr = html.match(attribute))) &#123;</span><br><span class="line">    advance(attr[<span class="number">0</span>].length)</span><br><span class="line">    match.attrs.push(attr)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面代码的<code>while</code>循环中，如果剩下的字符串不符合开始标签的结束特征（startTagClose）并且符合标签属性的特征的话，那就说明还有未提取出的标签属性，那就进入循环，继续提取，直到把所有标签属性都提取完毕。</p>
+<p>所谓不符合开始标签的结束特征是指当前剩下的字符串不是以开始标签结束符开头的，我们知道一个开始标签的结束符有可能是一个<code>&gt;</code>（非自闭合标签），也有可能是<code>/&gt;</code>（自闭合标签），如果剩下的字符串（如<code>&gt;&lt;/div&gt;</code>）以开始标签的结束符开头，那么就表示标签属性已经被提取完毕了。</p>
+</li>
+</ol>
+<ol start="2">
+<li>
+<p>解析标签是否是自闭合</p>
+<p>在<code>HTML</code>中，有自闭合标签（如<code>&lt;img src=&quot;&quot;/&gt;</code>）也有非自闭合标签（如<code>&lt;div&gt;&lt;/div&gt;</code>），这两种类型的标签在创建<code>AST</code>节点是处理方式是有区别的，所以我们需要解析出当前标签是否是自闭合标签。</p>
+<p>解析的方式很简单，我们知道，经过标签属性提取之后，那么剩下的字符串无非就两种，如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--非自闭合标签--&gt;</span></span><br><span class="line">&gt;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--自闭合标签--&gt;</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<p>所以我们可以用剩下的字符串去匹配开始标签结束符正则，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> startTagClose = <span class="regexp">/^\s*(\/?)&gt;/</span></span><br><span class="line"><span class="keyword">let</span> end = html.match(startTagClose)</span><br><span class="line"><span class="string">'&gt;&lt;/div&gt;'</span>.match(startTagClose) <span class="comment">// ["&gt;", "", index: 0, input: "&gt;&lt;/div&gt;", groups: undefined]</span></span><br><span class="line"><span class="string">'/&gt;'</span>.match(startTagClose) <span class="comment">// ["/&gt;", "/", index: 0, input: "/&gt;&lt;div&gt;&lt;/div&gt;", groups: undefined]</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，非自闭合标签匹配结果中的<code>end[1]</code>为<code>&quot;&quot;</code>，而自闭合标签匹配结果中的<code>end[1]</code>为<code>&quot;/&quot;</code>。所以根据匹配结果的<code>end[1]</code>是否是<code>&quot;&quot;</code>我们即可判断出当前标签是否为自闭合标签，源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> startTagClose = <span class="regexp">/^\s*(\/?)&gt;/</span></span><br><span class="line"><span class="keyword">let</span> end = html.match(startTagClose)</span><br><span class="line"><span class="keyword">if</span> (end) &#123;</span><br><span class="line">    match.unarySlash = end[<span class="number">1</span>]</span><br><span class="line">    advance(end[<span class="number">0</span>].length)</span><br><span class="line">    match.end = index</span><br><span class="line">    <span class="keyword">return</span> match</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>经过以上两步，开始标签就已经解析完毕了，完整源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ncname = <span class="string">'[a-zA-Z_][\\w\\-\\.]*'</span></span><br><span class="line"><span class="keyword">const</span> qnameCapture = <span class="string">`((?:<span class="subst">$&#123;ncname&#125;</span>\\:)?<span class="subst">$&#123;ncname&#125;</span>)`</span></span><br><span class="line"><span class="keyword">const</span> startTagOpen = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`^&lt;<span class="subst">$&#123;qnameCapture&#125;</span>`</span>)</span><br><span class="line"><span class="keyword">const</span> startTagClose = <span class="regexp">/^\s*(\/?)&gt;/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseStartTag</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> start = html.match(startTagOpen)</span><br><span class="line">    <span class="comment">// '&lt;div&gt;&lt;/div&gt;'.match(startTagOpen)  =&gt; ['&lt;div','div',index:0,input:'&lt;div&gt;&lt;/div&gt;']</span></span><br><span class="line">    <span class="keyword">if</span> (start) &#123;</span><br><span class="line">      <span class="keyword">const</span> match = &#123;</span><br><span class="line">        tagName: start[<span class="number">1</span>],</span><br><span class="line">        attrs: [],</span><br><span class="line">        start: index</span><br><span class="line">      &#125;</span><br><span class="line">      advance(start[<span class="number">0</span>].length)</span><br><span class="line">      <span class="keyword">let</span> end, attr</span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * &lt;div a=1 b=2 c=3&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment">       * 从&lt;div之后到开始标签的结束符号'&gt;'之前，一直匹配属性attrs</span></span><br><span class="line"><span class="comment">       * 所有属性匹配完之后，html字符串还剩下 </span></span><br><span class="line"><span class="comment">       * 自闭合标签剩下：'/&gt;'</span></span><br><span class="line"><span class="comment">       * 非自闭合标签剩下：'&gt;&lt;/div&gt;'</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">while</span> (!(end = html.match(startTagClose)) &amp;&amp; (attr = html.match(attribute))) &#123;</span><br><span class="line">        advance(attr[<span class="number">0</span>].length)</span><br><span class="line">        match.attrs.push(attr)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">       * 这里判断了该标签是否为自闭合标签</span></span><br><span class="line"><span class="comment">       * 自闭合标签如:&lt;input type='text' /&gt;</span></span><br><span class="line"><span class="comment">       * 非自闭合标签如:&lt;div&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="comment">       * '&gt;&lt;/div&gt;'.match(startTagClose) =&gt; ["&gt;", "", index: 0, input: "&gt;&lt;/div&gt;", groups: undefined]</span></span><br><span class="line"><span class="comment">       * '/&gt;&lt;div&gt;&lt;/div&gt;'.match(startTagClose) =&gt; ["/&gt;", "/", index: 0, input: "/&gt;&lt;div&gt;&lt;/div&gt;", groups: undefined]</span></span><br><span class="line"><span class="comment">       * 因此，我们可以通过end[1]是否是"/"来判断该标签是否是自闭合标签</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">      <span class="keyword">if</span> (end) &#123;</span><br><span class="line">        match.unarySlash = end[<span class="number">1</span>]</span><br><span class="line">        advance(end[<span class="number">0</span>].length)</span><br><span class="line">        match.end = index</span><br><span class="line">        <span class="keyword">return</span> match</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>通过源码可以看到，调用<code>parseStartTag</code>函数，如果模板字符串符合开始标签的特征，则解析开始标签，并将解析结果返回，如果不符合开始标签的特征，则返回<code>undefined</code>。</p>
+<p>解析完毕后，就可以用解析得到的结果去调用<code>start</code>钩子函数去创建元素型的<code>AST</code>节点了。</p>
+<p>在源码中，<code>Vue</code>并没有直接去调<code>start</code>钩子函数去创建<code>AST</code>节点，而是调用了<code>handleStartTag</code>函数，在该函数内部才去调的<code>start</code>钩子函数，为什么要这样做呢？这是因为虽然经过<code>parseStartTag</code>函数已经把创建<code>AST</code>节点必要信息提取出来了，但是提取出来的标签属性数组还是需要处理一下，下面我们就来看一下<code>handleStartTag</code>函数都做了些什么事。<code>handleStartTag</code>函数源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleStartTag</span> (<span class="params">match</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> tagName = match.tagName</span><br><span class="line">    <span class="keyword">const</span> unarySlash = match.unarySlash</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (expectHTML) &#123;</span><br><span class="line">      <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> unary = isUnaryTag(tagName) || !!unarySlash</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> l = match.attrs.length</span><br><span class="line">    <span class="keyword">const</span> attrs = <span class="keyword">new</span> <span class="built_in">Array</span>(l)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; l; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> args = match.attrs[i]</span><br><span class="line">      <span class="keyword">const</span> value = args[<span class="number">3</span>] || args[<span class="number">4</span>] || args[<span class="number">5</span>] || <span class="string">''</span></span><br><span class="line">      <span class="keyword">const</span> shouldDecodeNewlines = tagName === <span class="string">'a'</span> &amp;&amp; args[<span class="number">1</span>] === <span class="string">'href'</span></span><br><span class="line">        ? options.shouldDecodeNewlinesForHref</span><br><span class="line">        : options.shouldDecodeNewlines</span><br><span class="line">      attrs[i] = &#123;</span><br><span class="line">        name: args[<span class="number">1</span>],</span><br><span class="line">        value: decodeAttr(value, shouldDecodeNewlines)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!unary) &#123;</span><br><span class="line">      stack.push(&#123; <span class="attr">tag</span>: tagName, <span class="attr">lowerCasedTag</span>: tagName.toLowerCase(), <span class="attr">attrs</span>: attrs &#125;)</span><br><span class="line">      lastTag = tagName</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (options.start) &#123;</span><br><span class="line">      options.start(tagName, attrs, unary, match.start, match.end)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><code>handleStartTag</code>函数用来对<code>parseStartTag</code>函数的解析结果进行进一步处理，它接收<code>parseStartTag</code>函数的返回值作为参数。</p>
+<p><code>handleStartTag</code>函数的开始定义几个常量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tagName = match.tagName       <span class="comment">// 开始标签的标签名</span></span><br><span class="line"><span class="keyword">const</span> unarySlash = match.unarySlash  <span class="comment">// 是否为自闭合标签的标志，自闭合为"",非自闭合为"/"</span></span><br><span class="line"><span class="keyword">const</span> unary = isUnaryTag(tagName) || !!unarySlash  <span class="comment">// 布尔值，标志是否为自闭合标签</span></span><br><span class="line"><span class="keyword">const</span> l = match.attrs.length    <span class="comment">// match.attrs 数组的长度</span></span><br><span class="line"><span class="keyword">const</span> attrs = <span class="keyword">new</span> <span class="built_in">Array</span>(l)  <span class="comment">// 一个与match.attrs数组长度相等的数组</span></span><br></pre></td></tr></table></figure>
+<p>接下来是循环处理提取出来的标签属性数组<code>match.attrs</code>，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; l; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> args = match.attrs[i]</span><br><span class="line">    <span class="keyword">const</span> value = args[<span class="number">3</span>] || args[<span class="number">4</span>] || args[<span class="number">5</span>] || <span class="string">''</span></span><br><span class="line">    <span class="keyword">const</span> shouldDecodeNewlines = tagName === <span class="string">'a'</span> &amp;&amp; args[<span class="number">1</span>] === <span class="string">'href'</span></span><br><span class="line">    ? options.shouldDecodeNewlinesForHref</span><br><span class="line">    : options.shouldDecodeNewlines</span><br><span class="line">    attrs[i] = &#123;</span><br><span class="line">        name: args[<span class="number">1</span>],</span><br><span class="line">        value: decodeAttr(value, shouldDecodeNewlines)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中，首先定义了 <code>args</code>常量，它是解析出来的标签属性数组中的每一个属性对象，即<code>match.attrs</code> 数组中每个元素对象。 它长这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> args = [<span class="string">"class="</span>a<span class="string">""</span>, <span class="string">"class"</span>, <span class="string">"="</span>, <span class="string">"a"</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="attr">index</span>: <span class="number">0</span>, <span class="attr">input</span>: <span class="string">"class="</span>a<span class="string">" id="</span>b<span class="string">"&gt;&lt;/div&gt;"</span>, <span class="attr">groups</span>: <span class="literal">undefined</span>]</span><br></pre></td></tr></table></figure>
+<p>接着定义了<code>value</code>，用于存储标签属性的属性值，我们可以看到，在代码中尝试取<code>args</code>的<code>args[3]</code>、<code>args[4]</code>、<code>args[5]</code>，如果都取不到，则给<code>value</code>复制为空</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> value = args[<span class="number">3</span>] || args[<span class="number">4</span>] || args[<span class="number">5</span>] || <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<p>接着定义了<code>shouldDecodeNewlines</code>，这个常量主要是做一些兼容性处理， 如果 <code>shouldDecodeNewlines</code> 为 <code>true</code>，意味着 <code>Vue</code> 在编译模板的时候，要对属性值中的换行符或制表符做兼容处理。而<code>shouldDecodeNewlinesForHref</code>为<code>true</code> 意味着<code>Vue</code>在编译模板的时候，要对<code>a</code>标签的 <code>href</code>属性值中的换行符或制表符做兼容处理。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> shouldDecodeNewlines = tagName === <span class="string">'a'</span> &amp;&amp; args[<span class="number">1</span>] === <span class="string">'href'</span></span><br><span class="line">    ? options.shouldDecodeNewlinesForHref</span><br><span class="line">    : options.shouldDecodeNewlinesconst value = args[<span class="number">3</span>] || args[<span class="number">4</span>] || args[<span class="number">5</span>] || <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<p>最后将处理好的结果存入之前定义好的与<code>match.attrs</code>数组长度相等的<code>attrs</code>数组中，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">attrs[i] = &#123;</span><br><span class="line">    name: args[<span class="number">1</span>],    <span class="comment">// 标签属性的属性名，如class</span></span><br><span class="line">    value: decodeAttr(value, shouldDecodeNewlines) <span class="comment">// 标签属性的属性值，如class对应的a</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，如果该标签是非自闭合标签，则将标签推入栈中（关于栈这个概念后面会说到），如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!unary) &#123;</span><br><span class="line">    stack.push(&#123; <span class="attr">tag</span>: tagName, <span class="attr">lowerCasedTag</span>: tagName.toLowerCase(), <span class="attr">attrs</span>: attrs &#125;)</span><br><span class="line">    lastTag = tagName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果该标签是自闭合标签，现在就可以调用<code>start</code>钩子函数并传入处理好的参数来创建<code>AST</code>节点了，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (options.start) &#123;</span><br><span class="line">    options.start(tagName, attrs, unary, match.start, match.end)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上就是开始标签的解析以及调用<code>start</code>钩子函数创建元素型的<code>AST</code>节点的所有过程。</p>
+<h3><span id="35-解析结束标签">3.5 解析结束标签</span></h3>
+<p>结束标签的解析要比解析开始标签容易多了，因为它不需要解析什么属性，只需要判断剩下的模板字符串是否符合结束标签的特征，如果是，就将结束标签名提取出来，再调用4个钩子函数中的<code>end</code>函数就好了。</p>
+<p>首先判断剩余的模板字符串是否符合结束标签的特征，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ncname = <span class="string">'[a-zA-Z_][\\w\\-\\.]*'</span></span><br><span class="line"><span class="keyword">const</span> qnameCapture = <span class="string">`((?:<span class="subst">$&#123;ncname&#125;</span>\\:)?<span class="subst">$&#123;ncname&#125;</span>)`</span></span><br><span class="line"><span class="keyword">const</span> endTag = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">`^&lt;\\/<span class="subst">$&#123;qnameCapture&#125;</span>[^&gt;]*&gt;`</span>)</span><br><span class="line"><span class="keyword">const</span> endTagMatch = html.match(endTag)</span><br><span class="line"></span><br><span class="line"><span class="string">'&lt;/div&gt;'</span>.match(endTag)  <span class="comment">// ["&lt;/div&gt;", "div", index: 0, input: "&lt;/div&gt;", groups: undefined]</span></span><br><span class="line"><span class="string">'&lt;div&gt;'</span>.match(endTag)  <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，如果模板字符串符合结束标签的特征，则会获得匹配结果数组；如果不合符，则得到null。</p>
+<p>接着再调用<code>end</code>钩子函数，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (endTagMatch) &#123;</span><br><span class="line">    <span class="keyword">const</span> curIndex = index</span><br><span class="line">    advance(endTagMatch[<span class="number">0</span>].length)</span><br><span class="line">    parseEndTag(endTagMatch[<span class="number">1</span>], curIndex, index)</span><br><span class="line">    <span class="keyword">continue</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面代码中，没有直接去调用<code>end</code>函数，而是调用了<code>parseEndTag</code>函数，关于<code>parseEndTag</code>函数内部的作用我们后面会介绍到，在这里你暂时可以理解为该函数内部就是去调用了<code>end</code>钩子函数。</p>
+<h3><span id="36-解析文本">3.6 解析文本</span></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">终于到了解析最后一种文本类型的内容了，为什么要把解析文本类型放在最后一个介绍呢？我们仔细想一下，前面五种类型都是以`&lt;`开头的，只有文本类型的内容不是以`&lt;`开头的，所以我们在解析模板字符串的时候可以先判断一下字符串是不是以`&lt;`开头的，如果是则继续判断是以上五种类型的具体哪一种，而如果不是的话，那它肯定就是文本了。</span><br></pre></td></tr></table></figure>
+<p>解析文本也比较容易，在解析模板字符串之前，我们先查找一下第一个<code>&lt;</code>出现在什么位置，如果第一个<code>&lt;</code>在第一个位置，那么说明模板字符串是以其它5种类型开始的；如果第一个<code>&lt;</code>不在第一个位置而在模板字符串中间某个位置，那么说明模板字符串是以文本开头的，那么从开头到第一个<code>&lt;</code>出现的位置就都是文本内容了；如果在整个模板字符串里没有找到<code>&lt;</code>，那说明整个模板字符串都是文本。这就是解析思路，接下来我们对照源码来了解一下实际的解析过程，源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> textEnd = html.indexOf(<span class="string">'&lt;'</span>)</span><br><span class="line"><span class="comment">// '&lt;' 在第一个位置，为其余5种类型</span></span><br><span class="line"><span class="keyword">if</span> (textEnd === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// ... </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// '&lt;' 不在第一个位置，文本开头</span></span><br><span class="line"><span class="keyword">if</span> (textEnd &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// 如果html字符串不是以'&lt;'开头,说明'&lt;'前面的都是纯文本，无需处理</span></span><br><span class="line">    <span class="comment">// 那就把'&lt;'以后的内容拿出来赋给rest</span></span><br><span class="line">    rest = html.slice(textEnd)</span><br><span class="line">    <span class="keyword">while</span> (</span><br><span class="line">        !endTag.test(rest) &amp;&amp;</span><br><span class="line">        !startTagOpen.test(rest) &amp;&amp;</span><br><span class="line">        !comment.test(rest) &amp;&amp;</span><br><span class="line">        !conditionalComment.test(rest)</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="comment">// &lt; in plain text, be forgiving and treat it as text</span></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">           * 用'&lt;'以后的内容rest去匹配endTag、startTagOpen、comment、conditionalComment</span></span><br><span class="line"><span class="comment">           * 如果都匹配不上，表示'&lt;'是属于文本本身的内容</span></span><br><span class="line"><span class="comment">           */</span></span><br><span class="line">        <span class="comment">// 在'&lt;'之后查找是否还有'&lt;'</span></span><br><span class="line">        next = rest.indexOf(<span class="string">'&lt;'</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="comment">// 如果没有了，表示'&lt;'后面也是文本</span></span><br><span class="line">        <span class="keyword">if</span> (next &lt; <span class="number">0</span>) <span class="keyword">break</span></span><br><span class="line">        <span class="comment">// 如果还有，表示'&lt;'是文本中的一个字符</span></span><br><span class="line">        textEnd += next</span><br><span class="line">        <span class="comment">// 那就把next之后的内容截出来继续下一轮循环匹配</span></span><br><span class="line">        rest = html.slice(textEnd)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// '&lt;'是结束标签的开始 ,说明从开始到'&lt;'都是文本，截取出来</span></span><br><span class="line">    text = html.substring(<span class="number">0</span>, textEnd)</span><br><span class="line">    advance(textEnd)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 整个模板字符串里没有找到`&lt;`,说明整个模板字符串都是文本</span></span><br><span class="line"><span class="keyword">if</span> (textEnd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    text = html</span><br><span class="line">    html = <span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 把截取出来的text转化成textAST</span></span><br><span class="line"><span class="keyword">if</span> (options.chars &amp;&amp; text) &#123;</span><br><span class="line">    options.chars(text)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>源码的逻辑很清晰，根据<code>&lt;</code>在不在第一个位置以及整个模板字符串里没有<code>&lt;</code>都分别进行了处理。</p>
+<p>值得深究的是如果<code>&lt;</code>不在第一个位置而在模板字符串中间某个位置，那么说明模板字符串是以文本开头的，那么从开头到第一个<code>&lt;</code>出现的位置就都是文本内容了，接着我们还要从第一个<code>&lt;</code>的位置继续向后判断，因为还存在这样一种情况，那就是如果文本里面本来就包含一个<code>&lt;</code>，例如<code>1&lt;2&lt;/div&gt;</code>。为了处理这种情况，我们把从第一个<code>&lt;</code>的位置直到模板字符串结束都截取出来记作<code>rest</code>，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> rest = html.slice(textEnd)</span><br></pre></td></tr></table></figure>
+<p>接着用<code>rest</code>去匹配以上5种类型的正则，如果都匹配不上，则表明这个<code>&lt;</code>是属于文本本身的内容，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (</span><br><span class="line">    !endTag.test(rest) &amp;&amp;</span><br><span class="line">    !startTagOpen.test(rest) &amp;&amp;</span><br><span class="line">    !comment.test(rest) &amp;&amp;</span><br><span class="line">    !conditionalComment.test(rest)</span><br><span class="line">) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果都匹配不上，则表明这个<code>&lt;</code>是属于文本本身的内容，接着以这个<code>&lt;</code>的位置继续向后查找，看是否还有<code>&lt;</code>，如果没有了，则表示后面的都是文本；如果后面还有下一个<code>&lt;</code>，那表明至少在这个<code>&lt;</code>到下一个<code>&lt;</code>中间的内容都是文本，至于下一个<code>&lt;</code>以后的内容是什么，则还需要重复以上的逻辑继续判断。代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (</span><br><span class="line">    !endTag.test(rest) &amp;&amp;</span><br><span class="line">    !startTagOpen.test(rest) &amp;&amp;</span><br><span class="line">    !comment.test(rest) &amp;&amp;</span><br><span class="line">    !conditionalComment.test(rest)</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="comment">// &lt; in plain text, be forgiving and treat it as text</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 用'&lt;'以后的内容rest去匹配endTag、startTagOpen、comment、conditionalComment</span></span><br><span class="line"><span class="comment">    * 如果都匹配不上，表示'&lt;'是属于文本本身的内容</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="comment">// 在'&lt;'之后查找是否还有'&lt;'</span></span><br><span class="line">    next = rest.indexOf(<span class="string">'&lt;'</span>, <span class="number">1</span>)</span><br><span class="line">    <span class="comment">// 如果没有了，表示'&lt;'后面也是文本</span></span><br><span class="line">    <span class="keyword">if</span> (next &lt; <span class="number">0</span>) <span class="keyword">break</span></span><br><span class="line">    <span class="comment">// 如果还有，表示'&lt;'是文本中的一个字符</span></span><br><span class="line">    textEnd += next</span><br><span class="line">    <span class="comment">// 那就把next之后的内容截出来继续下一轮循环匹配</span></span><br><span class="line">    rest = html.slice(textEnd)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后截取文本内容<code>text</code>并调用4个钩子函数中的<code>chars</code>函数创建文本型的<code>AST</code>节点。</p>
+<h2><span id="4-如何保证ast节点层级关系">4. 如何保证AST节点层级关系</span></h2>
+<p>上一章节我们介绍了<code>HTML</code>解析器是如何解析各种不同类型的内容并且调用钩子函数创建不同类型的<code>AST</code>节点。此时你可能会有个疑问，我们上面创建的<code>AST</code>节点都是单独创建且分散的，而真正的<code>DOM</code>节点都是有层级关系的，那如何来保证<code>AST</code>节点的层级关系与真正的<code>DOM</code>节点相同呢？</p>
+<p>关于这个问题，<code>Vue</code>也注意到了。<code>Vue</code>在<code>HTML</code>解析器的开头定义了一个栈<code>stack</code>，这个栈的作用就是用来维护<code>AST</code>节点层级的，那么它是怎么维护的呢？通过前文我们知道，<code>HTML</code>解析器在从前向后解析模板字符串时，每当遇到开始标签时就会调用<code>start</code>钩子函数，那么在<code>start</code>钩子函数内部我们可以将解析得到的开始标签推入栈中，而每当遇到结束标签时就会调用<code>end</code>钩子函数，那么我们也可以在<code>end</code>钩子函数内部将解析得到的结束标签所对应的开始标签从栈中弹出。请看如下例子：</p>
+<p>加入有如下模板字符串：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当解析到开始标签<code>&lt;div&gt;</code>时，就把<code>div</code>推入栈中，然后继续解析，当解析到<code>&lt;p&gt;</code>时，再把<code>p</code>推入栈中，同理，再把<code>span</code>推入栈中，当解析到结束标签<code>&lt;/span&gt;</code>时，此时栈顶的标签刚好是<code>span</code>的开始标签，那么就用<code>span</code>的开始标签和结束标签构建<code>AST</code>节点，并且从栈中把<code>span</code>的开始标签弹出，那么此时栈中的栈顶标签<code>p</code>就是构建好的<code>span</code>的<code>AST</code>节点的父节点，如下图：</p>
+<p><img src="/img/complie/7.png" alt></p>
+<p>这样我们就找到了当前被构建节点的父节点。这只是栈的一个用途，它还有另外一个用途，我们再看如下模板字符串：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>按照上面的流程解析这个模板字符串时，当解析到结束标签<code>&lt;/p&gt;</code>时，此时栈顶的标签应该是<code>p</code>才对，而现在是<code>span</code>，那么就说明<code>span</code>标签没有被正确闭合，此时控制台就会抛出警告：‘tag  has no matching end tag.’相信这个警告你一定不会陌生。这就是栈的第二个用途： 检测模板字符串中是否有未正确闭合的标签。</p>
+<p>OK，有了这个栈的概念之后，我们再回看上一章<code>HTML</code>解析器解析不同内容的代码。</p>
+<h2><span id="5-回归源码">5. 回归源码</span></h2>
+<h3><span id="51-html解析器源码">5.1 HTML解析器源码</span></h3>
+<p>以上内容都了解了之后，我们回归源码，逐句分析<code>HTML</code>解析器<code>parseHTML</code>函数，函数定义如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseHTML</span>(<span class="params">html, options</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> stack = [];</span><br><span class="line">	<span class="keyword">var</span> expectHTML = options.expectHTML;</span><br><span class="line">	<span class="keyword">var</span> isUnaryTag$$<span class="number">1</span> = options.isUnaryTag || no;</span><br><span class="line">	<span class="keyword">var</span> canBeLeftOpenTag$$<span class="number">1</span> = options.canBeLeftOpenTag || no;</span><br><span class="line">	<span class="keyword">var</span> index = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">var</span> last, lastTag;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 开启一个 while 循环，循环结束的条件是 html 为空，即 html 被 parse 完毕</span></span><br><span class="line">	<span class="keyword">while</span> (html) &#123;</span><br><span class="line">		last = html;</span><br><span class="line">		<span class="comment">// 确保即将 parse 的内容不是在纯文本标签里 (script,style,textarea)</span></span><br><span class="line">		<span class="keyword">if</span> (!lastTag || !isPlainTextElement(lastTag)) &#123;</span><br><span class="line">		   <span class="keyword">let</span> textEnd = html.indexOf(<span class="string">'&lt;'</span>)</span><br><span class="line">              <span class="comment">/**</span></span><br><span class="line"><span class="comment">               * 如果html字符串是以'&lt;'开头,则有以下几种可能</span></span><br><span class="line"><span class="comment">               * 开始标签:&lt;div&gt;</span></span><br><span class="line"><span class="comment">               * 结束标签:&lt;/div&gt;</span></span><br><span class="line"><span class="comment">               * 注释:&lt;!-- 我是注释 --&gt;</span></span><br><span class="line"><span class="comment">               * 条件注释:&lt;!-- [if !IE] --&gt; &lt;!-- [endif] --&gt;</span></span><br><span class="line"><span class="comment">               * DOCTYPE:&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="comment">               * 需要一一去匹配尝试</span></span><br><span class="line"><span class="comment">               */</span></span><br><span class="line">            <span class="keyword">if</span> (textEnd === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 解析是否是注释</span></span><br><span class="line">        		<span class="keyword">if</span> (comment.test(html)) &#123;</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 解析是否是条件注释</span></span><br><span class="line">                <span class="keyword">if</span> (conditionalComment.test(html)) &#123;</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 解析是否是DOCTYPE</span></span><br><span class="line">                <span class="keyword">const</span> doctypeMatch = html.match(doctype)</span><br><span class="line">                <span class="keyword">if</span> (doctypeMatch) &#123;</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 解析是否是结束标签</span></span><br><span class="line">                <span class="keyword">const</span> endTagMatch = html.match(endTag)</span><br><span class="line">                <span class="keyword">if</span> (endTagMatch) &#123;</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 匹配是否是开始标签</span></span><br><span class="line">                <span class="keyword">const</span> startTagMatch = parseStartTag()</span><br><span class="line">                <span class="keyword">if</span> (startTagMatch) &#123;</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">// 如果html字符串不是以'&lt;'开头,则解析文本类型</span></span><br><span class="line">            <span class="keyword">let</span> text, rest, next</span><br><span class="line">            <span class="keyword">if</span> (textEnd &gt;= <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 如果在html字符串中没有找到'&lt;'，表示这一段html字符串都是纯文本</span></span><br><span class="line">            <span class="keyword">if</span> (textEnd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                text = html</span><br><span class="line">                html = <span class="string">''</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 把截取出来的text转化成textAST</span></span><br><span class="line">            <span class="keyword">if</span> (options.chars &amp;&amp; text) &#123;</span><br><span class="line">                options.chars(text)</span><br><span class="line">            &#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 父元素为script、style、textarea时，其内部的内容全部当做纯文本处理</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//将整个字符串作为文本对待</span></span><br><span class="line">		<span class="keyword">if</span> (html === last) &#123;</span><br><span class="line">			options.chars &amp;&amp; options.chars(html);</span><br><span class="line">			<span class="keyword">if</span> (!stack.length &amp;&amp; options.warn) &#123;</span><br><span class="line">				options.warn((<span class="string">"Mal-formatted tag at end of template: \""</span> + html + <span class="string">"\""</span>));</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Clean up any remaining tags</span></span><br><span class="line">	parseEndTag();</span><br><span class="line">	<span class="comment">//parse 开始标签</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">parseStartTag</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//处理 parseStartTag 的结果</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">handleStartTag</span>(<span class="params">match</span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//parse 结束标签</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">parseEndTag</span>(<span class="params">tagName, start, end</span>) </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码中大致可分为三部分：</p>
+<ul>
+<li>定义的一些常量和变量</li>
+<li>while 循环</li>
+<li>解析过程中用到的辅助函数</li>
+</ul>
+<p>我们一一来分析：</p>
+<p>首先定义了几个常量，如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> stack = []       <span class="comment">// 维护AST节点层级的栈</span></span><br><span class="line"><span class="keyword">const</span> expectHTML = options.expectHTML</span><br><span class="line"><span class="keyword">const</span> isUnaryTag = options.isUnaryTag || no</span><br><span class="line"><span class="keyword">const</span> canBeLeftOpenTag = options.canBeLeftOpenTag || no   <span class="comment">//用来检测一个标签是否是可以省略闭合标签的非自闭合标签</span></span><br><span class="line"><span class="keyword">let</span> index = <span class="number">0</span>   <span class="comment">//解析游标，标识当前从何处开始解析模板字符串</span></span><br><span class="line"><span class="keyword">let</span> last,   <span class="comment">// 存储剩余还未解析的模板字符串</span></span><br><span class="line">    lastTag  <span class="comment">// 存储着位于 stack 栈顶的元素</span></span><br></pre></td></tr></table></figure>
+<p>接着开启<code>while</code> 循环，循环的终止条件是 模板字符串<code>html</code>为空，即模板字符串被全部编译完毕。在每次<code>while</code>循环中， 先把 <code>html</code>的值赋给变量 <code>last</code>，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last = html</span><br></pre></td></tr></table></figure>
+<p>这样做的目的是，如果经过上述所有处理逻辑处理过后，<code>html</code>字符串没有任何变化，即表示<code>html</code>字符串没有匹配上任何一条规则，那么就把<code>html</code>字符串当作纯文本对待，创建文本类型的<code>AST</code>节点并且如果抛出异常：模板字符串中标签格式有误。如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将整个字符串作为文本对待</span></span><br><span class="line"><span class="keyword">if</span> (html === last) &#123;</span><br><span class="line">    options.chars &amp;&amp; options.chars(html);</span><br><span class="line">    <span class="keyword">if</span> (!stack.length &amp;&amp; options.warn) &#123;</span><br><span class="line">        options.warn((<span class="string">"Mal-formatted tag at end of template: \""</span> + html + <span class="string">"\""</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着，我们继续看<code>while</code>循环体内的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (html) &#123;</span><br><span class="line">  <span class="comment">// 确保即将 parse 的内容不是在纯文本标签里 (script,style,textarea)</span></span><br><span class="line">  <span class="keyword">if</span> (!lastTag || !isPlainTextElement(lastTag)) &#123;</span><br><span class="line">      </span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// parse 的内容是在纯文本标签里 (script,style,textarea)</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在循环体内，首先判断了待解析的<code>html</code>字符串是否在纯文本标签里，如<code>script</code>,<code>style</code>,<code>textarea</code>，因为在这三个标签里的内容肯定不会有<code>HTML</code>标签，所以我们可直接当作文本处理，判断条件如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">!lastTag || !isPlainTextElement(lastTag)</span><br></pre></td></tr></table></figure>
+<p>前面我们说了，<code>lastTag</code>为栈顶元素，<code>!lastTag</code>即表示当前<code>html</code>字符串没有父节点，而<code>isPlainTextElement(lastTag)</code> 是检测 <code>lastTag</code> 是否为是那三个纯文本标签之一，是的话返回<code>true</code>，不是返回<code>fasle</code>。</p>
+<p>也就是说当前<code>html</code>字符串要么没有父节点要么父节点不是纯文本标签，则接下来就可以依次解析那6种类型的内容了，关于6种类型内容的处理方式前文已经逐个介绍过，此处不再重复。</p>
+<h3><span id="52-parseendtag函数源码">5.2 parseEndTag函数源码</span></h3>
+<p>接下来我们看一下之前在解析结束标签时遗留的<code>parseEndTag</code>函数，该函数定义如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseEndTag</span> (<span class="params">tagName, start, end</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> pos, lowerCasedTagName</span><br><span class="line">    <span class="keyword">if</span> (start == <span class="literal">null</span>) start = index</span><br><span class="line">    <span class="keyword">if</span> (end == <span class="literal">null</span>) end = index</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tagName) &#123;</span><br><span class="line">      lowerCasedTagName = tagName.toLowerCase()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find the closest opened tag of the same type</span></span><br><span class="line">    <span class="keyword">if</span> (tagName) &#123;</span><br><span class="line">      <span class="keyword">for</span> (pos = stack.length - <span class="number">1</span>; pos &gt;= <span class="number">0</span>; pos--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (stack[pos].lowerCasedTag === lowerCasedTagName) &#123;</span><br><span class="line">          <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// If no tag name is provided, clean shop</span></span><br><span class="line">      pos = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pos &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="comment">// Close all the open elements, up the stack</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = stack.length - <span class="number">1</span>; i &gt;= pos; i--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp;</span><br><span class="line">          (i &gt; pos || !tagName) &amp;&amp;</span><br><span class="line">          options.warn</span><br><span class="line">        ) &#123;</span><br><span class="line">          options.warn(</span><br><span class="line">            <span class="string">`tag &lt;<span class="subst">$&#123;stack[i].tag&#125;</span>&gt; has no matching end tag.`</span></span><br><span class="line">          )</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (options.end) &#123;</span><br><span class="line">          options.end(stack[i].tag, start, end)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Remove the open elements from the stack</span></span><br><span class="line">      stack.length = pos</span><br><span class="line">      lastTag = pos &amp;&amp; stack[pos - <span class="number">1</span>].tag</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lowerCasedTagName === <span class="string">'br'</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (options.start) &#123;</span><br><span class="line">        options.start(tagName, [], <span class="literal">true</span>, start, end)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lowerCasedTagName === <span class="string">'p'</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (options.start) &#123;</span><br><span class="line">        options.start(tagName, [], <span class="literal">false</span>, start, end)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (options.end) &#123;</span><br><span class="line">        options.end(tagName, start, end)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数接收三个参数，分别是结束标签名<code>tagName</code>、结束标签在<code>html</code>字符串中的起始和结束位置<code>start</code>和<code>end</code>。</p>
+<p>这三个参数其实都是可选的，根据传参的不同其功能也不同。</p>
+<ul>
+<li>第一种是三个参数都传递，用于处理普通的结束标签</li>
+<li>第二种是只传递<code>tagName</code></li>
+<li>第三种是三个参数都不传递，用于处理栈中剩余未处理的标签</li>
+</ul>
+<p>如果<code>tagName</code>存在，那么就从后往前遍历栈，在栈中寻找与<code>tagName</code>相同的标签并记录其所在的位置<code>pos</code>，如果<code>tagName</code>不存在，则将<code>pos</code>置为0。如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (tagName) &#123;</span><br><span class="line">    <span class="keyword">for</span> (pos = stack.length - <span class="number">1</span>; pos &gt;= <span class="number">0</span>; pos--) &#123;</span><br><span class="line">        <span class="keyword">if</span> (stack[pos].lowerCasedTag === lowerCasedTagName) &#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// If no tag name is provided, clean shop</span></span><br><span class="line">    pos = <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着当<code>pos&gt;=0</code>时，开启一个<code>for</code>循环，从栈顶位置从后向前遍历直到<code>pos</code>处，如果发现<code>stack</code>栈中存在索引大于<code>pos</code>的元素，那么该元素一定是缺少闭合标签的。这是因为在正常情况下，<code>stack</code>栈的栈顶元素应该和当前的结束标签<code>tagName</code> 匹配，也就是说正常的<code>pos</code>应该是栈顶位置，后面不应该再有元素，如果后面还有元素，那么后面的元素就都缺少闭合标签 那么这个时候如果是在非生产环境会抛出警告，告诉你缺少闭合标签。除此之外，还会调用 <code>options.end(stack[i].tag, start, end)</code>立即将其闭合，这是为了保证解析结果的正确性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pos &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">	<span class="comment">// Close all the open elements, up the stack</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = stack.length - <span class="number">1</span>; i &gt;= pos; i--) &#123;</span><br><span class="line">		<span class="keyword">if</span> (i &gt; pos || !tagName ) &#123;</span><br><span class="line">			options.warn(</span><br><span class="line">				(<span class="string">"tag &lt;"</span> + (stack[i].tag) + <span class="string">"&gt; has no matching end tag."</span>)</span><br><span class="line">			);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (options.end) &#123;</span><br><span class="line">			options.end(stack[i].tag, start, end);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Remove the open elements from the stack</span></span><br><span class="line">	stack.length = pos;</span><br><span class="line">	lastTag = pos &amp;&amp; stack[pos - <span class="number">1</span>].tag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后把<code>pos</code>位置以后的元素都从<code>stack</code>栈中弹出，以及把<code>lastTag</code>更新为栈顶元素:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stack.length = pos;</span><br><span class="line">lastTag = pos &amp;&amp; stack[pos - <span class="number">1</span>].tag;</span><br></pre></td></tr></table></figure>
+<p>接着，如果<code>pos</code>没有大于等于0，即当 <code>tagName</code> 没有在 <code>stack</code> 栈中找到对应的开始标签时，<code>pos</code> 为 -1 。那么此时再判断 <code>tagName</code> 是否为<code>br</code> 或<code>p</code>标签，为什么要单独判断这两个标签呢？这是因为在浏览器中如果我们写了如下<code>HTML</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>浏览器会自动把<code>&lt;/br&gt;</code>标签解析为正常的 &lt;br&gt;标签，而对于<code>&lt;/p&gt;</code>浏览器则自动将其补全为<code>&lt;p&gt;&lt;/p&gt;</code>，所以<code>Vue</code>为了与浏览器对这两个标签的行为保持一致，故对这两个便签单独判断处理，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (lowerCasedTagName === <span class="string">'br'</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (options.start) &#123;   </span><br><span class="line">        options.start(tagName, [], <span class="literal">true</span>, start, end)  <span class="comment">// 创建&lt;br&gt;AST节点</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 补全p标签并创建AST节点</span></span><br><span class="line"><span class="keyword">if</span> (lowerCasedTagName === <span class="string">'p'</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (options.start) &#123;</span><br><span class="line">        options.start(tagName, [], <span class="literal">false</span>, start, end)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (options.end) &#123;</span><br><span class="line">        options.end(tagName, start, end)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上就是对结束标签的解析与处理。</p>
+<p>另外，在<code>while</code>循环后面还有一行代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parseEndTag()</span><br></pre></td></tr></table></figure>
+<p>这行代码执行的时机是<code>html === last</code>，即<code>html</code>字符串中的标签格式有误时会跳出<code>while</code>循环，此时就会执行这行代码，这行代码是调用<code>parseEndTag</code>函数并不传递任何参数，前面我们说过如果<code>parseEndTag</code>函数不传递任何参数是用于处理栈中剩余未处理的标签。这是因为如果不传递任何函数，此时<code>parseEndTag</code>函数里的<code>pos</code>就为0，那么<code>pos&gt;=0</code>就会恒成立，那么就会逐个警告缺少闭合标签，并调用 <code>options.end</code>将其闭合。</p>
+<h2><span id="6-总结">6. 总结</span></h2>
+<p>本篇文章主要介绍了<code>HTML</code>解析器的工作流程以及工作原理，文章比较长，但是逻辑并不复杂。</p>
+<p>首先介绍了<code>HTML</code>解析器的工作流程，一句话概括就是：一边解析不同的内容一边调用对应的钩子函数生成对应的<code>AST</code>节点，最终完成将整个模板字符串转化成<code>AST</code>。</p>
+<p>接着介绍了<code>HTML</code>解析器是如何解析用户所写的模板字符串中各种类型的内容的，把各种类型的解析方式都分别进行了介绍。</p>
+<p>其次，介绍了在解析器内维护了一个栈，用来保证构建的<code>AST</code>节点层级与真正<code>DOM</code>层级一致。</p>
+<p>了解了思想之后，最后回归源码，学习了源码中一些处理细节的地方。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/Vue/Vue 源码阅读 模板编译（二）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 模板编译（二）">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/Vue/Vue 源码阅读 模板编译（一）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 模板编译（一）">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+<!--PC和WAP自适应版-->
+            <div id="SOHUCS" sid="Vue/Vue 源码阅读 模板编译（三）/"></div>
+            <script type="text/javascript">
+                (function () {
+                    var appid = 'cyudaHkzu';
+                    var conf = 'prod_53d882f398ccb8a21ddd91e1aefc77a0';
+                    var width = window.innerWidth || document.documentElement.clientWidth;
+                    if (width < 960) {
+                        window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+                    
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if (docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                           
+                            } else { var loadJs = function (d, a) { var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement; var b = document.createElement("script"); b.setAttribute("type", "text/javascript"); b.setAttribute("charset", "UTF-8"); b.setAttribute("src", d); if (typeof a === "function") { if (window.attachEvent) { b.onreadystatechange = function () { var e = b.readyState; if (e === "loaded" || e === "complete") { b.onreadystatechange = null; a() } } } else { b.onload = a } } c.appendChild(b) }; loadJs("https://changyan.sohu.com/upload/changyan.js", function () { 
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if(docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                        window.changyan.api.config({ appid: appid, conf: conf }) });
+                    }
+                    
+                })();
+                </script>
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="https://s2.ax1x.com/2019/04/30/E8OqQx.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="https://s2.ax1x.com/2019/04/30/E8ObS1.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><span id="1-&#x524D;&#x8A00;">1. &#x524D;&#x8A00;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><span id="2-html&#x89E3;&#x6790;&#x5668;&#x5185;&#x90E8;&#x8FD0;&#x884C;&#x6D41;&#x7A0B;">2. HTML&#x89E3;&#x6790;&#x5668;&#x5185;&#x90E8;&#x8FD0;&#x884C;&#x6D41;&#x7A0B;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><span id="3-&#x5982;&#x4F55;&#x89E3;&#x6790;&#x4E0D;&#x540C;&#x7684;&#x5185;&#x5BB9;">3. &#x5982;&#x4F55;&#x89E3;&#x6790;&#x4E0D;&#x540C;&#x7684;&#x5185;&#x5BB9;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><span id="31-&#x89E3;&#x6790;html&#x6CE8;&#x91CA;">3.1 &#x89E3;&#x6790;HTML&#x6CE8;&#x91CA;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><span id="32-&#x89E3;&#x6790;&#x6761;&#x4EF6;&#x6CE8;&#x91CA;">3.2 &#x89E3;&#x6790;&#x6761;&#x4EF6;&#x6CE8;&#x91CA;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><span id="33-&#x89E3;&#x6790;doctype">3.3 &#x89E3;&#x6790;DOCTYPE</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text"><span id="34-&#x89E3;&#x6790;&#x5F00;&#x59CB;&#x6807;&#x7B7E;">3.4 &#x89E3;&#x6790;&#x5F00;&#x59CB;&#x6807;&#x7B7E;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text"><span id="35-&#x89E3;&#x6790;&#x7ED3;&#x675F;&#x6807;&#x7B7E;">3.5 &#x89E3;&#x6790;&#x7ED3;&#x675F;&#x6807;&#x7B7E;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text"><span id="36-&#x89E3;&#x6790;&#x6587;&#x672C;">3.6 &#x89E3;&#x6790;&#x6587;&#x672C;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><span id="4-&#x5982;&#x4F55;&#x4FDD;&#x8BC1;ast&#x8282;&#x70B9;&#x5C42;&#x7EA7;&#x5173;&#x7CFB;">4. &#x5982;&#x4F55;&#x4FDD;&#x8BC1;AST&#x8282;&#x70B9;&#x5C42;&#x7EA7;&#x5173;&#x7CFB;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.</span> <span class="toc-nav-text"><span id="5-&#x56DE;&#x5F52;&#x6E90;&#x7801;">5. &#x56DE;&#x5F52;&#x6E90;&#x7801;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text"><span id="51-html&#x89E3;&#x6790;&#x5668;&#x6E90;&#x7801;">5.1 HTML&#x89E3;&#x6790;&#x5668;&#x6E90;&#x7801;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text"><span id="52-parseendtag&#x51FD;&#x6570;&#x6E90;&#x7801;">5.2 parseEndTag&#x51FD;&#x6570;&#x6E90;&#x7801;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">6.</span> <span class="toc-nav-text"><span id="6-&#x603B;&#x7ED3;">6. &#x603B;&#x7ED3;</span></span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                          <a class="tag" href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+                        
+                          <a class="tag" href="/tags/#Vue" title="Vue">Vue</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+                    
+                        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+                    
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    
+                        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+                    
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                    
+                        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    #pop_ad{
+        display: none!important;
+    }
+    #feedAv{
+        display: none!important;
+    }
+    .module-cmt-float-bar{
+        display: none!important;
+    }
+    .list-content-wrapper-wap:last-child{
+        display: none!important;
+    }
+    div[ad-wap-feed='ad-wap-feed']{
+        display: none!important;
+    }
+    #baidu_new_ad,#bianxianmao_ad,.list-ctrl-area-wap{
+       display: none!important; 
+    }
+    .cy-logo{
+        background-size: 100%!important;
+    }
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

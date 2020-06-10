@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Vue 源码阅读 虚拟DOM （一） - Carlos | Blog
+        
+    </title>
+
+    <link rel="canonical" href="carlosme.fun/Vue/Vue 源码阅读 虚拟DOM （一）/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img.zcool.cn/community/0144ed58660585a8012060c810d41f.jpg@2o.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                            
+                              <a class="tag" href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+                            
+                              <a class="tag" href="/tags/#Vue" title="Vue">Vue</a>
+                            
+                        </div>
+                        <h1>Vue 源码阅读 虚拟DOM （一）</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Carlos on
+                            2019-10-27
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Carlos</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2><span id="1-前言">1. 前言</span></h2>
+<p>虚拟DOM，这个名词作为当下的前端开发人员你一定不会陌生，至少会略有耳闻，但不会闻所未闻吧。这也是现在求职面试考察中非常高频的一个考点了。因为在当下的前端三大框架中关于虚拟DOM或多或少都有所涉及，那么接下来，我们就从源码角度出发，看看<code>Vue</code>中的虚拟DOM时怎样的。</p>
+<h2><span id="2-虚拟dom简介">2. 虚拟DOM简介</span></h2>
+<p>由于本系列文章是针对<code>Vue</code>源码深入学习的，所以着重分析在<code>Vue</code>中对虚拟DOM是如何实现的，而对于虚拟DOM本身这个概念不做大篇幅的展开讨论，仅从以下几个问题简单介绍：</p>
+<ol>
+<li>
+<p>什么是虚拟DOM？</p>
+<p>所谓虚拟DOM，就是用一个<code>JS</code>对象来描述一个<code>DOM</code>节点，像如下示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"a"</span> id=<span class="string">"b"</span>&gt;我是内容&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&#123;</span></span><br><span class="line"><span class="regexp">  tag:'div',        /</span><span class="regexp">/ 元素标签</span></span><br><span class="line"><span class="regexp">  attrs:&#123;           /</span><span class="regexp">/ 属性</span></span><br><span class="line"><span class="regexp">    class:'a',</span></span><br><span class="line"><span class="regexp">    id:'b'</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  text:'我是内容',  /</span><span class="regexp">/ 文本内容</span></span><br><span class="line"><span class="regexp">  children:[]       /</span><span class="regexp">/ 子元素</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>我们把组成一个<code>DOM</code>节点的必要东西通过一个<code>JS</code>对象表示出来，那么这个<code>JS</code>对象就可以用来描述这个<code>DOM</code>节点，我们把这个<code>JS</code>对象就称为是这个真实<code>DOM</code>节点的虚拟<code>DOM</code>节点。</p>
+</li>
+<li>
+<p>为什么要有虚拟DOM？</p>
+<p>我们知道，<code>Vue</code>是数据驱动视图的，数据发生变化视图就要随之更新，在更新视图的时候难免要操作<code>DOM</code>,而操作真实<code>DOM</code>又是非常耗费性能的，这是因为浏览器的标准就把 <code>DOM</code> 设计的非常复杂，所以一个真正的 <code>DOM</code> 元素是非常庞大的，如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> div = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>)</span><br><span class="line"><span class="keyword">let</span> str = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> div) &#123;</span><br><span class="line">  str += key + <span class="string">''</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(str)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/virtualDOM/1.png" alt></p>
+<p>上图中我们打印一个简单的空<code>div</code>标签，就打印出这么多东西，更不用说复杂的、深嵌套的<code>DOM</code>节点了。由此可见，直接操作真实<code>DOM</code>是非常消耗性能的。</p>
+<p>那么有没有什么解决方案呢？当然是有的。我们可以用<code>JS</code>的计算性能来换取操作<code>DOM</code>所消耗的性能。</p>
+<p>既然我们逃不掉操作<code>DOM</code>这道坎,但是我们可以尽可能少的操作<code>DOM</code>。那如何在更新视图的时候尽可能少的操作<code>DOM</code>呢？最直观的思路就是我们不要盲目的去更新视图，而是通过对比数据变化前后的状态，计算出视图中哪些地方需要更新，只更新需要更新的地方，而不需要更新的地方则不需关心，这样我们就可以尽可能少的操作<code>DOM</code>了。这也就是上面所说的用<code>JS</code>的计算性能来换取操作<code>DOM</code>的性能。</p>
+<p>我们可以用<code>JS</code>模拟出一个<code>DOM</code>节点，称之为虚拟<code>DOM</code>节点。当数据发生变化时，我们对比变化前后的虚拟<code>DOM</code>节点，通过<code>DOM-Diff</code>算法计算出需要更新的地方，然后去更新需要更新的视图。</p>
+<p>这就是虚拟<code>DOM</code>产生的原因以及最大的用途。</p>
+<h2><span id="3-vue中的虚拟dom">3. Vue中的虚拟DOM</span></h2>
+<p>前文我们介绍了虚拟<code>DOM</code>的概念以及为什么要有虚拟<code>DOM</code>，那么在<code>Vue</code>中虚拟<code>DOM</code>是怎么实现的呢？接下来，我们从源码出发，深入学习一下。</p>
+<h3><span id="31-vnode类">3.1 VNode类</span></h3>
+<p>我们说了，虚拟<code>DOM</code>就是用<code>JS</code>来描述一个真实的<code>DOM</code>节点。而在<code>Vue</code>中就存在了一个<code>VNode</code>类，通过这个类，我们就可以实例化出不同类型的虚拟<code>DOM</code>节点，源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码位置：src/core/vdom/vnode.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">VNode</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span> (</span><br><span class="line">    tag?: string,</span><br><span class="line">    data?: VNodeData,</span><br><span class="line">    children?: ?Array&lt;VNode&gt;,</span><br><span class="line">    text?: string,</span><br><span class="line">    elm?: Node,</span><br><span class="line">    context?: Component,</span><br><span class="line">    componentOptions?: VNodeComponentOptions,</span><br><span class="line">    asyncFactory?: Function</span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">this</span>.tag = tag                                <span class="comment">/*当前节点的标签名*/</span></span><br><span class="line">    <span class="keyword">this</span>.data = data        <span class="comment">/*当前节点对应的对象，包含了具体的一些数据信息，是一个VNodeData类型，可以参考VNodeData类型中的数据信息*/</span></span><br><span class="line">    <span class="keyword">this</span>.children = children  <span class="comment">/*当前节点的子节点，是一个数组*/</span></span><br><span class="line">    <span class="keyword">this</span>.text = text     <span class="comment">/*当前节点的文本*/</span></span><br><span class="line">    <span class="keyword">this</span>.elm = elm       <span class="comment">/*当前虚拟节点对应的真实dom节点*/</span></span><br><span class="line">    <span class="keyword">this</span>.ns = <span class="literal">undefined</span>            <span class="comment">/*当前节点的名字空间*/</span></span><br><span class="line">    <span class="keyword">this</span>.context = context          <span class="comment">/*当前组件节点对应的Vue实例*/</span></span><br><span class="line">    <span class="keyword">this</span>.fnContext = <span class="literal">undefined</span>       <span class="comment">/*函数式组件对应的Vue实例*/</span></span><br><span class="line">    <span class="keyword">this</span>.fnOptions = <span class="literal">undefined</span>      </span><br><span class="line">    <span class="keyword">this</span>.fnScopeId = <span class="literal">undefined</span>          </span><br><span class="line">    <span class="keyword">this</span>.key = data &amp;&amp; data.key           <span class="comment">/*节点的key属性，被当作节点的标志，用以优化*/</span></span><br><span class="line">    <span class="keyword">this</span>.componentOptions = componentOptions   <span class="comment">/*组件的option选项*/</span></span><br><span class="line">    <span class="keyword">this</span>.componentInstance = <span class="literal">undefined</span>       <span class="comment">/*当前节点对应的组件的实例*/</span></span><br><span class="line">    <span class="keyword">this</span>.parent = <span class="literal">undefined</span>           <span class="comment">/*当前节点的父节点*/</span></span><br><span class="line">    <span class="keyword">this</span>.raw = <span class="literal">false</span>         <span class="comment">/*简而言之就是是否为原生HTML或只是普通文本，innerHTML的时候为true，textContent的时候为false*/</span></span><br><span class="line">    <span class="keyword">this</span>.isStatic = <span class="literal">false</span>         <span class="comment">/*静态节点标志*/</span></span><br><span class="line">    <span class="keyword">this</span>.isRootInsert = <span class="literal">true</span>      <span class="comment">/*是否作为跟节点插入*/</span></span><br><span class="line">    <span class="keyword">this</span>.isComment = <span class="literal">false</span>             <span class="comment">/*是否为注释节点*/</span></span><br><span class="line">    <span class="keyword">this</span>.isCloned = <span class="literal">false</span>           <span class="comment">/*是否为克隆节点*/</span></span><br><span class="line">    <span class="keyword">this</span>.isOnce = <span class="literal">false</span>                <span class="comment">/*是否有v-once指令*/</span></span><br><span class="line">    <span class="keyword">this</span>.asyncFactory = asyncFactory</span><br><span class="line">    <span class="keyword">this</span>.asyncMeta = <span class="literal">undefined</span></span><br><span class="line">    <span class="keyword">this</span>.isAsyncPlaceholder = <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> child (): Component | void &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.componentInstance</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码中可以看出：<code>VNode</code>类中包含了描述一个真实<code>DOM</code>节点所需要的一系列属性，如<code>tag</code>表示节点的标签名，<code>text</code>表示节点中包含的文本，<code>children</code>表示该节点包含的子节点等。通过属性之间不同的搭配，就可以描述出各种类型的真实<code>DOM</code>节点。</p>
+<h3><span id="32-vnode的类型">3.2 VNode的类型</span></h3>
+<p>上一小节最后我们说了，通过属性之间不同的搭配，<code>VNode</code>类可以描述出各种类型的真实<code>DOM</code>节点。那么它都可以描述出哪些类型的节点呢？通过阅读源码，可以发现通过不同属性的搭配，可以描述出以下几种类型的节点。</p>
+<ul>
+<li>注释节点</li>
+<li>文本节点</li>
+<li>元素节点</li>
+<li>组件节点</li>
+<li>函数式组件节点</li>
+<li>克隆节点</li>
+</ul>
+<p>接下来，我们就把这几种类型的节点描述方式从源码中一一对应起来。</p>
+<h4><span id="321-注释节点">3.2.1 注释节点</span></h4>
+<p>注释节点描述起来相对就非常简单了，它只需两个属性就够了，源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建注释节点</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> createEmptyVNode = <span class="function">(<span class="params">text: string = <span class="string">''</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> node = <span class="keyword">new</span> VNode()</span><br><span class="line">  node.text = text</span><br><span class="line">  node.isComment = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面代码中可以看到，描述一个注释节点只需两个属性，分别是：<code>text</code>和<code>isComment</code>。其中<code>text</code>属性表示具体的注释信息，<code>isComment</code>是一个标志，用来标识一个节点是否是注释节点。</p>
+<h4><span id="322-文本节点">3.2.2 文本节点</span></h4>
+<p>文本节点描述起来比注释节点更简单，因为它只需要一个属性，那就是<code>text</code>属性，用来表示具体的文本信息。源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建文本节点</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createTextVNode</span> (<span class="params">val: string | number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> VNode(<span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="built_in">String</span>(val))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="323-克隆节点">3.2.3 克隆节点</span></h4>
+<p>克隆节点就是把一个已经存在的节点复制一份出来，它主要是为了做模板编译优化时使用，这个后面我们会说道。关于克隆节点的描述，源码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建克隆节点</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">cloneVNode</span> (<span class="params">vnode: VNode</span>): <span class="title">VNode</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> cloned = <span class="keyword">new</span> VNode(</span><br><span class="line">    vnode.tag,</span><br><span class="line">    vnode.data,</span><br><span class="line">    vnode.children,</span><br><span class="line">    vnode.text,</span><br><span class="line">    vnode.elm,</span><br><span class="line">    vnode.context,</span><br><span class="line">    vnode.componentOptions,</span><br><span class="line">    vnode.asyncFactory</span><br><span class="line">  )</span><br><span class="line">  cloned.ns = vnode.ns</span><br><span class="line">  cloned.isStatic = vnode.isStatic</span><br><span class="line">  cloned.key = vnode.key</span><br><span class="line">  cloned.isComment = vnode.isComment</span><br><span class="line">  cloned.fnContext = vnode.fnContext</span><br><span class="line">  cloned.fnOptions = vnode.fnOptions</span><br><span class="line">  cloned.fnScopeId = vnode.fnScopeId</span><br><span class="line">  cloned.asyncMeta = vnode.asyncMeta</span><br><span class="line">  cloned.isCloned = <span class="literal">true</span></span><br><span class="line">  <span class="keyword">return</span> cloned</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面代码中可以看到，克隆节点就是把已有节点的属性全部复制到新节点中，而现有节点和新克隆得到的节点之间唯一的不同就是克隆得到的节点<code>isCloned</code>为<code>true</code>。</p>
+<h4><span id="324-元素节点">3.2.4 元素节点</span></h4>
+<p>相比之下，元素节点更贴近于我们通常看到的真实<code>DOM</code>节点，它有描述节点标签名词的<code>tag</code>属性，描述节点属性如<code>class</code>、<code>attributes</code>等的<code>data</code>属性，有描述包含的子节点信息的<code>children</code>属性等。由于元素节点所包含的情况相比而言比较复杂，源码中没有像前三种节点一样直接写死（当然也不可能写死），那就举个简单例子说明一下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 真实DOM节点</span></span><br><span class="line">&lt;div id=<span class="string">'a'</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>难凉热血<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// VNode节点</span></span><br><span class="line">&#123;</span><br><span class="line">  tag:<span class="string">'div'</span>,</span><br><span class="line">  data:&#123;&#125;,</span><br><span class="line">  children:[</span><br><span class="line">    &#123;</span><br><span class="line">      tag:<span class="string">'span'</span>,</span><br><span class="line">      text:<span class="string">'难凉热血'</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以看到，真实<code>DOM</code>节点中:<code>div</code>标签里面包含了一个<code>span</code>标签，而<code>span</code>标签里面有一段文本。反应到<code>VNode</code>节点上就如上所示:<code>tag</code>表示标签名，<code>data</code>表示标签的属性<code>id</code>等，<code>children</code>表示子节点数组。</p>
+<h4><span id="325-组件节点">3.2.5 组件节点</span></h4>
+<p>组件节点除了有元素节点具有的属性之外，它还有两个特有的属性：</p>
+<ul>
+<li>componentOptions :组件的option选项，如组件的<code>props</code>等</li>
+<li>componentInstance :当前组件节点对应的<code>Vue</code>实例</li>
+</ul>
+<h4><span id="326-函数式组件节点">3.2.6 函数式组件节点</span></h4>
+<p>函数式组件节点相较于组件节点，它又有两个特有的属性：</p>
+<ul>
+<li>fnContext:函数式组件对应的Vue实例</li>
+<li>fnOptions: 组件的option选项</li>
+</ul>
+<h4><span id="327-小结">3.2.7 小结</span></h4>
+<p>以上就是<code>VNode</code>可以描述的多种节点类型，它们本质上都是<code>VNode</code>类的实例，只是在实例化的时候传入的属性参数不同而已。</p>
+<h3><span id="33-vnode的作用">3.3 VNode的作用</span></h3>
+<p>说了这么多，那么<code>VNode</code>在<code>Vue</code>的整个虚拟<code>DOM</code>过程起了什么作用呢？</p>
+<p>其实<code>VNode</code>的作用是相当大的。我们在视图渲染之前，把写好的<code>template</code>模板先编译成<code>VNode</code>并缓存下来，等到数据发生变化页面需要重新渲染的时候，我们把数据发生变化后生成的<code>VNode</code>与前一次缓存下来的<code>VNode</code>进行对比，找出差异，然后有差异的<code>VNode</code>对应的真实<code>DOM</code>节点就是需要重新渲染的节点，最后根据有差异的<code>VNode</code>创建出真实的<code>DOM</code>节点再插入到视图中，最终完成一次视图更新。</p>
+<h2><span id="4-总结">4. 总结</span></h2>
+<p>本章首先介绍了虚拟<code>DOM</code>的一些基本概念和为什么要有虚拟<code>DOM</code>，其实说白了就是以<code>JS</code>的计算性能来换取操作真实<code>DOM</code>所消耗的性能。接着从源码角度我们知道了在<code>Vue</code>中是通过<code>VNode</code>类来实例化出不同类型的虚拟<code>DOM</code>节点，并且学习了不同类型节点生成的属性的不同，所谓不同类型的节点其本质还是一样的，都是<code>VNode</code>类的实例，只是在实例化时传入的属性参数不同罢了。最后探究了<code>VNode</code>的作用，有了数据变化前后的<code>VNode</code>，我们才能进行后续的<code>DOM-Diff</code>找出差异，最终做到只更新有差异的视图，从而达到尽可能少的操作真实<code>DOM</code>的目的，以节省性能。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/Vue/Vue 源码阅读 虚拟DOM （二）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 虚拟DOM （二）">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/Vue/Vue 源码阅读 模板编译（七）/" data-toggle="tooltip" data-placement="top" title="Vue 源码阅读 模板编译（七）">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+<!--PC和WAP自适应版-->
+            <div id="SOHUCS" sid="Vue/Vue 源码阅读 虚拟DOM （一）/"></div>
+            <script type="text/javascript">
+                (function () {
+                    var appid = 'cyudaHkzu';
+                    var conf = 'prod_53d882f398ccb8a21ddd91e1aefc77a0';
+                    var width = window.innerWidth || document.documentElement.clientWidth;
+                    if (width < 960) {
+                        window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+                    
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if (docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                           
+                            } else { var loadJs = function (d, a) { var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement; var b = document.createElement("script"); b.setAttribute("type", "text/javascript"); b.setAttribute("charset", "UTF-8"); b.setAttribute("src", d); if (typeof a === "function") { if (window.attachEvent) { b.onreadystatechange = function () { var e = b.readyState; if (e === "loaded" || e === "complete") { b.onreadystatechange = null; a() } } } else { b.onload = a } } c.appendChild(b) }; loadJs("https://changyan.sohu.com/upload/changyan.js", function () { 
+                                var adDoc = document.getElementById('pop_ad')
+                                var docs = document.querySelector('.module-cmt-float-bar')
+                                var wapper = document.getElementById('feedAv')
+                                if (adDoc) {
+                                    adDoc.style.display = 'none!important'
+                                    console.log('hello')
+                                }
+                                if (wapper) {
+                                    wapper.style.display = 'none!important'
+                                }
+                                if(docs) {
+                                    docs.style.display = 'none!important'
+                                }
+                                console.log('none')
+                        window.changyan.api.config({ appid: appid, conf: conf }) });
+                    }
+                    
+                })();
+                </script>
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="https://s2.ax1x.com/2019/04/30/E8OqQx.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="https://s2.ax1x.com/2019/04/30/E8ObS1.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><span id="1-&#x524D;&#x8A00;">1. &#x524D;&#x8A00;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">2.</span> <span class="toc-nav-text"><span id="2-&#x865A;&#x62DF;dom&#x7B80;&#x4ECB;">2. &#x865A;&#x62DF;DOM&#x7B80;&#x4ECB;</span></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.</span> <span class="toc-nav-text"><span id="3-vue&#x4E2D;&#x7684;&#x865A;&#x62DF;dom">3. Vue&#x4E2D;&#x7684;&#x865A;&#x62DF;DOM</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text"><span id="31-vnode&#x7C7B;">3.1 VNode&#x7C7B;</span></span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text"><span id="32-vnode&#x7684;&#x7C7B;&#x578B;">3.2 VNode&#x7684;&#x7C7B;&#x578B;</span></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text"><span id="321-&#x6CE8;&#x91CA;&#x8282;&#x70B9;">3.2.1 &#x6CE8;&#x91CA;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text"><span id="322-&#x6587;&#x672C;&#x8282;&#x70B9;">3.2.2 &#x6587;&#x672C;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.3.</span> <span class="toc-nav-text"><span id="323-&#x514B;&#x9686;&#x8282;&#x70B9;">3.2.3 &#x514B;&#x9686;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.4.</span> <span class="toc-nav-text"><span id="324-&#x5143;&#x7D20;&#x8282;&#x70B9;">3.2.4 &#x5143;&#x7D20;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.5.</span> <span class="toc-nav-text"><span id="325-&#x7EC4;&#x4EF6;&#x8282;&#x70B9;">3.2.5 &#x7EC4;&#x4EF6;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.6.</span> <span class="toc-nav-text"><span id="326-&#x51FD;&#x6570;&#x5F0F;&#x7EC4;&#x4EF6;&#x8282;&#x70B9;">3.2.6 &#x51FD;&#x6570;&#x5F0F;&#x7EC4;&#x4EF6;&#x8282;&#x70B9;</span></span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.2.7.</span> <span class="toc-nav-text"><span id="327-&#x5C0F;&#x7ED3;">3.2.7 &#x5C0F;&#x7ED3;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text"><span id="33-vnode&#x7684;&#x4F5C;&#x7528;">3.3 VNode&#x7684;&#x4F5C;&#x7528;</span></span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#undefined"><span class="toc-nav-number">4.</span> <span class="toc-nav-text"><span id="4-&#x603B;&#x7ED3;">4. &#x603B;&#x7ED3;</span></span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+                        
+                          <a class="tag" href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+                        
+                          <a class="tag" href="/tags/#Vue" title="Vue">Vue</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://cn.vuejs.org/" target="_blank">Vue.js</a></li>
+                    
+                        <li><a href="https://www.reactjs.org/" target="_blank">React</a></li>
+                    
+                        <li><a href="https://github.com/" target="_blank">GitHub</a></li>
+                    
+                        <li><a href="https://angular.io/" target="_blank">Angular</a></li>
+                    
+                        <li><a href="https://www.docker.com/" target="_blank">Docker</a></li>
+                    
+                        <li><a href="https://nodejs.org/" target="_blank">NodeJS</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    #pop_ad{
+        display: none!important;
+    }
+    #feedAv{
+        display: none!important;
+    }
+    .module-cmt-float-bar{
+        display: none!important;
+    }
+    .list-content-wrapper-wap:last-child{
+        display: none!important;
+    }
+    div[ad-wap-feed='ad-wap-feed']{
+        display: none!important;
+    }
+    #baidu_new_ad,#bianxianmao_ad,.list-ctrl-area-wap{
+       display: none!important; 
+    }
+    .cy-logo{
+        background-size: 100%!important;
+    }
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/ma-li-ao-38-98/activities">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/7036193150">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/maliaoMJ">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/健-马-462970134/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Carlos 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="https://github.com/maliaoMJ">Carlos</a> 
+                    <!-- <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe> -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("carlosme.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#3f51b5'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="carlosme.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
