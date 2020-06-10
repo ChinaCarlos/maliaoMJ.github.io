@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About Me</a>
                         </li>
                         
                     
@@ -211,33 +211,31 @@
 
 <div class="post-preview">
 
-    <a href="/ThreeJS/第一章 TheeJS 创建场景/">
+    <a href="/前端面试/前端面试系列- CSS基础篇/">
         <h2 class="post-title">
-            ThreeJS学习 第一章 创建一个场景
+            前端面试系列- CSS基础篇
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1.创建基本的页面结构
+            
 
-从Threejs官网下载Three.js 到本地并且引入此文件。 下载地址
-
-1234567891011121314151617181920&lt;!DOCTYPE html&gt;&lt;html lang="en"&gt;&lt;head&gt;    &lt;meta charset="UTF-8"&gt;    &lt;meta name="viewport......
+一. 有哪几种游览器内核 1. Trident内核：IE,MaxThon,TT,The Word,360,搜狗浏览器等。[又称为MSHTML] 2. Gecko内核：Netscape6及以上版本，FF,MozillaSuite/SeaMonkey等； 3. Presto内核：Opera7及以上。[Opera内核原为：Presto，现为：Blink] 4. Webkit内核：Safari,......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-08-05
+            2019-02-26
         </p>
         <div class="tags">
             
-              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+              <a href="/tags/#CSS3" title="CSS3">CSS3</a>
             
-              <a href="/tags/#HTML" title="HTML">HTML</a>
+              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
             
-              <a href="/tags/#Threejs" title="Threejs">Threejs</a>
+              <a href="/tags/#html" title="html">html</a>
             
         </div>
     
@@ -247,66 +245,45 @@
 
 <div class="post-preview">
 
-    <a href="/Vue/Uni-App 基于Vue技术栈方向跨端技术实践/">
+    <a href="/前端面试/前端面试系列-JavaScript中的this指向问题/">
         <h2 class="post-title">
-            Uni-App 基于Vue技术栈方向跨端技术实践
+            前端面试系列-JavaScript中的this指向问题
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1.什么是Uni-App?
-uni-app 是一个使用 Vue.js 开发跨平台应用的前端框架，开发者编写一套代码，可编译到iOS、Android、H5、小程序等多个平台。一套代码编到7个平台，最全面的跨平台。
-如下图：
+            谁调用它他就指向谁，箭头函数没有this
+
+
+new 的过程中发生了什么
 
 
 
-uni-app实现了一套代码，同时运行到多个平台，一套代码，同时可以运行到iOS模拟器、Android模拟器、H5、微信开发者工具、支付宝小程序Studio、百度开发......
+首先创建一个新的对象
+链接到原型
+绑定this
+返回新的对象
+
+代码实现：
+function create() {
+  let obj = {};
+  let Constructor = [].shift.call(arguments);
+  obj.__proto__ = Constructor.prototy......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-04-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Vue" title="Vue">Vue</a>
-            
-              <a href="/tags/#Weex" title="Weex">Weex</a>
-            
-              <a href="/tags/#微信小程序" title="微信小程序">微信小程序</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/数据结构/JavaScript数据结构与算法-树/">
-        <h2 class="post-title">
-            JavaScript数据结构与算法-树
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1. 什么是树？
-树是一种分层数据的抽象模型。现实生活中最常见的树的例子是家谱，或是公司的组织架构 图，一个树结构包含一系列存在父子关系的节点。每个节点都有一个父节点(除了顶部的第一个 节点的一个属性是深度，节点的深度取决于它的祖先节点的数量。比如，节点3有3个祖先节 9 点(5、7和11)，它的深度为3。 树的高度取决于所有节点深度的最大值。一棵树也可以被分解成层级。根节点在第0层，它 的......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-03-13
+            2019-02-26
         </p>
         <div class="tags">
             
               <a href="/tags/#javascript" title="javascript">javascript</a>
             
-              <a href="/tags/#数据结构" title="数据结构">数据结构</a>
+              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
+            
+              <a href="/tags/#html" title="html">html</a>
             
         </div>
     
@@ -316,34 +293,43 @@ uni-app实现了一套代码，同时运行到多个平台，一套代码，同�
 
 <div class="post-preview">
 
-    <a href="/数据结构/JavaScript数据结构与算法-字典和哈希表/">
+    <a href="/前端面试/前端面试系列-游览器中的事件/">
         <h2 class="post-title">
-            JavaScript数据结构与算法-字典和哈希表
+            前端面试系列-游览器中的事件
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1. 什么是字典？
-集合表示一组互不相同的元素(不重复的元素)。在字典中，存储的是[键，值] 对，其中键名是用来查询特定元素的。字典和集合很相似，集合以[值，值]的形式存储元素，字 典则是以[键，值]的形式来存储元素。字典也称作映射。
-2. 手动实现Dirctionary
-// 字典 Dirctionary
+            
 
-class Dirctionary {
-    constructor(){
-  ......
+事件触发的过程
+
+- window 往事件触发处传播，遇到注册的事件捕获 （这一个过程称作事件的捕获）
+
+
+
+传播到事件处发处注册事件会触发
+
+
+从事件触发处往window传播，遇见注册的事件冒泡会触发
+
+
+事件触发一般来说会按照上面的顺序进行，但是也有特例，如果给一个目标节点同时注册冒泡和捕获事件，事件触发会按照注册的顺序执行。
+
+
+// 以下会先打印冒泡然后是捕获
+node.addE......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-10
+            2019-02-26
         </p>
         <div class="tags">
             
-              <a href="/tags/#javascript" title="javascript">javascript</a>
-            
-              <a href="/tags/#数据结构" title="数据结构">数据结构</a>
+              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
             
         </div>
     
@@ -353,37 +339,32 @@ class Dirctionary {
 
 <div class="post-preview">
 
-    <a href="/数据结构/JavaScript数据结构与算法-集合/">
+    <a href="/前端面试/前端面试系列-前端跨域常用的几种方式/">
         <h2 class="post-title">
-            JavaScript数据结构与算法-集合
+            前端面试系列-前端跨域常用的几种方式
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1. 什么是集合 ？
-集合是由一组无序且唯一(即不能重复)的项组成的。这个数据结构使用了与有限集合相同 的数学概念，但应用在计算机科学的数据结构中。
-2. 代码实现集合
-// 数据结构 之 集合 我们用ES6来实现
+            
 
-class Collect {
-  constructor() {
-    this.set = new Set();
-  }
-  add(element) {
-    thi......
+JSONP JSONP 的原理很简单，就是利用 script 标签没有跨域限制的漏洞。通过 script&gt;标签指向一个需要访问的地址并提供一个回调函数来接收数据当需要通讯时。我反正不常用。
+
+
+封装JOSNP
+function jsonp(url,callback,success){
+    var scprit = document.createElement('script')......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-07
+            2019-02-26
         </p>
         <div class="tags">
             
-              <a href="/tags/#javascript" title="javascript">javascript</a>
-            
-              <a href="/tags/#数据结构" title="数据结构">数据结构</a>
+              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
             
         </div>
     
@@ -393,28 +374,41 @@ class Collect {
 
 <div class="post-preview">
 
-    <a href="/数据结构/JavaScript数据结构与算法-链表（LinkedList）/">
+    <a href="/前端面试/前端面试系列-JS基础数据类型/">
         <h2 class="post-title">
-            JavaScript数据结构与算法-链表（LinkedList）
+            前端面试系列-JS基础数据类型
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1.什么是链表？
-要存储多个元素，数组(或列表)可能是最常用的数据结构。正如本书之前提到过的，每种 语言都实现了数组。这种数据结构非常方便，提供了一个便利的[]语法来访问它的元素。然而， 这种数据结构有一个缺点:(在大多数语言中)数组的大小是固定的，从数组的起点或中间插入 或移除项的成本很高，因为需要移动元素(尽管我们已经学过的JavaScript的array类方法可以帮 我们做这些事，但背......
+            
+
+typeof 结果可能有哪些值
+
+
+number,string, function, object, undfined, boolean, symbol
+
+
+JS 的数据类型
+
+
+
+
+值类型(基本类型)：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol。
+
+
+引用数据类型：对象(Object)、数组(Arr......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-07
+            2019-02-26
         </p>
         <div class="tags">
             
-              <a href="/tags/#javascript" title="javascript">javascript</a>
-            
-              <a href="/tags/#数据结构" title="数据结构">数据结构</a>
+              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
             
         </div>
     
@@ -424,28 +418,38 @@ class Collect {
 
 <div class="post-preview">
 
-    <a href="/数据结构/JavaScript数据结构与算法队列（Queue）/">
+    <a href="/CSS3/前端面试系列 — 布局篇/">
         <h2 class="post-title">
-            JavaScript数据结构与算法队列（Queue）
+            前端面试系列 — 布局篇
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1. 什么是队列？
-队列是遵循FIFO(First In First Out，先进先出，也称为先来先服务)原则的一组有序的项。 队列在尾部添加新元素，并从顶部移除元素。最新添加的元素必须排在队列的末尾。在计算机科学中，一个常见的例子就是打印队列。比如说我们需要打印五份文档。我们会打 开每个文档，然后点击打印按钮。每个文档都会被发送至打印队列。第一个发送到打印队列的文 档会首先被打印，以此类推......
+            
+
+一. 三栏布局，固定高度，左右固定宽度，中间自适应。请写出合理的布局方案。
+
+
+利用浮动布局（圣杯布局和双飞翼布局）
+利用定位布局
+flex 布局
+table 表格布局
+grid 布局
+
+代码如下:
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-06
+            2019-02-26
         </p>
         <div class="tags">
-            
-              <a href="/tags/#javascript" title="javascript">javascript</a>
-            
-              <a href="/tags/#数据结构" title="数据结构">数据结构</a>
             
         </div>
     
@@ -455,33 +459,29 @@ class Collect {
 
 <div class="post-preview">
 
-    <a href="/数据结构/JavaScript数据结构与算法-栈（Stack）/">
+    <a href="/HTML5/前端面试系列 — HMTL基础篇/">
         <h2 class="post-title">
-            JavaScript数据结构与算法-栈（Stack）
+            前端面试系列 — HMTL基础篇
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            JavaScript 数据结构-栈
-1. 什么是栈？
-栈是一种遵从后进先出(LIFO)原则的有序集合。新添加的或待删除的元素都保存在栈的 同一端，称作栈顶，另一端就叫栈底。在栈里，新元素都靠近栈顶，旧元素都接近栈底。栈也被用在编程语言的编译器和内存中保存变量、方法调用等。 #
-2. 用JavaScript实现一个简单的栈
-class Stack {
-  constructor() {
-   ......
+            
+
+1. HTML中首行 有什么作用? doctype 又分哪几类?其中这些每一类由对应有什么作用？请简单描述一下。
+
+
+DOCTYPE 是 document type(文档类型的）的简写。是为了告诉浏览器需要通过哪一种规范（文档类型定义，DTD）解析文档（比如HTML或XHTML规范）
+DTD（document type definition，文档类型定义）是一系列的语法规则，用来定义 X......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-06
+            2019-02-26
         </p>
         <div class="tags">
-            
-              <a href="/tags/#javascript" title="javascript">javascript</a>
-            
-              <a href="/tags/#数据结构" title="数据结构">数据结构</a>
             
         </div>
     
@@ -491,35 +491,27 @@ class Stack {
 
 <div class="post-preview">
 
-    <a href="/JavaScript/前端面试系列-JavaScript继承/">
+    <a href="/微信小程序/微信小程序开发技术选型分享/">
         <h2 class="post-title">
-            前端面试系列-JavaScript继承
+            微信小程序开发技术选型分享
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            
-Javascript 继承
-1. 通过构造函数实现继承
-function Parent(){
-    this.parent = 'parent'
-    this.getWho = function(){
-        return 'getWho:'+this.parent
-    }
-}
-Parent.prototype.sayWho = function(){
-   consol......
+            微信小程序开发技术分享:anchor:
+
+目前编写微信小程序的技术有如下：微信开发者工具自带的一套开发技术，基于腾讯的WePY框架，美团的Mpvue，京东的Taro，这四个开发小程序技术目前是应用最为广泛的。今天最主要介绍的是来自京东凹凸团队的Taro框架。
+什么是Taro?
+多端统一开发框架，支持用 React 的开发方式编写一次代码，生成能运行在微信小程序、H5、React Native......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-05
+            2019-02-21
         </p>
         <div class="tags">
-            
-              <a href="/tags/#javascript" title="javascript">javascript</a>
             
         </div>
     
@@ -529,37 +521,100 @@ Parent.prototype.sayWho = function(){
 
 <div class="post-preview">
 
-    <a href="/HTTP/前端面试系列-HTTP常考点/">
+    <a href="/docker/Docker 学习笔记 如何安装Docker/">
         <h2 class="post-title">
-            前端面试系列-HTTP常考点
+            Docker 学习笔记 如何安装Docker
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-经典五层模型
+
+1.安装环境 CentOS7
+
+  sudo yum install docker
 
 
-物理层主要作用是定义物理设备如何传输数据
-数据链路层在通信的实体间建立数据链路连接
-网络层为数据在结点之间传输创建逻辑链路
-传输层（TCP，UDP…）向用户提供可靠的端到端（End-to-End）服务。向高层屏蔽了下层数据通信的细节。
-应用层（HTTP，FTP…）为软件提供很多的服务，构建在TCP协议之上，屏蔽网络传输相关的细节。
+2.启动Docker
+
+   sudo yum systemctl start docker
 
 
+3.搜索镜像
 
-从输入 URL 到页面加载完成的过......
+   docker search ubuntu
+
+
+4.拉取镜像
+
+docker pull ubuntu:16.04
+
+
+5.docker 权限问题
+运行如下命令
+
+ sudo group......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-03-05
+            2019-02-21
         </p>
         <div class="tags">
             
-              <a href="/tags/#http" title="http">http</a>
+              <a href="/tags/#Docker" title="Docker">Docker</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/docker/centOS中利用Docker安装gitlab/">
+        <h2 class="post-title">
+            centOS中利用Docker安装gitlab
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+首先安装虚拟机或者直接在你的云主机上操作
+修改centos 默认配置 查看IP
+
+centos 配置最好高于：4G 2核，否则运行不起来
+
+查看centos的IP地址
+ ip addr 
+
+无法查询IP的解决办法
+
+进入ect/sysconfig/network-scripts文件夹,修改对应的网卡配置文件，如图所示
+
+
+
+  service network start
+
+
+然后查看IP地......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-02-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Docker" title="Docker">Docker</a>
+            
+              <a href="/tags/#git" title="git">git</a>
+            
+              <a href="/tags/#gitlab" title="gitlab">gitlab</a>
             
         </div>
     
@@ -618,6 +673,10 @@ Parent.prototype.sayWho = function(){
             
         
             
+            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
+            
+        
+            
             <a href="/tags/#javascript" title="javascript" rel="9">javascript</a>
             
         
@@ -626,11 +685,7 @@ Parent.prototype.sayWho = function(){
             
         
             
-            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
-            
-        
-            
-            <a href="/tags/#JavaScript" title="JavaScript" rel="30">JavaScript</a>
+            <a href="/tags/#JavaScript" title="JavaScript" rel="19">JavaScript</a>
             
         
             
@@ -638,15 +693,15 @@ Parent.prototype.sayWho = function(){
             
         
             
-            <a href="/tags/#Vue源码" title="Vue源码" rel="17">Vue源码</a>
-            
-        
-            
-            <a href="/tags/#Vue" title="Vue" rel="20">Vue</a>
+            <a href="/tags/#Vue" title="Vue" rel="9">Vue</a>
             
         
             
         
+            
+        
+            
+            <a href="/tags/#Vue源码" title="Vue源码" rel="6">Vue源码</a>
             
         
             
@@ -773,7 +828,7 @@ Parent.prototype.sayWho = function(){
         </li>
       
         <li>
-          <a href="/Vue/Vue 源码阅读 虚拟DOM （四）/">Vue 源码阅读 虚拟DOM （四）</a>
+          <a href="/Vue/Vue 源码阅读 深入响应式原理(三)/">Vue 源码阅读 深入响应式原理(三)</a>
         </li>
       
     </ul>
@@ -784,7 +839,7 @@ Parent.prototype.sayWho = function(){
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
     </div>
 
         <hr>

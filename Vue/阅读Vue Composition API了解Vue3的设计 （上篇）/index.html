@@ -146,6 +146,13 @@
 
                         
                         <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -154,13 +161,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About Me</a>
                         </li>
                         
                     
@@ -293,9 +293,9 @@
 <p>采用getter函数，并为getter返回的值返回一个不变的反应性ref对象。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = ref(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">const</span> plusOne = computed(<span class="function"><span class="params">()</span> =&gt;</span> count.value + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(plusOne.value) <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">plusOne.value++ <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
 <p>或者，它可以使用具有get和set功能的对象来创建可写的ref对象。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = ref(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">const</span> plusOne = computed(&#123;</span><br><span class="line">  <span class="keyword">get</span>: () =&gt; count.value + 1,</span><br><span class="line">  <span class="keyword">set</span>: val =&gt; &#123; count.value = val - <span class="number">1</span> &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">plusOne.value = <span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(count.value) <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = ref(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">const</span> plusOne = computed(&#123;</span><br><span class="line">  get: <span class="function"><span class="params">()</span> =&gt;</span> count.value + <span class="number">1</span>,</span><br><span class="line">  set: <span class="function"><span class="params">val</span> =&gt;</span> &#123; count.value = val - <span class="number">1</span> &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">plusOne.value = <span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(count.value) <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
 <h4><span id="typing-类型">typing 类型</span></h4>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// read-only</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">computed</span>&lt;<span class="title">T</span>&gt;(<span class="params">getter: () =&gt; T</span>): <span class="title">Readonly</span>&lt;<span class="title">Ref</span>&lt;<span class="title">Readonly</span>&lt;<span class="title">T</span>&gt;&gt;&gt;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">// <span class="title">writable</span></span></span><br><span class="line"><span class="function"><span class="function"><span class="keyword">function</span> <span class="title">computed</span>&lt;<span class="title">T</span>&gt;(<span class="params">options: &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="function"><span class="params">  <span class="keyword">get</span>: () =&gt; T,</span></span></span></span><br><span class="line"><span class="function"><span class="function"><span class="params">  <span class="keyword">set</span>: (value: T) =&gt; <span class="built_in">void</span></span></span></span></span><br><span class="line"><span class="function"><span class="function"><span class="params">&#125;</span>): <span class="title">Ref</span>&lt;<span class="title">T</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// read-only</span></span><br><span class="line">function computed&lt;T&gt;(getter: () =&gt; T): Readonly&lt;Ref&lt;Readonly&lt;T&gt;&gt;&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// writable</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">computed</span>&lt;<span class="title">T</span>&gt;(<span class="params">options: &#123;</span></span></span><br><span class="line">  get: () =&gt; T,</span><br><span class="line">  <span class="keyword">set</span>: <span class="function">(<span class="params">value: T</span>) =&gt;</span> <span class="built_in">void</span></span><br><span class="line">&#125;): Ref&lt;T&gt;</span><br></pre></td></tr></table></figure>
 <h3><span id="未完待续">未完待续…</span></h3>
 
                 

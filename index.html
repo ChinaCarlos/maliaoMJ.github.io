@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About Me</a>
                         </li>
                         
                     
@@ -260,15 +260,15 @@ initLif......
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2020-01-02
+            2019-11-03
         </p>
         <div class="tags">
             
               <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
             
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
               <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
             
         </div>
     
@@ -294,15 +294,15 @@ initLif......
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2020-01-02
+            2019-11-02
         </p>
         <div class="tags">
             
               <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
             
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
               <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
             
         </div>
     
@@ -327,13 +327,154 @@ initLif......
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2020-01-01
+            2019-11-01
         </p>
         <div class="tags">
             
               <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
             
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
               <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 深入响应式原理(三)/">
+        <h2 class="post-title">
+            Vue 源码阅读 深入响应式原理(三)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+上一篇文章中我们介绍了Object数据的变化侦测方式，本篇文章我们来看一下对Array型数据的变化Vue是如何进行侦测的。
+为什么Object数据和Array型数据会有两种不同的变化侦测方式？
+这是因为对于Object数据我们使用的是JS提供的对象原型上的方法Object.defineProperty，而这个方法是对象原型上的，所以Array无法使用这个方法，所以我们需要对Arr......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-19
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 深入响应式原理(二)/">
+        <h2 class="post-title">
+            Vue 源码阅读 深入响应式原理(二)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+在上一篇文章中，我们知道：数据驱动视图的关键点则在于我们如何知道数据发生了变化，只要知道数据在什么时候变了，那么问题就变得迎刃而解，我们只需在数据变化的时候去通知视图更新即可。
+要想知道数据什么时候被读取了或数据什么时候被改写了，其实不难，JS为我们提供了Object.defineProperty方法，通过该方法我们就可以轻松的知道数据在什么时候发生变化。
+2. 使Object数......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/Vue 源码阅读 深入响应式原理(一)/">
+        <h2 class="post-title">
+            Vue 源码阅读 深入响应式原理(一)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1. 前言
+众所周知，Vue最大的特点之一就是数据驱动视图，那么什么是数据驱动视图呢？在这里，我们可以把数据理解为状态，而视图就是用户可直观看到页面。页面不可能是一成不变的，它应该是动态变化的，而它的变化也不应该是无迹可寻的，它或者是由用户操作引起的，亦或者是由后端数据变化引起的，不管它是因为什么引起的，我们统称为它的状态变了，它由前一个状态变到了后一个状态，页面也就应该随之而变化，所以我们......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#Vue" title="Vue">Vue</a>
+            
+              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/Vue/阅读Vue Composition API了解Vue3的设计 （下篇）/">
+        <h2 class="post-title">
+            阅读Vue Composition API 了解Vue3.x的设计思想（下篇）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            API Reference
+
+要看源码之前，首先要学会TypeScript（前十篇文档有Typescript学习指南）,因为vue3.x 版本中+90%的代码是使用的Typescript，Vue3.x 源码地址。
+
+ReadOnly
+接收一个对象（reactive or plain）或ref并返回一个对原始对象的只读（and reactive）代理。
+1234567891011121314c......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-10-17
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
+            
+              <a href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
             
               <a href="/tags/#Vue" title="Vue">Vue</a>
             
@@ -345,30 +486,34 @@ initLif......
 
 <div class="post-preview">
 
-    <a href="/Vue/Vue 源码阅读 虚拟DOM （四）/">
+    <a href="/Vue/阅读Vue Composition API了解Vue3的设计 （上篇）/">
         <h2 class="post-title">
-            Vue 源码阅读 虚拟DOM （四）
+            阅读Vue Composition API 了解Vue3.x的设计思想（上篇）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1. 前言
-在上一篇文章中，我们介绍了当新的VNode与旧的oldVNode都是元素节点并且都包含子节点时，Vue对子节点是
-先外层循环newChildren数组，再内层循环oldChildren数组，每循环外层newChildren数组里的一个子节点，就去内层oldChildren数组里找看有没有与之相同的子节点，最后根据不同的情况作出不同的操作。
-在上一篇文章的结尾我们也说了，这种方法虽......
+            API Reference
+
+要看源码之前，首先要学会TypeScript（前十篇文档有Typescript学习指南）,因为vue3.x 版本中+90%的代码是使用的Typescript，Vue3.x 源码地址。
+
+Setup
+该setup功能是新的组件选项。它充当在组件内部使用Composition API的入口点。
+调用时间
+setup创建组件实例时，在初始道具解析后立即调用。在生命周期......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-10-29
+            2019-10-17
         </p>
         <div class="tags">
             
               <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
             
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
+              <a href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
             
               <a href="/tags/#Vue" title="Vue">Vue</a>
             
@@ -380,167 +525,30 @@ initLif......
 
 <div class="post-preview">
 
-    <a href="/Vue/Vue 源码阅读 虚拟DOM （三）/">
+    <a href="/TypeScript/TypeScript 学习第十章 TypeScript高级类型/">
         <h2 class="post-title">
-            Vue 源码阅读 虚拟DOM （三）
+            TypeScript 学习第十章 TypeScript 高级类型
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1. 前言
-在上一篇文章中，我们了解了Vue中的patch过程，即DOM-Diff算法。并且知道了在patch过程中基本会干三件事，分别是：创建节点，删除节点和更新节点。创建节点和删除节点都比较简单，而更新节点因为要处理各种可能出现的情况所以逻辑略微复杂一些，但是没关系，我们通过分析过程，对照源码，画逻辑流程图来帮助我们理解了其中的过程。最后我们还遗留了一个问题，那就是在更新节点过程中，新旧......
+            高级类型
+交叉类型
+交叉类型是将多个类型合并为一个类型。 这让我们可以把现有的多种类型叠加到一起成为一种类型，它包含了所需的所有类型的特性。 例如，Person &amp; Loggable 同时是 Person 和 Loggable。 就是说这个类型的对象同时拥有了这两种类型的成员。
+我们大多是在混入（mixins）或其它不适合典型面向对象模型的地方看到交叉类型的使用。 （在 JavaSc......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-10-28
+            2019-08-24
         </p>
         <div class="tags">
             
               <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
             
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
-              <a href="/tags/#Vue" title="Vue">Vue</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/Vue/Vue 源码阅读 虚拟DOM （二）/">
-        <h2 class="post-title">
-            Vue 源码阅读 虚拟DOM （二）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1. 前言
-在上一篇文章介绍VNode的时候我们说了，VNode最大的用途就是在数据变化前后生成真实DOM对应的虚拟DOM节点，然后就可以对比新旧两份VNode，找出差异所在，然后更新有差异的DOM节点，最终达到以最少操作真实DOM更新视图的目的。而对比新旧两份VNode并找出差异的过程就是所谓的DOM-Diff过程。DOM-Diff算法时整个虚拟DOM的核心所在，那么接下来，我们就以源码出......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-10-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
-            
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
-              <a href="/tags/#Vue" title="Vue">Vue</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/Vue/Vue 源码阅读 虚拟DOM （一）/">
-        <h2 class="post-title">
-            Vue 源码阅读 虚拟DOM （一）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1. 前言
-虚拟DOM，这个名词作为当下的前端开发人员你一定不会陌生，至少会略有耳闻，但不会闻所未闻吧。这也是现在求职面试考察中非常高频的一个考点了。因为在当下的前端三大框架中关于虚拟DOM或多或少都有所涉及，那么接下来，我们就从源码角度出发，看看Vue中的虚拟DOM时怎样的。
-2. 虚拟DOM简介
-由于本系列文章是针对Vue源码深入学习的，所以着重分析在Vue中对虚拟DOM是如何实现的，而......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-10-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
-            
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
-              <a href="/tags/#Vue" title="Vue">Vue</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/Vue/Vue 源码阅读 模板编译（七）/">
-        <h2 class="post-title">
-            Vue 源码阅读 模板编译（七）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1. 前言
-到现在，模板编译的三大阶段就已经全部介绍完毕了，接下来本篇文章，就以宏观角度回顾并梳理一下模板编译整个流程是怎样的。
-首先，我们需要搞清楚模板编译的最终目的是什么，它的最终目的就是：把用户所写的模板转化成供Vue实例在挂载时可调用的render函数。或者你可以这样简单的理解为：模板编译就是一台机器，给它输入模板字符串，它就输出对应的render函数。
-我们把模板编译的最终目的只要......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-10-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
-            
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
-              <a href="/tags/#Vue" title="Vue">Vue</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/Vue/Vue 源码阅读 模板编译（六）/">
-        <h2 class="post-title">
-            Vue 源码阅读 模板编译（六）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1. 前言
-经过前几篇文章，我们把用户所写的模板字符串先经过解析阶段解析生成对应的抽象语法树AST，接着再经过优化阶段将AST中的静态节点及静态根节点都打上标记，现在终于到了模板编译三大阶段的最后一个阶段了——代码生成阶段。所谓代码生成阶段，到底是要生成什么代码？答：要生成render函数字符串。
-我们知道，Vue实例在挂载的时候会调用其自身的render函数来生成实例上的template选......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-10-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#JavaScript" title="JavaScript">JavaScript</a>
-            
-              <a href="/tags/#Vue源码" title="Vue源码">Vue源码</a>
-            
-              <a href="/tags/#Vue" title="Vue">Vue</a>
+              <a href="/tags/#TypeScript" title="TypeScript">TypeScript</a>
             
         </div>
     
@@ -595,6 +603,10 @@ initLif......
             
         
             
+            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
+            
+        
+            
             <a href="/tags/#javascript" title="javascript" rel="9">javascript</a>
             
         
@@ -603,11 +615,7 @@ initLif......
             
         
             
-            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
-            
-        
-            
-            <a href="/tags/#JavaScript" title="JavaScript" rel="30">JavaScript</a>
+            <a href="/tags/#JavaScript" title="JavaScript" rel="19">JavaScript</a>
             
         
             
@@ -615,15 +623,15 @@ initLif......
             
         
             
-            <a href="/tags/#Vue源码" title="Vue源码" rel="17">Vue源码</a>
-            
-        
-            
-            <a href="/tags/#Vue" title="Vue" rel="20">Vue</a>
+            <a href="/tags/#Vue" title="Vue" rel="9">Vue</a>
             
         
             
         
+            
+        
+            
+            <a href="/tags/#Vue源码" title="Vue源码" rel="6">Vue源码</a>
             
         
             
@@ -750,7 +758,7 @@ initLif......
         </li>
       
         <li>
-          <a href="/Vue/Vue 源码阅读 虚拟DOM （四）/">Vue 源码阅读 虚拟DOM （四）</a>
+          <a href="/Vue/Vue 源码阅读 深入响应式原理(三)/">Vue 源码阅读 深入响应式原理(三)</a>
         </li>
       
     </ul>
@@ -761,7 +769,7 @@ initLif......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
     </div>
 
         <hr>

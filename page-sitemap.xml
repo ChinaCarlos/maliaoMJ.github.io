@@ -7,29 +7,29 @@
     </url>
     
     <url>
-        <loc>carlosme.fun/about/</loc>
-        <lastmod>2019-12-31T03:20:32.083Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
         <loc>carlosme.fun/tags/</loc>
-        <lastmod>2019-08-05T09:32:00.884Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
-        <loc>carlosme.fun/archive/</loc>
-        <lastmod>2019-08-05T09:32:00.520Z</lastmod>
+        <lastmod>2020-06-10T14:55:13.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
         <loc>carlosme.fun/404.html</loc>
-        <lastmod>2019-08-05T09:32:00.509Z</lastmod>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>carlosme.fun/about/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>carlosme.fun/archive/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>

@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About Me</a>
                         </li>
                         
                     
@@ -212,9 +212,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h4><span id></span></h4>
+                <h4><span id=""></span></h4>
 <p>GraphQL入门之GraphQL的查询</p>
-<p><img src="http://img0.imgtn.bdimg.com/it/u=3309702283,977143577&amp;fm=26&amp;gp=0.jpg" alt></p>
+<p><img src="http://img0.imgtn.bdimg.com/it/u=3309702283,977143577&amp;fm=26&amp;gp=0.jpg" alt=""></p>
 <h4><span id="先附上源代码文件">先附上源代码文件</span></h4>
 <blockquote>
 <p>app.js</p>
@@ -306,7 +306,7 @@ app.listen(3000, () =&gt; {
 <li>简单而言，GraphQL 是关于请求对象上的特定字段。我们以一个非常简单的查询以及其结果为例：</li>
 </ol>
 </blockquote>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/1.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/1.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>
@@ -317,7 +317,7 @@ app.listen(3000, () =&gt; {
 <blockquote>
 <p>在前一例子中，我们请求返回了一个字符串类型（String），但是字段也能指代对象类型（Object）。这个时候，你可以对这个对象的字段进行次级选择（sub-selection）。GraphQL 查询能够遍历相关对象及其字段，使得客户端可以一次请求查询大量相关数据，而不像传统 REST 架构中那样需要多次往返查询。</p>
 </blockquote>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/2.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/2.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>
@@ -334,7 +334,7 @@ app.listen(3000, () =&gt; {
 <blockquote>
 <p>即使我们能做的仅仅是遍历对象及其字段，GraphQL就已经是一个非常有用的数据查询语言了。但是当你加入给字段传递参数的能力时，事情会变得更加有趣。</p>
 </blockquote>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/8.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/8.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>
@@ -351,7 +351,7 @@ app.listen(3000, () =&gt; {
 <blockquote>
 <p>你可能已经发现，即便结果中的字段与查询中的字段能够匹配，但是因为他们并不包含参数，你就没法通过不同参数来查询相同字段。这便是为何你需要别名 ——这可以让你重命名结果中的字段为任意你想到的名字。</p>
 </blockquote>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/5.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/5.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>
@@ -368,7 +368,7 @@ app.listen(3000, () =&gt; {
 <blockquote>
 <p>假设我们的 app 有比较复杂的页面。你立马就能想到对应的查询会变得复杂，因为我们需要将一些字段重复至少一次。两方各一次以作比较。这就是为何 GraphQL 包含了称作片段的可复用单元。片段使你能够组织一组字段，然后在需要它们的的地方引入。下面例子展示了如何使用片段解决上述场景：</p>
 </blockquote>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/6.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/6.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>
@@ -394,7 +394,7 @@ fragment useItem on User {
 <li>声明 $variableName 为查询接受的变量之一。</li>
 <li>将 variableName: value 通过传输专用（通常是 JSON）的分离的变量字典中。</li>
 </ol>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/9.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/9.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>
@@ -414,7 +414,7 @@ fragment useItem on User {
 <blockquote>
 <p>我们上面讨论的变量使得我们可以避免手动字符串插值构建动态查询。传递变量给参数解决了一大堆这样的问题，但是我们可能也需要一个方式使用变量动态地改变我们查询的结构。譬如我们假设有个 UI 组件，其有概括视图和详情视图，后者比前者拥有更多的字段。我们来构建一个这种组件的查询：</p>
 </blockquote>
-<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/10.png" alt></p>
+<p><img src="http://116.85.35.63/wp-content/uploads/2019/02/10.png" alt=""></p>
 <blockquote>
 <p>查询语句如下：</p>
 </blockquote>

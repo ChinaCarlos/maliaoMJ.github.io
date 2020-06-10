@@ -7,85 +7,85 @@
     </url>
 
     <url>
-        <loc>carlosme.fun/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-        <lastmod>2019-12-31T03:00:25.867Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>carlosme.fun/categories/TypeScript/</loc>
-        <lastmod>2019-12-31T03:00:25.871Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>carlosme.fun/categories/docker/</loc>
-        <lastmod>2019-12-31T03:00:25.872Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>carlosme.fun/categories/HTML5/</loc>
-        <lastmod>2019-12-31T03:00:25.872Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>carlosme.fun/categories/CSS3/</loc>
-        <lastmod>2019-12-31T03:00:25.873Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>carlosme.fun/categories/HTTP/</loc>
-        <lastmod>2019-12-31T03:00:25.874Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>carlosme.fun/categories/JavaScript/</loc>
-        <lastmod>2019-12-31T03:00:25.876Z</lastmod>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>carlosme.fun/categories/GraphQL/</loc>
-        <lastmod>2019-12-31T03:00:25.878Z</lastmod>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>carlosme.fun/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
-        <lastmod>2019-12-31T03:00:25.878Z</lastmod>
+        <loc>carlosme.fun/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>carlosme.fun/categories/ThreeJS/</loc>
-        <lastmod>2019-12-31T03:00:25.878Z</lastmod>
+        <loc>carlosme.fun/categories/TypeScript/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>carlosme.fun/categories/Vue/</loc>
-        <lastmod>2020-01-02T10:44:42.049Z</lastmod>
+        <loc>carlosme.fun/categories/HTML5/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>carlosme.fun/categories/CSS3/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>carlosme.fun/categories/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/</loc>
-        <lastmod>2020-01-05T09:12:08.000Z</lastmod>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>carlosme.fun/categories/HTTP/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>carlosme.fun/categories/JavaScript/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>carlosme.fun/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>carlosme.fun/categories/ThreeJS/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>carlosme.fun/categories/Vue/</loc>
+        <lastmod>2020-06-10T15:24:45.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

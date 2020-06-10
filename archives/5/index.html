@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About Me</a>
                         </li>
                         
                     
@@ -211,41 +211,46 @@
 
 <div class="post-preview">
 
-    <a href="/前端面试/前端面试系列-JavaScript 数组/">
+    <a href="/GraphQL/如何在Vue SPA中集成GraphQL/">
         <h2 class="post-title">
-            前端面试系列-JavaScript 数组
+            如何在Vue SPA中集成GraphQL
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            一. 如何对一个多维数组进行扁平化
-首先需要对数组进行降维，有很多种解决方案 假设我们现在有一个高维数组
-const arr = [1,2,[2,323,434,[2323,[2322,5646],23],255]];
+            
+
+
+为了快速搭建，首先我们安装vue-cli@3.x
+
+
+ sudo npm install -g @vue/cli
+ yarn global add @vue/cli
 
 
 
-利用递归思想来解决
+我们快速搭建一个Vue-SPA项目
 
 
-let tempArr = [];
-function flattenArrFirst(array){
-array.map(item=&gt;{
+  mkdir learn_vue_with_graphql
+  cd learn_vue_with_graphql
+  vue create vue-ssr-graphql
 ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-02-26
+            2019-02-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#javascript" title="javascript">javascript</a>
+              <a href="/tags/#graphql" title="graphql">graphql</a>
             
-              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
+              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
             
-              <a href="/tags/#ES6" title="ES6">ES6</a>
+              <a href="/tags/#vuejs" title="vuejs">vuejs</a>
             
         </div>
     
@@ -255,9 +260,9 @@ array.map(item=&gt;{
 
 <div class="post-preview">
 
-    <a href="/前端面试/前端面试系列- CSS基础篇/">
+    <a href="/GraphQL/graphQL 如和在客户端调用/">
         <h2 class="post-title">
-            前端面试系列- CSS基础篇
+            graphQL 如和在客户端调用
         </h2>
         <h3 class="post-subtitle">
             
@@ -265,235 +270,37 @@ array.map(item=&gt;{
         <div class="post-content-preview">
             
 
-一. 有哪几种游览器内核 1. Trident内核：IE,MaxThon,TT,The Word,360,搜狗浏览器等。[又称为MSHTML] 2. Gecko内核：Netscape6及以上版本，FF,MozillaSuite/SeaMonkey等； 3. Presto内核：Opera7及以上。[Opera内核原为：Presto，现为：Blink] 4. Webkit内核：Safari,......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-02-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#CSS3" title="CSS3">CSS3</a>
-            
-              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
-            
-              <a href="/tags/#html" title="html">html</a>
-            
-        </div>
-    
+源码地址：github地址
 
-</div>
-<hr>
+1. 先展示目录结构
 
-<div class="post-preview">
-
-    <a href="/前端面试/前端面试系列-JavaScript中的this指向问题/">
-        <h2 class="post-title">
-            前端面试系列-JavaScript中的this指向问题
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            谁调用它他就指向谁，箭头函数没有this
+2. 如何搭建
 
 
-new 的过程中发生了什么
+在上一篇文章的基础上，在 index.js 添加Express静态文件托管并且指明静态文件夹目录
+
+
+app.use(express.static('public'));
 
 
 
-首先创建一个新的对象
-链接到原型
-绑定this
-返回新的对象
-
-代码实现：
-function create() {
-  let obj = {};
-  let Constructor = [].shift.call(arguments);
-  obj.__proto__ = Constructor.prototy......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-02-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#javascript" title="javascript">javascript</a>
-            
-              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
-            
-              <a href="/tags/#html" title="html">html</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/前端面试/前端面试系列-游览器中的事件/">
-        <h2 class="post-title">
-            前端面试系列-游览器中的事件
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-事件触发的过程
-
-- window 往事件触发处传播，遇到注册的事件捕获 （这一个过程称作事件的捕获）
+创建public目录并且在此文件中创建index.html 文件
 
 
-
-传播到事件处发处注册事件会触发
-
-
-从事件触发处往window传播，遇见注册的事件冒泡会触发
-
-
-事件触发一般来说会按照上面的顺序进行，但是也有特例，如果给一个目标节点同时注册冒泡和捕获事件，事件触发会按照注册的顺序执行。
-
-
-// 以下会先打印冒泡然后是捕获
-node.addE......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-02-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/前端面试/前端面试系列-前端跨域常用的几种方式/">
-        <h2 class="post-title">
-            前端面试系列-前端跨域常用的几种方式
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-JSONP JSONP 的原理很简单，就是利用 script 标签没有跨域限制的漏洞。通过 script&gt;标签指向一个需要访问的地址并提供一个回调函数来接收数据当需要通讯时。我反正不常用。
-
-
-封装JOSNP
-function jsonp(url,callback,success){
-    var scprit = document.createElement('script')......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-02-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/前端面试/前端面试系列-JS基础数据类型/">
-        <h2 class="post-title">
-            前端面试系列-JS基础数据类型
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-typeof 结果可能有哪些值
-
-
-number,string, function, object, undfined, boolean, symbol
-
-
-JS 的数据类型
-
-
-
-
-值类型(基本类型)：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol。
-
-
-引用数据类型：对象(Object)、数组(Arr......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-02-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Frontend Interview" title="Frontend Interview">Frontend Interview</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/CSS3/前端面试系列 — 布局篇/">
-        <h2 class="post-title">
-            前端面试系列 — 布局篇
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-一. 三栏布局，固定高度，左右固定宽度，中间自适应。请写出合理的布局方案。
-
-
-利用浮动布局（圣杯布局和双飞翼布局）
-利用定位布局
-flex 布局
-table 表格布局
-grid 布局
-
-代码如下:
 &lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-    &lt;meta charset=&quot;......
+&lt;html lan......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-02-26
+            2019-02-20
         </p>
         <div class="tags">
+            
+              <a href="/tags/#graphql" title="graphql">graphql</a>
+            
+              <a href="/tags/#nodejs" title="nodejs">nodejs</a>
             
         </div>
     
@@ -503,29 +310,37 @@ grid 布局
 
 <div class="post-preview">
 
-    <a href="/HTML5/前端面试系列 — HMTL基础篇/">
+    <a href="/GraphQL/GraphQL入门之GraphQL的查询/">
         <h2 class="post-title">
-            前端面试系列 — HMTL基础篇
+            GraphQL入门之GraphQL的查询
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
+GraphQL入门之GraphQL的查询
 
-1. HTML中首行 有什么作用? doctype 又分哪几类?其中这些每一类由对应有什么作用？请简单描述一下。
+先附上源代码文件
 
+app.js
 
-DOCTYPE 是 document type(文档类型的）的简写。是为了告诉浏览器需要通过哪一种规范（文档类型定义，DTD）解析文档（比如HTML或XHTML规范）
-DTD（document type definition，文档类型定义）是一系列的语法规则，用来定义 X......
+const express = require('express');
+const { buildSchema } = require('graphql');
+const graphqlHTTP = require('express-graphql');
+
+const originData = [{
+     ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-02-26
+            2019-02-19
         </p>
         <div class="tags">
+            
+              <a href="/tags/#graphql" title="graphql">graphql</a>
             
         </div>
     
@@ -535,80 +350,80 @@ DTD（document type definition，文档类型定义）是一系列的语法规�
 
 <div class="post-preview">
 
-    <a href="/微信小程序/微信小程序开发技术选型分享/">
+    <a href="/docker/Docker 中如何安装WordPress/">
         <h2 class="post-title">
-            微信小程序开发技术选型分享
+            Docker 中如何安装WordPress
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            微信小程序开发技术分享:anchor:
+            Docker 中如何安装WordPress
 
-目前编写微信小程序的技术有如下：微信开发者工具自带的一套开发技术，基于腾讯的WePY框架，美团的Mpvue，京东的Taro，这四个开发小程序技术目前是应用最为广泛的。今天最主要介绍的是来自京东凹凸团队的Taro框架。
-什么是Taro?
-多端统一开发框架，支持用 React 的开发方式编写一次代码，生成能运行在微信小程序、H5、React Native......
+
+1. 从dockerHub 中拉取mysql镜像
+
+   docker pull mysql:5.6
+
+当然你也可选用最新的mysql版本
+docker pull mysql
+
+
+
+2. 从dockerHub 中拉取 wordpress镜像
+
+docker pull wordpress:latest
+
+
+3. 创建mysql容器 并且做一些设置......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by Carlos on
-            2019-02-21
-        </p>
-        <div class="tags">
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/docker/Docker 学习笔记 如何安装Docker/">
-        <h2 class="post-title">
-            Docker 学习笔记 如何安装Docker
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-1.安装环境 CentOS7
-
-  sudo yum install docker
-
-
-2.启动Docker
-
-   sudo yum systemctl start docker
-
-
-3.搜索镜像
-
-   docker search ubuntu
-
-
-4.拉取镜像
-
-docker pull ubuntu:16.04
-
-
-5.docker 权限问题
-运行如下命令
-
- sudo group......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by Carlos on
-            2019-02-21
+            2019-02-18
         </p>
         <div class="tags">
             
               <a href="/tags/#Docker" title="Docker">Docker</a>
+            
+              <a href="/tags/#WordPress" title="WordPress">WordPress</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/GraphQL/GraphQL 简介/">
+        <h2 class="post-title">
+            GraphQL 简介
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            GraphQL 简介
+
+1. 什么是GraphQL ?
+
+
+GraphQL是一种新的API标准，它提供了一种更高效、强大和灵活的数据提供方式。它是由Facebook 2015年开发和开源，目前由来自世界各地的大公司和个人维护。是REST API的替代品。
+
+
+GraphQL本质上是一种基于api的查询语言，现在大多数应用程序都需要从服务器中获取数据，这些数据存储可能存储在数据库中，API的职......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by Carlos on
+            2019-02-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#graphql" title="graphql">graphql</a>
             
         </div>
     
@@ -626,10 +441,6 @@ docker pull ubuntu:16.04
             <a href="/archives/4/">&larr; Newer Posts</a>
         </li>
     
-    
-        <li class="next">
-            <a href="/archives/6/">Older Posts &rarr;</a>
-        </li>
     
 </ul>
 
@@ -667,6 +478,10 @@ docker pull ubuntu:16.04
             
         
             
+            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
+            
+        
+            
             <a href="/tags/#javascript" title="javascript" rel="9">javascript</a>
             
         
@@ -675,11 +490,7 @@ docker pull ubuntu:16.04
             
         
             
-            <a href="/tags/#graphql" title="graphql" rel="4">graphql</a>
-            
-        
-            
-            <a href="/tags/#JavaScript" title="JavaScript" rel="30">JavaScript</a>
+            <a href="/tags/#JavaScript" title="JavaScript" rel="19">JavaScript</a>
             
         
             
@@ -687,15 +498,15 @@ docker pull ubuntu:16.04
             
         
             
-            <a href="/tags/#Vue源码" title="Vue源码" rel="17">Vue源码</a>
-            
-        
-            
-            <a href="/tags/#Vue" title="Vue" rel="20">Vue</a>
+            <a href="/tags/#Vue" title="Vue" rel="9">Vue</a>
             
         
             
         
+            
+        
+            
+            <a href="/tags/#Vue源码" title="Vue源码" rel="6">Vue源码</a>
             
         
             
@@ -822,7 +633,7 @@ docker pull ubuntu:16.04
         </li>
       
         <li>
-          <a href="/Vue/Vue 源码阅读 虚拟DOM （四）/">Vue 源码阅读 虚拟DOM （四）</a>
+          <a href="/Vue/Vue 源码阅读 深入响应式原理(三)/">Vue 源码阅读 深入响应式原理(三)</a>
         </li>
       
     </ul>
@@ -833,7 +644,7 @@ docker pull ubuntu:16.04
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">February 2019</a><span class="archive-list-count">16</span></li></ul>
     </div>
 
         <hr>
