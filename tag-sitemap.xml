@@ -58,6 +58,13 @@
     </url>
 
     <url>
+        <loc>carlosme.fun/tags/nodejs/</loc>
+        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>carlosme.fun/tags/git/</loc>
         <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -72,7 +79,7 @@
     </url>
 
     <url>
-        <loc>carlosme.fun/tags/nodejs/</loc>
+        <loc>carlosme.fun/tags/http/</loc>
         <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -94,13 +101,6 @@
 
     <url>
         <loc>carlosme.fun/tags/html/</loc>
-        <lastmod>2020-06-10T14:55:12.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>carlosme.fun/tags/http/</loc>
         <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>

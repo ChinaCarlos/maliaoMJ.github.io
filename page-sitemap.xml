@@ -21,14 +21,14 @@
     </url>
     
     <url>
-        <loc>carlosme.fun/about/</loc>
+        <loc>carlosme.fun/archive/</loc>
         <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>carlosme.fun/archive/</loc>
+        <loc>carlosme.fun/about/</loc>
         <lastmod>2020-06-10T14:55:12.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
